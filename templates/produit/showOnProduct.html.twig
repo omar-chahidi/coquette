@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <!--
+    <article>
+        <h2>Titre de l'article</h2>
+        <div class="metadata">Ecrit le 07/05/2020 à 16:00 dans la catégorie Homme</div>
+        <div class="content">
+            <img src="http://placehold.it/350x150" alt="">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic, impedit.
+                Aperiam culpa cupiditate eaque ipsum mollitia, nobis rerum vero voluptatem.
+            </p>
+            <hr>
+            {# (p>lorem50)*2 #}
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam assumenda error incidunt numquam quod
+                reiciendis repudiandae! Animi dignissimos fugit molestiae obcaecati recusandae! Beatae commodi cumque
+                debitis error, eum excepturi harum inventore iste laborum magnam mollitia odit officiis perferendis,
+                perspiciatis quia sit veritatis? Ab accusamus, deserunt maiores porro totam veritatis vitae.</p>
+            <p>Amet eos, omnis. Dignissimos, enim eveniet facere fugit itaque molestiae placeat repudiandae ullam vero.
+                Ad cupiditate eos fugiat fugit iure, nemo non numquam odio reprehenderit saepe sit tempora vero
+                voluptatem. Distinctio exercitationem fugit impedit quaerat recusandae, velit voluptas. Ad cum,
+                dignissimos dolor exercitationem iure neque nihil quibusdam quisquam voluptates voluptatibus.</p>
+        </div>
+    </article>
+    -->
+
+    <article>
+        <h2>Article n° {{ unArticle.id }}</h2>
+        <h3>{{ unArticle.titre }}</h3>
+        <div class="metadata">Ecrit le {{ unArticle.createdAt | date ('Y/m/d')}} dans la catégorie Homme</div>
+        <div class="content">
+            <img src="http://placehold.it/350x150" alt="">
+            <p>{{ unArticle.description | raw}}</p>
+            <hr>
+            <p>{{ unArticle.motRecherche }}</p>
+    </article>
+{% endblock %}

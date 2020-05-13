@@ -1,0 +1,129 @@
+App\Entity\Marque:
+  marque1:
+    titre: 'NIKE'
+    description: <paragraphs(1, true)>
+
+  marque2:
+    titre: 'ADIDAS'
+    description: <paragraphs(1, true)>
+
+  marque3:
+    titre: 'ETAM'
+    description: <paragraphs(1, true)>
+
+  marque4:
+    titre: 'LACOSTE'
+    description: <paragraphs(1, true)>
+
+  marque5:
+    titre: 'JULES'
+    description: <paragraphs(1, true)>
+
+  marque6:
+    titre: 'ORCHESTRA'
+    description: <paragraphs(1, true)>
+
+App\Entity\Domaine:
+  domaine1:
+    titre: 'CHAUSSURES'
+    description: <paragraphs(3, true)>
+
+  domaine2:
+    titre: 'VETÊMENTS'
+    description: <paragraphs(3, true)>
+
+  domaine3:
+    titre: 'ACCESSOIRES'
+    description: <paragraphs(3, true)>
+
+App\Entity\Categorie:
+  categorie1:
+    titre: 'HOMME'
+    description: <paragraphs(3, true)>
+
+  categorie2:
+    titre: 'FEMME'
+    description: <paragraphs(3, true)>
+
+  categorie3:
+    titre: 'ENFANT'
+    description: <paragraphs(3, true)>
+
+
+App\Entity\Article:
+  article{1..30}:
+    titre: <sentence(6, true)>
+    description: <paragraphs(3, true)>
+    motRecherche: <sentence(6, true)>
+    createdAt: <dateTimeThisYear('now')>
+    prix: <numberBetween(1, 1000000)>
+    remise: <numberBetween(0, 90)>
+    categorie: '@categorie*'
+    domaine: '@domaine*'
+    marque: '@marque*'
+
+App\Entity\Variante:
+  variante{1..50}:
+    taille: <randomElement(['L', 'M', '42', '29', 'null'])>
+    couleur: <colorName()>
+    stocke: <numberBetween(1, 5)>
+    article: '@article*'
+
+App\Entity\Photo:
+  photo_{@article*}:
+    titrePhoto: <imageUrl()>
+    master: 1
+    article: <current()>
+
+  photo{1..60}:
+    titrePhoto: <imageUrl()>
+    master: 0
+    article: '@article*'
+
+App\Entity\Pays:
+  pays{1..5}:
+    code: <word()>
+    nom: <country()>
+
+App\Entity\Ville:
+  ville_{@pays*}:
+    codePostale: <fr_FR:postcode()>
+    nomVille: <city()>
+    pays: <current()>
+    # pays: '@pays*'
+
+App\Entity\Utilisateur:
+  user{1..20}:
+    nomUtilisateur: <fr_FR:firstName()>
+    prenom: <fr_FR:lastName()>
+    telephone: <fr_FR:phoneNumber()>
+    adresse: <fr_FR:address()>
+    dateNaissance: <date_create()>
+    email (unique): <fr_FR:email()>
+    mdp: '123'
+    activation: ok
+    dateAjout: <dateTimeThisYear('now')>
+    dateDesactivation: null
+    ville: '@ville*'
+
+App\Entity\Commande:
+  commande{1..10}:
+    datCommande: <dateTimeThisYear('now')>
+    utilisateur: '@user*'
+
+App\Entity\CommandeProduit:
+  ligneDeCommande{1..30}:
+    commande: '@commande*'
+    variante: '@variante*'
+    prixUnitaire: <numberBetween(1, 1000000)>
+    quantite: <numberBetween(1, 5)>
+
+App\Entity\Facture:
+  facture_{@commande*}:
+    dateFacture: <dateTimeThisYear('now')>
+    commande: <current()>
+
+App\Entity\BonDeLivraison:
+  bonLivraison_{@commande*}:
+    dateBonLivraison: <dateTimeThisYear('now')>
+    commande: <current()>

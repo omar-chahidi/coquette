@@ -9,12 +9,21 @@
     {% for article in articles %}
         <article>
             <h2>{{ article.titre }}</h2>
-            <div class="metadata">Ecrit le {{ article.createdAt | date ('Y/m/d')}} dans la catégorie Homme</div>
+            <div class="metadata">Ecrit le {{ article.createdAt | date ('Y/m/d') }} dans la catégorie Homme</div>
             <div class="content">
-                <img src="http://placehold.it/350x150" alt="">
-                <p>{{ article.description | raw}}</p>
-                <p>{{ article.motRecherche }}</p>
+                {% for photo in article.getPhotos() %}
+                    <img src="{{ photo.getTitrePhoto() }}" alt="">
+                {% endfor %}
+                <br><br>
+
+                <p>Marque : {{ article.marque.titre }}</p>
+                <p>Prix avant remise : {{ article.prix }}</p>
+                <p>Remise : {{ article.remise  }}</p>
+                <p> Prix après remise : {{ article.prix-(article.prix*article.remise)/100 }}</p>
+                <p>Categorie : {{ article.categorie.titre  }}</p>
+
                 <a href="{{ path('show_On_Product', {'id': article.id}) }}" class="btn btn-info">Lire la suite</a>
+                <hr>
             </div>
         </article>
     {% endfor %}

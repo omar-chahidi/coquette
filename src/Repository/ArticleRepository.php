@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Article;
+use App\Entity\Categorie;
+use App\Entity\Photo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -47,4 +49,79 @@ class ArticleRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    // equivalant de findAll
+    public function myFindAll()
+    {
+        return $this
+            ->createQueryBuilder('a')
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    // Depuis le repository d'Advert
+    //public function getAllArticlesWithMasterImage(Categorie $categorie)
+    public function getAllArticlesWithMasterImage()
+    {
+        $qb = $this
+            ->createQueryBuilder('a')
+            // on fait une jointure avec l'entité Categorie
+            /**/
+            ->join('a.categorie', 'ca')
+            ->addSelect('ca')
+                /*
+            ->where('ca.titre = :titre' )
+            ->setParameter('titre', 'HOMME')
+            */
+            ->leftJoin('a.photos', 'ph')
+            ->addSelect('ph')
+            ->leftJoin('a.marque', 'ma')
+            ->addSelect('ma')
+        ;
+
+        // Filtrer sur les images MASTER
+        $qb->where($qb->expr()->in('ph.master', 1));
+
+                    // filtrer sur une gategorie
+        //$qb->andWhere($qb->expr()->in('ca.titre', 'HOMME'));
+
+        return $qb
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    public function getAllArticlesWithMasterImageAndCtegorie()
+    {
+        $qb = $this
+            ->createQueryBuilder('a')
+            // on fait une jointure avec l'entité Categorie
+            /**/
+            ->join('a.categorie', 'ca')
+            ->addSelect('ca')
+            /*
+        ->where('ca.titre = :titre' )
+        ->setParameter('titre', 'HOMME')
+        */
+            ->leftJoin('a.photos', 'ph')
+            ->addSelect('ph')
+            ->leftJoin('a.marque', 'ma')
+            ->addSelect('ma')
+
+        ;
+
+
+        // Filtrer sur les images MASTER
+        $qb->where($qb->expr()->in('ph.master', 1));
+
+        // filtrer sur une gategorie
+        $qb->andWhere($qb->expr()->in('ca.id', 1));
+
+        return $qb
+            ->getQuery()
+            ->getResult();
+    }
+
+    // getArticleWithimages
 }

@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Article;
 use App\Entity\Photo;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -47,4 +48,20 @@ class PhotoRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    // Photo MASTER d'un article
+    public function getMasterImage(Article $article){
+
+        // querybuider
+        $qb = $this ->createQueryBuilder('p')
+            ->select('p')
+            ->join('p.article', 'article')
+            ->where('article.id = :id')
+            ->andWhere('p.master', 1)
+            ->setParameter('id', $article->getId())
+        ;
+        return $qb->getQuery()->getResult();
+
+    }
+
 }

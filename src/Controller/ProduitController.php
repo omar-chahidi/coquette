@@ -52,9 +52,9 @@ class ProduitController extends AbstractController
         // exemple 4 en fonction d'une catégorie
         // Liste des produits
 
-
-        $articles = $repo->getAllArticlesWithMasterImageAndCtegorie();
         //$articles = $repo->getAllArticlesWithMasterImage();
+        //$articles = $repo->getAllArticlesWithMasterImageAndCtegorie();
+        $articles = $repo->getAllArticlesWithMasterImageAndCtegorie(2);
         foreach ($articles as $unArticle) {
             var_dump($unArticle->getCategorie()->getTitre());
 
@@ -69,6 +69,45 @@ class ProduitController extends AbstractController
             'articles' => $articles
         ]);
     }
+
+    /**
+     * @Route("/produit/categorie/{categorie}", name="liste_produits_par_categorie")
+     */
+    public function produitsParCategorie(ArticleRepository $repo, $categorie)
+    {
+        var_dump($categorie);
+        $articles = $repo->getAllArticlesWithMasterImageAndCtegorie($categorie);
+        foreach ($articles as $unArticle) {
+            var_dump($unArticle->getCategorie()->getTitre());
+            foreach ($unArticle->getPhotos() as $photo){
+                var_dump($photo->getMaster());
+            }
+        }
+        return $this->render('produit/listeProduits.html.twig', [
+            'articles' => $articles
+        ]);
+    }
+
+    /**
+     * @Route("/produit/categorie/{categorie}/{domaine}", name="liste_produits_par_categorie_et_domaine")
+     */
+    public function produitsParCategorieEtDomaine(ArticleRepository $repo, $categorie, $domaine)
+    {
+        var_dump($categorie);
+        var_dump($domaine);
+        $articles = $repo->getAllArticlesWithMasterImageByCtegorieAndDomaine($categorie, $domaine);
+        foreach ($articles as $unArticle) {
+            var_dump($unArticle->getCategorie()->getTitre());
+            var_dump($unArticle->getDomaine()->getTitre());
+            foreach ($unArticle->getPhotos() as $photo){
+                var_dump($photo->getMaster());
+            }
+        }
+        return $this->render('produit/listeProduits.html.twig', [
+            'articles' => $articles
+        ]);
+    }
+
 
     /**
      * @Route("/produit/{id}", name="show_On_Product")

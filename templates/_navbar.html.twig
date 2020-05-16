@@ -1,0 +1,41 @@
+
+<!-- -->
+<nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+    <!--
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    -->
+    <a class="navbar-brand" href="{{ path('home') }}">
+        <img src="{{ asset('uploads/images/coquette_logo.png') }}" height="60px" style="margin-top: 0; padding: 0"
+             alt="Coquette">
+    </a>
+
+    <div class="collapse navbar-collapse" id="navbarColor03">
+        <ul class="navbar-nav mr-auto">
+
+            <!-- PRODUITS PAR CATEGORIE -->
+            <li class="nav-item ">
+                <a class="nav-link" href="{{ path('liste_produits_par_categorie', {'categorie':'1'}) }}">HOMMES</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('liste_produits_par_categorie', {'categorie':'2'}) }}">FEMMES</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path('liste_produits_par_categorie', {'categorie':'3'}) }}">ENFANTS</a>
+            </li>
+
+            <!-- PRODUITS PAR CATEGORIE + DOMAINE -->
+            <li class="nav-item">
+                <a class="nav-link"
+                   href="{{ path('liste_produits_par_categorie_et_domaine', {'categorie':'1', 'domaine':'1'}) }}">HOMMES
+                    + CHAUSSURES</a>
+            </li>
+
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search">
+            <button class="btn btn-secondary my-2 my-sm-0" type="submit">RECHERCHER</button>
+        </form>
+    </div>
+</nav>
+
+<br><br><br><br><br><br>

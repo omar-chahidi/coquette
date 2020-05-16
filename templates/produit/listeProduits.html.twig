@@ -9,7 +9,7 @@
     {% for article in articles %}
         <article>
             <h2>{{ article.titre }}</h2>
-            <div class="metadata">Ecrit le {{ article.createdAt | date ('Y/m/d') }} dans la catégorie Homme</div>
+            <div class="metadata">Ecrit le {{ article.createdAt | date ('Y/m/d') }} dans la catégorie {{ article.categorie.titre  }} et le domaine {{ article.domaine.titre  }}</div>
             <div class="content">
                 {% for photo in article.getPhotos() %}
                     <img src="{{ photo.getTitrePhoto() }}" alt="">
@@ -21,6 +21,7 @@
                 <p>Remise : {{ article.remise  }}</p>
                 <p> Prix après remise : {{ article.prix-(article.prix*article.remise)/100 }}</p>
                 <p>Categorie : {{ article.categorie.titre  }}</p>
+                <p>Domaine : {{ article.domaine.titre  }}</p>
 
                 <a href="{{ path('show_On_Product', {'id': article.id}) }}" class="btn btn-info">Lire la suite</a>
                 <hr>

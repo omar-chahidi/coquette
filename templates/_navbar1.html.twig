@@ -1,0 +1,72 @@
+<nav class="navbar fixed-top navbar-expand-md navbar-light bg-light">
+    <a class="navbar-brand" href="{{ path('home') }}">
+        <img src="{{ asset('uploads/images/coquette_logo.png') }}" height="60px" style="margin-top: 0; padding: 0"
+             alt="Coquette">
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="{{ path('liste_produits_par_categorie', {'categorie':'1'}) }}" id="navbarDropdown" role="button" data-toggle="dropdown">
+                    HOMMES
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ path('liste_produits_par_categorie_et_domaine', {'categorie':'1', 'domaine':'1'}) }}">CHAUSSURES</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('liste_produits_par_categorie_et_domaine', {'categorie':'1', 'domaine':'2'}) }}">VETÊMENTS</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('liste_produits_par_categorie_et_domaine', {'categorie':'1', 'domaine':'3'}) }}">ACCESSOIRES</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('liste_produits_par_categorie', {'categorie':'1'}) }}">Tout voir</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="{{ path('liste_produits_par_categorie', {'categorie':'2'}) }}" id="navbarDropdown" role="button" data-toggle="dropdown">
+                    FEMMES
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ path('liste_produits_par_categorie_et_domaine', {'categorie':'2', 'domaine':'1'}) }}">CHAUSSURES</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('liste_produits_par_categorie_et_domaine', {'categorie':'2', 'domaine':'2'}) }}">VETÊMENTS</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('liste_produits_par_categorie_et_domaine', {'categorie':'2', 'domaine':'3'}) }}">ACCESSOIRES</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('liste_produits_par_categorie', {'categorie':'2'}) }}">Tout voir</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="{{ path('liste_produits_par_categorie', {'categorie':'3'}) }}" id="navbarDropdown" role="button" data-toggle="dropdown">
+                    ENFANTS
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{{ path('liste_produits_par_categorie_et_domaine', {'categorie':'3', 'domaine':'1'}) }}">CHAUSSURES</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('liste_produits_par_categorie_et_domaine', {'categorie':'3', 'domaine':'2'}) }}">VETÊMENTS</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('liste_produits_par_categorie_et_domaine', {'categorie':'3', 'domaine':'3'}) }}">ACCESSOIRES</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ path('liste_produits_par_categorie', {'categorie':'3'}) }}">Tout voir</a>
+                </div>
+            </li>
+
+            <!-- AUTRE -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">
+                    Services
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Photography</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">View Our Portfolio</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contact Us</a>
+            </li>
+        </ul>
+    </div>
+</nav>

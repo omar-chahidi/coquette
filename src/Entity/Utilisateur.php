@@ -7,6 +7,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+// namespace pour la validation
+use Symfony\Component\Validator\Constraints as Assert;
+
 /**
  * @ORM\Entity(repositoryClass=UtilisateurRepository::class)
  */
@@ -21,11 +24,19 @@ class Utilisateur
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Length(min=3,
+     *      max=50,
+     *     minMessage="Il faut un nom plus que 1O caractères",
+     *     maxMessage="Il faut un nom moin que 5O caractères")
      */
     private $nomUtilisateur;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Length(min=3,
+     *      max=50,
+     *     minMessage="Il faut un nom plus que 1O caractères",
+     *     maxMessage="Il faut un nom moin que 5O caractères")
      */
     private $prenom;
 
@@ -46,6 +57,7 @@ class Utilisateur
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\Email(message = "Adresse email '{{ value }}' n'est pas validé")
      */
     private $email;
 
@@ -53,6 +65,8 @@ class Utilisateur
      * @ORM\Column(type="string", length=255)
      */
     private $mdp;
+
+    public $confirm_password;
 
     /**
      * @ORM\Column(type="string", length=10)

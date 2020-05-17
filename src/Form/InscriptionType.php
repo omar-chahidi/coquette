@@ -21,10 +21,17 @@ class InscriptionType extends AbstractType
             ->add('prenom')
             ->add('telephone')
             ->add('adresse')
+            /*
             ->add('dateNaissance', BirthdayType::class, [
                 'placeholder' => [
                     'day' => 'jours', 'month' => 'mois', 'year' => 'année',
                 ]
+            ])
+            */
+            ->add('dateNaissance', DateType::class, [
+                'widget' => 'single_text',
+                // this is actually the default format for single_text
+                //'format' => 'dd-MM-yyyy',
             ])
             ->add('email')
             ->add('mdp', PasswordType::class)

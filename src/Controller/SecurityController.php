@@ -2,14 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Entity\Utilisateur;
 use App\Form\InscriptionType;
+use App\Form\RegistrationType;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SecurityController extends AbstractController
 {
@@ -21,7 +24,9 @@ class SecurityController extends AbstractController
     //public function inscription(Request $request, ObjectManager $manager){
     //public function inscription(Request $request, EntityManagerInterface $manager){
     //public function inscriptionEtModification(Request $request, ManagerRegistry $managerRegistry){
-    public function inscriptionEtModification(Utilisateur $utilisateur = null,Request $request, ManagerRegistry $managerRegistry){
+    //public function inscriptionEtModification(Utilisateur $utilisateur = null,Request $request, ManagerRegistry $managerRegistry){
+
+    public function inscriptionEtModification(Utilisateur $utilisateur = null,Request $request, ManagerRegistry $managerRegistry, UserPasswordEncoderInterface $encoder){
 
         // Instansiation d'un utilisateur
         if(!$utilisateur){
@@ -35,6 +40,12 @@ class SecurityController extends AbstractController
        $form->handleRequest($request);
 
        if($form->isSubmitted() && $form->isValid()){
+
+           // Encodage du mot de passe
+           $hash = $encoder->encodePassword($utilisateur, $utilisateur->getPassword());
+           // Modification du mot de passe avec le même mais encoder
+           $utilisateur->setPassword($hash);
+
            // s'il n y pas un compte utilisateur j'ajoute la date de création
            if(!$utilisateur->getId()){
                $utilisateur ->setActivation('ok')
@@ -43,13 +54,16 @@ class SecurityController extends AbstractController
            }
 
            dump($utilisateur);
-           /*
-           $manager->persist($utilisateur);
-           $manager->flush();
-            */
+
+           //$manager->persist($utilisateur);
+           //$manager->flush();
+
            $em = $managerRegistry->getManager();
            $em->persist($utilisateur);
            $em->flush();
+
+           // Après une inscription je me dérige vers la route login
+           return $this->redirectToRoute('security_login');
        }
 
        return $this->render('security/inscription.html.twig', [
@@ -57,5 +71,67 @@ class SecurityController extends AbstractController
            // utilisateur existe updateMode = true
            'updateMode' => $utilisateur->getId() !== null
        ]);
+   }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/security/connexion", name="security_login")
+     */
+   public function login(Request $request){
+       dump($request);
+       return $this->render('security/login.html.twig');
+   }
+
+    /**
+     * @Route("/security/deconnexion", name="security_logout")
+     */
+   public function logout(){
+
+   }
+
+    /*
+     * @Route("/inscription", name="security_registration")
+     * @Route("/{id}/modification", name="security_update")
+     */
+   public function registration(User $user = null,Request $request, ManagerRegistry $managerRegistry, UserPasswordEncoderInterface $encoder){
+
+       // Instansiation d'un utilisateur
+       if(!$user){
+           $user = new User();
+       }
+       // Création un formulaire
+       $form = $this->createForm(RegistrationType::class, $user);
+
+       // Annalyser la requette http
+       $form->handleRequest($request);
+
+       if($form->isSubmitted() && $form->isValid()){
+
+           // Encodage du mot de passe
+           $hash = $encoder->encodePassword($user, $user->getPassword());
+           // Modification du mot de passe avec le même mais encoder
+           $user->setPassword($hash);
+
+           // s'il n y pas un compte utilisateur j'ajoute la date de création
+           if(!$user->getId()){
+               $user ->setActivation('ok')
+                   ->setDateAjout(new \DateTime())
+               ;
+           }
+
+           dump($user);
+
+           $em = $managerRegistry->getManager();
+           $em->persist($user);
+           $em->flush();
+       }
+
+
+       return $this->render('security/registration.html.twig', [
+           'form' => $form->createView(),
+           // utilisateur existe updateMode = true
+           'updateMode' => $user->getId() !== null
+       ]);
+
    }
 }

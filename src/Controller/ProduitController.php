@@ -7,6 +7,7 @@ use App\Entity\Categorie;
 use App\Entity\Photo;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProduitController extends AbstractController
@@ -15,7 +16,8 @@ class ProduitController extends AbstractController
      * @Route("/", name="home")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function home(){
+    public function home(Request $request){
+        dump($request);
         return $this->render('produit/home.html.twig', [
             'titre' => 'Je suis la page home'
         ]);

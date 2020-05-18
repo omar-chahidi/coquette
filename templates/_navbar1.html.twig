@@ -59,13 +59,18 @@
                     S'inscrire/Se connecter
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Inscription</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Connexion</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Déconnexion</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Modification compte</a>
+                    {% if not app.user %}
+                        <a class="dropdown-item" href="{{ path('security_registration')}}">Inscription</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('security_login')}}">Connexion</a>
+                    {% else %}
+                        <a class="dropdown-item" href="#">{{ app.user.email }}</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('security_logout') }}">Déconnexion</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('security_update', {'id': app.user.id}) }}">Modification compte</a>
+
+                    {% endif %}
                 </div>
             </li>
             <li class="nav-item">

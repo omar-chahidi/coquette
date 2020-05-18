@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200513171505 extends AbstractMigration
+final class Version20200518132958 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -32,7 +32,7 @@ final class Version20200513171505 extends AbstractMigration
         $this->addSql('CREATE TABLE marque (id INT AUTO_INCREMENT NOT NULL, titre VARCHAR(255) NOT NULL, description LONGTEXT DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE pays (id INT AUTO_INCREMENT NOT NULL, code VARCHAR(50) NOT NULL, nom VARCHAR(50) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE photo (id INT AUTO_INCREMENT NOT NULL, article_id INT NOT NULL, titre_photo VARCHAR(255) NOT NULL, master VARCHAR(50) NOT NULL, INDEX IDX_14B784187294869C (article_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE utilisateur (id INT AUTO_INCREMENT NOT NULL, ville_id INT NOT NULL, nom_utilisateur VARCHAR(50) NOT NULL, prenom VARCHAR(50) NOT NULL, telephone VARCHAR(50) DEFAULT NULL, adresse VARCHAR(100) DEFAULT NULL, date_naissance DATE DEFAULT NULL, email VARCHAR(100) NOT NULL, mdp VARCHAR(255) NOT NULL, activation VARCHAR(10) NOT NULL, date_ajout DATE DEFAULT NULL, date_desactivation DATE DEFAULT NULL, INDEX IDX_1D1C63B3A73F0036 (ville_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE utilisateur (id INT AUTO_INCREMENT NOT NULL, ville_id INT NOT NULL, nom_utilisateur VARCHAR(50) NOT NULL, prenom VARCHAR(50) NOT NULL, telephone VARCHAR(50) DEFAULT NULL, adresse VARCHAR(100) DEFAULT NULL, date_naissance DATE DEFAULT NULL, email VARCHAR(100) NOT NULL, password VARCHAR(255) NOT NULL, activation VARCHAR(10) NOT NULL, date_ajout DATE DEFAULT NULL, date_desactivation DATE DEFAULT NULL, INDEX IDX_1D1C63B3A73F0036 (ville_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE variante (id INT AUTO_INCREMENT NOT NULL, article_id INT NOT NULL, taille VARCHAR(255) DEFAULT NULL, couleur VARCHAR(255) DEFAULT NULL, stocke INT NOT NULL, INDEX IDX_474CE6B07294869C (article_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE video (id INT AUTO_INCREMENT NOT NULL, article_id INT NOT NULL, titre VARCHAR(255) NOT NULL, master VARCHAR(50) NOT NULL, INDEX IDX_7CC7DA2C7294869C (article_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE ville (id INT AUTO_INCREMENT NOT NULL, pays_id INT NOT NULL, code_postale VARCHAR(50) NOT NULL, nom_ville VARCHAR(50) NOT NULL, INDEX IDX_43C3D9C3A6E44244 (pays_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');

@@ -100,7 +100,7 @@ App\Entity\Utilisateur:
     adresse: <fr_FR:address()>
     dateNaissance: <date_create()>
     email (unique): <fr_FR:email()>
-    mdp: '123'
+    password: '123'
     activation: ok
     dateAjout: <dateTimeThisYear('now')>
     dateDesactivation: null

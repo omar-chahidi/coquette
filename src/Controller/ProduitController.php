@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Entity\Categorie;
 use App\Entity\Photo;
+use App\Entity\Variante;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -116,11 +117,25 @@ class ProduitController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showOneProduct(ArticleRepository $repo, $id){
+        // Informations article (domaine, catégorie, prix, déscription)
         // $repo = $this->getDoctrine()->getRepository(Article::class);
         $unArticle = $repo->find($id);
 
+
+        // Tableau variante pour un article (taille, couleur, quantitée stock)
+        $repVariante = $this->getDoctrine()->getRepository(Variante::class);
+        $articleVariante = $repVariante->findBy(array('article' => $unArticle));
+        dump($articleVariante);
+
+        // Photos d'un article
+        $repoPhoto = $this->getDoctrine()->getRepository(Photo::class);
+        $articlePhotos = $repoPhoto->findBy(array('article' => $unArticle));
+        dump($articlePhotos);
+
         return $this->render('produit/showOnProduct.html.twig', [
-            'unArticle' => $unArticle
+            'unArticle' => $unArticle,
+            'articleVariante' => $articleVariante,
+            'articlePhotos' => $articlePhotos
         ]);
     }
 

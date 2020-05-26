@@ -28,10 +28,37 @@
         <h2>Article n° {{ unArticle.id }}</h2>
         <h3>{{ unArticle.titre }}</h3>
         <div class="metadata">Ecrit le {{ unArticle.createdAt | date ('Y/m/d')}} dans la catégorie Homme</div>
-        <div class="content">
-            <img src="http://placehold.it/350x150" alt="">
+        <div class="container">
+            <div class="row">
+                {% for photo in articlePhotos %}
+                    <div>
+                        <a href="{{ photo.titrePhoto }}" class="thumbnail" >
+                            <img src="{{ photo.titrePhoto }}" alt="{{ photo.titrePhoto }}" width="200" height="200"/>
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
             <p>{{ unArticle.description | raw}}</p>
             <hr>
             <p>{{ unArticle.motRecherche }}</p>
+
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <!--<th>Article</th>-->
+                    <th>Taille</th>
+                    <th>Couleur</th>
+                    <th>Stock</th>
+                </tr>
+                {% for article in articleVariante %}
+                    <tr>
+                        <!--<td>{{ article.id }}</td>-->
+                        <td>{{ article.taille}}</td>
+                        <td>{{ article.couleur }}</td>
+                        <td>{{ article.stocke }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+
     </article>
 {% endblock %}

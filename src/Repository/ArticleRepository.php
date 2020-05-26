@@ -152,5 +152,40 @@ class ArticleRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    // --------------------------------------------------------------
     // getArticleWithimages
+    /*
+    public function getArticle($categorie, $domaine, $article){
+        $qb = $this
+            ->createQueryBuilder('a')
+            // Jointure avec la table Variante
+            // Jointure avec la table Categorie
+            ->join('a.categorie', 'ca')
+            ->addSelect('ca')
+            // Jointure avec la table Domaine
+            ->join('a.domaine', 'do')
+            ->addSelect('do')
+            // Jointure avec la table Photo
+            ->leftJoin('a.photos', 'ph')
+            ->addSelect('ph')
+            // Jointure avec la table Marque
+            ->leftJoin('a.marque', 'ma')
+            ->addSelect('ma')
+        ;
+
+        // Filtre sur les images MASTER
+        $qb->where($qb->expr()->in('ph.master', 1));
+
+        // Filtre sur une gategorie
+        $qb->andWhere($qb->expr()->in('ca.id', $categorie));
+
+        // Filtre sur une domaine
+        $qb->andWhere($qb->expr()->in('do.id', $domaine));
+
+        return $qb
+            ->getQuery()
+            ->getResult();
+    }
+    */
 }

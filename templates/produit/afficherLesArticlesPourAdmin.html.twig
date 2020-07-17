@@ -30,17 +30,17 @@
                 <td>{{ produit.categorie.titre }}</td>
                 <td>{{ produit.domaine.titre }}</td>
                 <td>{{ produit.marque.titre }}</td>
-                <td>{{ produit.prix }}</td>
-                <td>{{ produit.remise }}</td>
+                <td>{{ produit.prix }} €</td>
+                <td>{{ produit.remise }} %</td>
                 <!--<td>{{ produit.description }}</td>-->
                 <!--<td>{{ produit.motRecherche }}</td>-->
                 <td>
                     <div class="btn-group">
                         <div class="btn mr-1">
-                            <a href="#" class="btn btn-warning">Modifier</a>
+                            <a href="{{ path('modifier_produit_par_un_admin', {'id': produit.id}) }}" class="btn btn-warning">Modifier</a>
                         </div>
                         <div class="btn mr-1">
-                            <a href="#" class="btn btn-danger">Supprimer</a>
+                            <a href="{{ path('supprimer_produit_par_un_admin', {'id': produit.id}) }}" class="btn btn-danger">Supprimer</a>
                         </div>
                         <div class="btn mr-1">
                             <a href="#" class="btn btn-success">Ajouter des informations</a>

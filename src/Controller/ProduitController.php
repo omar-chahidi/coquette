@@ -176,7 +176,11 @@ class ProduitController extends AbstractController
         // Annalyser la requette http
         $formulaireArticle->handleRequest($request);
         if($formulaireArticle->isSubmitted() && $formulaireArticle->isValid()) {
-            $article->setCreatedAt(new \DateTime());
+            // J'ajoute la date de création lorsque il n'y a pas l'article
+            if(!$article->getId()) {
+                $article->setCreatedAt(new \DateTime());
+            }
+
             dump($article);
             $em = $this->getDoctrine()->getManager();
             $em->persist($article);
@@ -188,6 +192,36 @@ class ProduitController extends AbstractController
         return $this->render('produit/ajouterModifierAricleParUnAdmin.html.twig', [
             'formulaireArticle' => $formulaireArticle->createView(),
             'produitExist' => $article->getId() !== null
+        ]);
+    }
+
+    /**
+     * @Route("/produit/{id}/supprimer", name="supprimer_produit_par_un_admin")
+     */
+    public function supprimerUnAricleParUnAdmin(Article $article){
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($article);
+        $entityManager->flush();
+        return $this->redirectToRoute('admin_afficher_les_articles');
+    }
+
+    /**
+     * @Route("/produit/{id}/ajouterVariantePhoto", name="ajouter_variante_photo_par_un_admin")
+     */
+    public function ajouterVariantePhotoParUnAdmin(Article $article) {
+        $depotProduit = $this->getDoctrine()->getRepository(Produit::class);
+        $monArticle = $depotProduit->find($article);
+
+        $depotImage = $this->getDoctrine()->getRepository(Photo::class);
+        $imagesDeMonProduit = $depotImage->findBy(array('produit' => $monArticle));
+
+        $depotVariante = $this->getDoctrine()->getRepository(Variante::class);
+        $variantesDeMonProduit = $depotVariante->findBy(array('produit' => $monArticle));
+
+        return $this->render('produit/ajouterVariantePhotoParUnAdmin.html.twig', [
+            'unArticle' => $monArticle,
+            'imagesProduit' => $imagesDeMonProduit,
+            'variantesProduit' => $variantesDeMonProduit
         ]);
     }
 

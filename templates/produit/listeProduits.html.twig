@@ -12,7 +12,7 @@
             <div class="metadata">Ecrit le {{ article.createdAt | date ('Y/m/d') }} dans la catégorie {{ article.categorie.titre  }} et le domaine {{ article.domaine.titre  }}</div>
             <div class="content">
                 {% for photo in article.getPhotos() %}
-                    <img src="{{ photo.getTitrePhoto() }}" alt="">
+                    <img src="/uploads/images/{{ photo.getTitrePhoto() }}" alt="{{ photo.getTitrePhoto() }}" width="300">
                 {% endfor %}
                 <br><br>
 

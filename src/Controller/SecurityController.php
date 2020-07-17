@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+//use App\Entity\User;
 use App\Entity\Utilisateur;
 use App\Form\InscriptionType;
 use App\Form\RegistrationType;
@@ -93,6 +93,7 @@ class SecurityController extends AbstractController
      * @Route("/inscription", name="security_registration")
      * @Route("/{id}/modification", name="security_update")
      */
+    /*
    public function registration(User $user = null,Request $request, ManagerRegistry $managerRegistry, UserPasswordEncoderInterface $encoder){
 
        // Instansiation d'un utilisateur
@@ -134,4 +135,6 @@ class SecurityController extends AbstractController
        ]);
 
    }
+    */
+
 }

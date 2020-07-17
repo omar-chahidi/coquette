@@ -104,6 +104,7 @@ class ProduitController extends AbstractController
             var_dump($unArticle->getDomaine()->getTitre());
             foreach ($unArticle->getPhotos() as $photo){
                 var_dump($photo->getMaster());
+                var_dump($photo->getTitrePhoto());
             }
         }
         return $this->render('produit/listeProduits.html.twig', [

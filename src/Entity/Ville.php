@@ -40,15 +40,15 @@ class Ville
      */
     private $utilisateurs;
 
-    /**
+    /*
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="ville")
      */
-    private $users;
+    //private $users;
 
     public function __construct()
     {
         $this->utilisateurs = new ArrayCollection();
-        $this->users = new ArrayCollection();
+        //$this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -123,9 +123,10 @@ class Ville
         return $this;
     }
 
-    /**
+    /*
      * @return Collection|User[]
      */
+    /*
     public function getUsers(): Collection
     {
         return $this->users;
@@ -153,4 +154,5 @@ class Ville
 
         return $this;
     }
+    */
 }

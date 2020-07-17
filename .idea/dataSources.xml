@@ -7,5 +7,11 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/coquetteTEST</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="coquette@localhost" uuid="3993456b-f62a-4987-a7c0-ca4a16928c66">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://localhost:3306/coquette</jdbc-url>
+    </data-source>
   </component>
 </project>

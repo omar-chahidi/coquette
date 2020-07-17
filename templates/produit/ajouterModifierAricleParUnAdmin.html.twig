@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if produitExist %}
+        <h2>Modifier un produit</h2>
+    {% else %}
+        <h2>Ajouter un nouveau produit</h2>
+    {% endif %}
+
+    {{ form_start(formulaireArticle) }}
+
+    {{ form_row(formulaireArticle.titre, {'label': 'Titre', 'attr': {'placeholder': 'Titre ...'}}) }}
+    {{ form_row(formulaireArticle.marque, {'label': 'La marque'}) }}
+    {{ form_row(formulaireArticle.categorie, {'label': 'Catégorie'}) }}
+    {{ form_row(formulaireArticle.domaine, {'label': 'Domaine'}) }}
+    {{ form_row(formulaireArticle.prix, {'label': 'Prix'}) }}
+    {{ form_row(formulaireArticle.remise, {'label': 'Réduction'}) }}
+    {{ form_row(formulaireArticle.description, {'label': 'Déscription', 'attr': {'placeholder': 'déscription ...'}}) }}
+    {{ form_row(formulaireArticle.motRecherche, {'label': 'Mot de recherche', 'attr': {'placeholder': 'mot de recherche ...'}}) }}
+
+    <button type="submit" class="btn btn-success">
+        {% if produitExist %}
+            Enregistrer les modifications
+        {% else %}
+            Ajouter le nouveau produit
+        {% endif %}
+    </button>
+    {{ form_end(formulaireArticle) }}
+{% endblock %}

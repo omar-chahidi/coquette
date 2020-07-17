@@ -6,6 +6,7 @@ use App\Entity\Article;
 use App\Entity\Categorie;
 use App\Entity\Photo;
 use App\Entity\Variante;
+use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -158,7 +159,37 @@ class ProduitController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/produit/ajouter", name="ajouter_produit_par_un_admin")
+     * @Route("/produit/{id}/modifier", name="modifier_produit_par_un_admin")
+     * php bin/console make:form ProduitType
+     */
+    public function ajouterModifierAricleParUnAdmin(Article $article = null, Request $request) {
 
+        if( !$article ){
+            $article = new Article();
+        }
+
+        // Création du formulaire
+        $formulaireArticle = $this->createForm(ArticleType::class, $article);
+
+        // Annalyser la requette http
+        $formulaireArticle->handleRequest($request);
+        if($formulaireArticle->isSubmitted() && $formulaireArticle->isValid()) {
+            $article->setCreatedAt(new \DateTime());
+            dump($article);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($article);
+            $em->flush();
+
+            return $this->redirectToRoute('admin_afficher_les_articles');
+        }
+
+        return $this->render('produit/ajouterModifierAricleParUnAdmin.html.twig', [
+            'formulaireArticle' => $formulaireArticle->createView(),
+            'produitExist' => $article->getId() !== null
+        ]);
+    }
 
 
 }

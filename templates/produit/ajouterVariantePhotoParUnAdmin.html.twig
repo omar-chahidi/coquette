@@ -37,10 +37,8 @@
                 <th>Stock disponible</th>
                 <th>Prix unitaire</th>
                 <th>Remise</th>
+                <th>N° variante</th>
                 <th>Action</th>
-
-
-
             </tr>
 
             {% for variante in variantesProduit %}
@@ -51,11 +49,11 @@
                     <td>{{ variante.stocke }}</td>
                     <td>{{ variante.article.prix }} €</td>
                     <td>{{ variante.article.remise }} %</td>
-
+                    <td>{{ variante.id }}</td>
                     <td>
                         <div class="btn-group">
                             <div class="btn mr-1">
-                                <a href="#" class="btn btn-warning">Modifier</a>
+                                <a href="{{ path('modifier_variante_aticle_par_admin', {'id': variante.id}) }}" class="btn btn-warning">Modifier</a>
                             </div>
                             <div class="btn mr-1">
                                 <a href="#" class="btn btn-danger">Supprimer</a>

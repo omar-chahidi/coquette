@@ -225,5 +225,4 @@ class ProduitController extends AbstractController
         ]);
     }
 
-
 }

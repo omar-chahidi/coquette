@@ -44,7 +44,7 @@ class ChariotController extends AbstractController
             $total += $totalItem;
         }
 
-        return $this->render('chariot/index.html.twig', [
+        return $this->render('chariot/ajouterModifierVariante.html.twig', [
             'items' => $panierAvecInfo,
             'total' => $total
         ]);
@@ -58,7 +58,7 @@ class ChariotController extends AbstractController
         // Calcul du total globale
         $total = $chariotService->calculerTotalPannier();
 
-        return $this->render('chariot/index.html.twig', [
+        return $this->render('chariot/ajouterModifierVariante.html.twig', [
             'items' => $panierAvecInfo,
             'total' => $total
         ]);

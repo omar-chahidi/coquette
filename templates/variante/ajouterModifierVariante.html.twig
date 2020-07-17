@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>
+        {% if mode == "ajouterVariante" %}
+            Ajout variante du produit {{ produit.titre }}
+        {% elseif mode == "modifierVariante" %}
+            Modifier variante du produit  {{ produit.titre }}
+        {% endif %}
+    </h2>
+    <br>
+    <h4>Catégorie : {{ categorie }} - Domaine : {{ domaine }}</h4>
+
+    {{ form_start(formulaireVariante) }}
+
+
+    {% if (domaine == "ACCESSOIRES")  %}
+        {{ form_row(formulaireVariante.taille, {'disabled': 'true', 'label': 'Taille'}) }}
+        {{ form_row(formulaireVariante.couleur, {'disabled': 'true', 'label': 'Couleur'}) }}
+
+    {% else %}
+        {{ form_row(formulaireVariante.taille, {'label': 'Taille', 'attr': {'placeholder': 'Taille ...'}}) }}
+        {{ form_row(formulaireVariante.couleur, {'label': 'Couleur', 'attr': {'placeholder': 'Couleur ...'}}) }}
+    {% endif %}
+
+    {{ form_row(formulaireVariante.stocke) }}
+
+
+    <button type="submit" class="btn btn-success">
+        {% if mode == "ajouterVariante" %}
+            Ajouter la nouvelle variante
+        {% elseif mode == "modifierVariante" %}
+            Enregistrer les modification
+        {% endif %}
+    </button>
+    {{ form_end(formulaireVariante) }}
+
+{% endblock %}

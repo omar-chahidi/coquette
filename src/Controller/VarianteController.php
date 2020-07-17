@@ -88,4 +88,17 @@ class VarianteController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/variante/{id}/supprimer", name="supprimer_variante_article_par_un_admin")
+     */
+    public function supprimerVariante(Variante $variante) {
+        $entitemanager = $this->getDoctrine()->getManager();
+        $entitemanager->remove($variante);
+        $entitemanager->flush();
+
+        return $this->redirectToRoute('ajouter_variante_photo_par_un_admin', [
+            'id' => $variante->getArticle()->getId()
+        ]);
+    }
+
 }

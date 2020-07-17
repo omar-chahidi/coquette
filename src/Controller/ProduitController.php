@@ -114,7 +114,7 @@ class ProduitController extends AbstractController
 
 
     /**
-     * @Route("/produit/{id}", name="show_On_Product")
+     * @Route("/produit/{id}", name="show_On_Product", requirements={"id"="\d+"})
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showOneProduct(ArticleRepository $repo, $id){
@@ -139,5 +139,26 @@ class ProduitController extends AbstractController
             'articlePhotos' => $articlePhotos
         ]);
     }
+
+
+    /* -----------------------------------------------------------------------------------------
+    * ------------------------------------- ADMINISTATION -------------------------------------
+    * -----------------------------------------------------------------------------------------
+    */
+
+    /**
+     * @Route("/produit/listerPourAdmin", name="admin_afficher_les_articles")
+     */
+    public function adminAfficherLesArticles() {
+        $repository = $this->getDoctrine()->getRepository(Article::class);
+        $listeArticles = $repository->findAll();
+        dump($listeArticles);
+        return $this->render('produit/afficherLesArticlesPourAdmin.html.twig', [
+            'listeDesArticles' => $listeArticles
+        ]);
+    }
+
+
+
 
 }

@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row mb-2 mt-2">
+        <div class="col text-left">
+            <a href="#" class="btn btn-primary">Nouveau produit</a>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+        <tr>
+            <th>N°</th>
+            <th>Article</th>
+            <th>Catégorie</th>
+            <th>Domaine</th>
+            <th>Marque</th>
+            <th>Prix</th>
+            <th>Remise</th>
+            <!--<th>Déscription</th>-->
+            <!--<th>Recherche</th>-->
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for produit in listeDesArticles %}
+            <tr>
+                <td>{{ produit.id }}</td>
+                <td>{{ produit.titre }}</td>
+                <td>{{ produit.categorie.titre }}</td>
+                <td>{{ produit.domaine.titre }}</td>
+                <td>{{ produit.marque.titre }}</td>
+                <td>{{ produit.prix }}</td>
+                <td>{{ produit.remise }}</td>
+                <!--<td>{{ produit.description }}</td>-->
+                <!--<td>{{ produit.motRecherche }}</td>-->
+                <td>
+                    <div class="btn-group">
+                        <div class="btn mr-1">
+                            <a href="#" class="btn btn-warning">Modifier</a>
+                        </div>
+                        <div class="btn mr-1">
+                            <a href="#" class="btn btn-danger">Supprimer</a>
+                        </div>
+                        <div class="btn mr-1">
+                            <a href="#" class="btn btn-success">Ajouter des informations</a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

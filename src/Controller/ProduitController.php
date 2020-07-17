@@ -161,7 +161,7 @@ class ProduitController extends AbstractController
 
     /**
      * @Route("/produit/ajouter", name="ajouter_produit_par_un_admin")
-     * @Route("/produit/{id}/modifier", name="modifier_produit_par_un_admin")
+     * @Route("/produit/{id}/modifier", name="modifier_produit_par_un_admin", requirements={"id"="\d+"})
      * php bin/console make:form ProduitType
      */
     public function ajouterModifierAricleParUnAdmin(Article $article = null, Request $request) {
@@ -196,7 +196,7 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("/produit/{id}/supprimer", name="supprimer_produit_par_un_admin")
+     * @Route("/produit/{id}/supprimer", name="supprimer_produit_par_un_admin", requirements={"id"="\d+"})
      */
     public function supprimerUnAricleParUnAdmin(Article $article){
         $entityManager = $this->getDoctrine()->getManager();
@@ -206,23 +206,31 @@ class ProduitController extends AbstractController
     }
 
     /**
-     * @Route("/produit/{id}/ajouterVariantePhoto", name="ajouter_variante_photo_par_un_admin")
+     * @Route("/produit/{id}/ajouter", name="ajouter_variante_photo_par_un_admin", requirements={"id"="\d+"})
      */
     public function ajouterVariantePhotoParUnAdmin(Article $article) {
-        $depotProduit = $this->getDoctrine()->getRepository(Produit::class);
+
+        dump($article);
+
+        $depotProduit = $this->getDoctrine()->getRepository(Article::class);
         $monArticle = $depotProduit->find($article);
 
+        dump($monArticle);
+
         $depotImage = $this->getDoctrine()->getRepository(Photo::class);
-        $imagesDeMonProduit = $depotImage->findBy(array('produit' => $monArticle));
+        $imagesDeMonProduit = $depotImage->findBy(array('article' => $monArticle));
 
         $depotVariante = $this->getDoctrine()->getRepository(Variante::class);
-        $variantesDeMonProduit = $depotVariante->findBy(array('produit' => $monArticle));
+        $variantesDeMonProduit = $depotVariante->findBy(array('article' => $monArticle));
+        /**/
+
 
         return $this->render('produit/ajouterVariantePhotoParUnAdmin.html.twig', [
             'unArticle' => $monArticle,
             'imagesProduit' => $imagesDeMonProduit,
             'variantesProduit' => $variantesDeMonProduit
         ]);
+
     }
 
 }

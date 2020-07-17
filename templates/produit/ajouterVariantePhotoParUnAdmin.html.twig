@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row mb-2 mt-2">
+        <div class="col text-right">
+            <a href="{{ path('admin_afficher_les_articles') }}" class="btn btn-primary">Lister les produits</a>
+            <a href="#" class="btn btn-info">Ajouter une variante</a>
+            <a href="#" class="btn btn-secondary">Ajouter une photo</a>
+        </div>
+    </div>
+
+    <article>
+        <h2>{{ unArticle.titre }}</h2>
+        <div class="container">
+            <div class="row">
+                {% for image in imagesProduit %}
+                    <div>
+                        <a href="/uploads/images/{{ image.titrePhoto() }}" class="thumbnail">
+                            <img src="/uploads/images/{{ image.titrePhoto() }}"
+                                 alt="{{ image.titrePhoto }}"
+                                 width="200" height="200"
+                            />
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <p>{{ unArticle.description | raw }}</p>
+        <hr>
+        {# <p>{{ unArticle.motRecherche }}</p> #}
+
+        <table class="table table-bordered table-striped">
+            <tr>
+                <th>Article</th>
+                <th>Taille</th>
+                <th>Couleur</th>
+                <th>Stock disponible</th>
+                <th>Prix unitaire</th>
+                <th>Remise</th>
+                <th>Action</th>
+
+
+
+            </tr>
+
+            {% for variante in variantesProduit %}
+                <tr>
+                    <td>{{ variante.article.titre }}</td>
+                    <td>{{ variante.taille }}</td>
+                    <td>{{ variante.couleur }}</td>
+                    <td>{{ variante.stocke }}</td>
+                    <td>{{ variante.article.prix }} €</td>
+                    <td>{{ variante.article.remise }} %</td>
+
+                    <td>
+                        <div class="btn-group">
+                            <div class="btn mr-1">
+                                <a href="#" class="btn btn-warning">Modifier</a>
+                            </div>
+                            <div class="btn mr-1">
+                                <a href="#" class="btn btn-danger">Supprimer</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    </article>
+{% endblock %}

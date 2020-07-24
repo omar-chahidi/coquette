@@ -36,7 +36,7 @@ class Utilisateur implements UserInterface
      * @ORM\Column(type="string", length=50)
      * @Assert\Length(min=3,
      *      max=50,
-     *     minMessage="Il faut un nom plus que 1O caractères",
+     *     minMessage="Il faut un nom plus que 3 caractères",
      *     maxMessage="Il faut un nom moin que 5O caractères")
      */
     private $nomUtilisateur;
@@ -45,7 +45,7 @@ class Utilisateur implements UserInterface
      * @ORM\Column(type="string", length=50)
      * @Assert\Length(min=3,
      *      max=50,
-     *     minMessage="Il faut un nom plus que 1O caractères",
+     *     minMessage="Il faut un nom plus que 3 caractères",
      *     maxMessage="Il faut un nom moin que 5O caractères")
      */
     private $prenom;

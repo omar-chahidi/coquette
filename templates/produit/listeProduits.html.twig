@@ -3,32 +3,35 @@
 {% block title %}Hello ProduitController!{% endblock %}
 
 {% block body %}
+
     {#
     (article>h2{Titre de l'article}+div.metadata{Ecrit le 07/05/2020 à 16:00 dans la catégorie Homme}+div.content>img+(p>lorem10)*2+a.btn.btn-primary{Lire la suite})*3
+     <div class="metadata">Ecrit le {{ article.createdAt | date ('Y/m/d') }} dans la catégorie {{ article.categorie.titre  }} et le domaine {{ article.domaine.titre  }}</div>
     #}
-    {% for article in articles %}
-        <article>
-            <h2>{{ article.titre }}</h2>
-            <div class="metadata">Ecrit le {{ article.createdAt | date ('Y/m/d') }} dans la catégorie {{ article.categorie.titre  }} et le domaine {{ article.domaine.titre  }}</div>
-            <div class="content">
-                {% for photo in article.getPhotos() %}
-                    <img src="/uploads/images/{{ photo.getTitrePhoto() }}" alt="{{ photo.getTitrePhoto() }}" width="300">
-                {% endfor %}
-                <br><br>
 
-                <p>Marque : {{ article.marque.titre }}</p>
-                <p>Prix avant remise : {{ article.prix }}</p>
-                <p>Remise : {{ article.remise  }}</p>
-                <p> Prix après remise : {{ article.prix-(article.prix*article.remise)/100 }}</p>
-                <p>Categorie : {{ article.categorie.titre  }}</p>
-                <p>Domaine : {{ article.domaine.titre  }}</p>
+    <div class="container">
+        <div class="row">
+            {% for article in articles %}
+                <div class="col-lg-6">
+                    <div class="jumbotron" style="background-color: white">
+                        {% for photo in article.getPhotos() %}
+                            <img src="/uploads/images/{{ photo.getTitrePhoto() }}" alt="{{ photo.getTitrePhoto() }}" width="450" height="450">
+                        {% endfor %}
+                        <hr class="my-4">
+                        <p><img src="/uploads/images/{{ article.marque.titre }}.png" alt="{{ article.marque.titre }}" width="50"></p>
+                        <p>{{ article.titre }}</p>
+                        {% if article.remise == 0 %}
+                            <p><B>{{ article.prix }} €</B></p>
+                        {% else %}
+                            <p><B style="color: red">{{ article.prix-(article.prix*article.remise)/100 }} €</B> <small><s>{{ article.prix }} €</s></small> (- {{ article.remise  }}%)</p>
+                        {% endif %}
 
-                <a href="{{ path('show_On_Product', {'id': article.id}) }}" class="btn btn-info">Lire la suite</a>
-                <hr>
-            </div>
-        </article>
-    {% endfor %}
-
-
+                        <a href="{{ path('show_On_Product', {'id': article.id}) }}" class="btn btn-primary btn-lg">
+                            <img src="/uploads/images/information.png" alt="information" width="40" height="40"></a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
 {% endblock %}

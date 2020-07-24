@@ -19,7 +19,7 @@ class ProduitController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function home(Request $request){
-        dump($request);
+        //dump($request);
         return $this->render('produit/home.html.twig', [
             'titre' => 'Je suis la page home'
         ]);
@@ -59,14 +59,14 @@ class ProduitController extends AbstractController
         //$articles = $repo->getAllArticlesWithMasterImage();
         //$articles = $repo->getAllArticlesWithMasterImageAndCtegorie();
         $articles = $repo->getAllArticlesWithMasterImageAndCtegorie(2);
+        /*
         foreach ($articles as $unArticle) {
             var_dump($unArticle->getCategorie()->getTitre());
-
             foreach ($unArticle->getPhotos() as $photo){
                 var_dump($photo->getMaster());
             }
-
         }
+        */
 
         return $this->render('produit/listeProduits.html.twig', [
             'controller_name' => 'ProduitController',
@@ -79,14 +79,16 @@ class ProduitController extends AbstractController
      */
     public function produitsParCategorie(ArticleRepository $repo, $categorie)
     {
-        var_dump($categorie);
+        //var_dump($categorie);
         $articles = $repo->getAllArticlesWithMasterImageAndCtegorie($categorie);
+        /*
         foreach ($articles as $unArticle) {
             var_dump($unArticle->getCategorie()->getTitre());
             foreach ($unArticle->getPhotos() as $photo){
                 var_dump($photo->getMaster());
             }
         }
+        */
         return $this->render('produit/listeProduits.html.twig', [
             'articles' => $articles
         ]);
@@ -97,9 +99,10 @@ class ProduitController extends AbstractController
      */
     public function produitsParCategorieEtDomaine(ArticleRepository $repo, $categorie, $domaine)
     {
-        var_dump($categorie);
-        var_dump($domaine);
+        //var_dump($categorie);
+        //var_dump($domaine);
         $articles = $repo->getAllArticlesWithMasterImageByCtegorieAndDomaine($categorie, $domaine);
+        /*
         foreach ($articles as $unArticle) {
             var_dump($unArticle->getCategorie()->getTitre());
             var_dump($unArticle->getDomaine()->getTitre());
@@ -108,6 +111,7 @@ class ProduitController extends AbstractController
                 var_dump($photo->getTitrePhoto());
             }
         }
+        */
         return $this->render('produit/listeProduits.html.twig', [
             'articles' => $articles
         ]);
@@ -127,12 +131,12 @@ class ProduitController extends AbstractController
         // Tableau variante pour un article (taille, couleur, quantitée stock)
         $repVariante = $this->getDoctrine()->getRepository(Variante::class);
         $articleVariante = $repVariante->findBy(array('article' => $unArticle));
-        dump($articleVariante);
+        //dump($articleVariante);
 
         // Photos d'un article
         $repoPhoto = $this->getDoctrine()->getRepository(Photo::class);
         $articlePhotos = $repoPhoto->findBy(array('article' => $unArticle));
-        dump($articlePhotos);
+        //dump($articlePhotos);
 
         return $this->render('produit/showOnProduct.html.twig', [
             'unArticle' => $unArticle,

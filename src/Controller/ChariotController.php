@@ -15,7 +15,6 @@ class ChariotController extends AbstractController
      * affichage de mon panier avec la récuperation de ma session
      * @Route("/chariot", name="chariot_index")
      */
-    /*
     public function index(SessionInterface $session)
     {
         // récuperation de mon pannier
@@ -44,12 +43,12 @@ class ChariotController extends AbstractController
             $total += $totalItem;
         }
 
-        return $this->render('chariot/ajouterModifierVariante.html.twig', [
+        return $this->render('chariot/index.html.twig', [
             'items' => $panierAvecInfo,
             'total' => $total
         ]);
     }
-    */
+    /*
     public function index(ChariotService $chariotService)
     {
         // Information pannier
@@ -63,13 +62,13 @@ class ChariotController extends AbstractController
             'total' => $total
         ]);
     }
-
+    */
 
     /**
      * Ajouter un produit dans mon pannier
      * @Route("/chariot/ajouter/{id}", name="chariot_ajouter")
      */
-    /*
+
     public function ajouter($id, SessionInterface $session){
     //public function ajouter($id, Request $request){
         // acceder à la session avec symfony avec via une requette (HttpFoundation)
@@ -93,19 +92,20 @@ class ChariotController extends AbstractController
 
         return $this->redirectToRoute("chariot_index");
     }
-    */
-    public function ajouter($id, ChariotService $chariotService){
-        // Ajouter un produit
-        $chariotService->ajouterUnProduitDansPannier($id);
-        // Retoure à mon pannier
-        return $this->redirectToRoute("chariot_index");
-    }
 
+    /*
+       public function ajouter($id, ChariotService $chariotService){
+           // Ajouter un produit
+           $chariotService->ajouterUnProduitDansPannier($id);
+           // Retoure à mon pannier
+           return $this->redirectToRoute("chariot_index");
+       }
+   */
 
-    /**
-     * Supprimer un produit de mon panier
-     * @Route("/chariet/supprimer/{id}", name="chariot_supprimer")
-     */
+       /**
+        * Supprimer un produit de mon panier
+        * @Route("/chariet/supprimer/{id}", name="chariot_supprimer")
+        */
     /*
     public function supprimer($id, SessionInterface $session){
 

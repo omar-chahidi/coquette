@@ -11,6 +11,8 @@
                 <tr>
                     <th>Produit</th>
                     <th>Prix</th>
+                    <th>Remise</th>
+                    <th>Prix avec remise</th>
                     <th>Quantité</th>
                     <th>Total</th>
                     <th></th>
@@ -21,9 +23,11 @@
                     {# tr>td*5 #}
                     <tr>
                         <td>{{ item.produit.article.titre }}</td>
-                        <td>{{ item.produit.article.prix }}</td>
+                        <td>{{ item.produit.article.prix }}  €</td>
+                        <td>{{ item.produit.article.remise }} %</td>
+                        <td>{{ item.produit.article.prix-(item.produit.article.prix * item.produit.article.remise)/100 }}  €</td>
                         <td>{{ item.quantite }}</td>
-                        <td>{{ item.produit.article.prix * item.quantite }}</td>
+                        <td>{{ (item.produit.article.prix-(item.produit.article.prix * item.produit.article.remise)/100) * item.quantite }}  €</td>
                         <td>
                             {# a.btn.btn-danger.btn-sm #}
                             <a href="{{ path('chariot_supprimer', {'id': item.produit.id}) }}" class="btn btn-danger btn-sm">
@@ -39,8 +43,8 @@
             <tfoot>
                 {# tr>td*3 #}
                 <tr>
-                    <td colspan="3" class="text-right">Total : </td>
-                    <td>{{ total }}</td>
+                    <td colspan="5" class="text-right">Total : </td>
+                    <td>{{ total }}  €</td>
                     <td></td>
                 </tr>
             </tfoot>

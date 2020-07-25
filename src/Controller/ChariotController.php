@@ -37,7 +37,12 @@ class ChariotController extends AbstractController
         $total = 0;
         foreach ($panierAvecInfo as $item){
             // calcul du total de chaque produit
-            $totalItem = $item['produit']->getArticle()->getPrix() * $item['quantite'];
+            //$totalItem = $item['produit']->getArticle()->getPrix() * $item['quantite'];
+
+            // {{ article.prix-(article.prix*article.remise)/100 }}
+            $prixAvecRemise = $item['produit']->getArticle()->getPrix() - ($item['produit']->getArticle()->getPrix() * $item['produit']->getArticle()->getRemise())/100 ;
+            $totalItem = $prixAvecRemise * $item['quantite'];
+
 
             // total globale
             $total += $totalItem;
@@ -102,11 +107,10 @@ class ChariotController extends AbstractController
        }
    */
 
-       /**
-        * Supprimer un produit de mon panier
-        * @Route("/chariet/supprimer/{id}", name="chariot_supprimer")
-        */
-    /*
+    /**
+     * Supprimer un produit de mon panier
+     * @Route("/chariet/supprimer/{id}", name="chariot_supprimer")
+     */
     public function supprimer($id, SessionInterface $session){
 
         // récuperation panier
@@ -123,12 +127,12 @@ class ChariotController extends AbstractController
         // Retourner à la liste de mon panier
         return $this->redirectToRoute("chariot_index");
     }
-    */
+    /*
     public function supprimer($id, ChariotService $chariotService){
         // Supprimer un produit
         $chariotService->supprimerUnProduitDeMonPannier($id);
         // Retourner à la liste de mon panier
         return $this->redirectToRoute("chariot_index");
     }
-
+    */
 }

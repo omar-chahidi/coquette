@@ -52,6 +52,7 @@
 
         <div>
             <a href="{{ path('home') }}" class="btn btn-info">Continuer vos achats </a>
+            <a href="{{ app.request.headers.get('referer') }}" class="btn btn-info">Revenir à la page précédente</a>
         </div>
     {% else  %}
         <h3>Pannier vide !</h3>

@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if items | length > 0 %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-7 border">
+                    <div class="panier">
+                        <h6>Mon panier</h6>
+                        <hr>
+                        {% for item in items %}
+                            <div class="container-fluid rounded my-1" style="border: black solid" >
+                                <div class="row bg-with">
+                                    <!-- <div class="col-md-3" style="background-color: red"><img src="http://placehold.it/80x80" alt=""></div> -->
+                                    <div class="col-md-3">
+                                        <img src="http://placehold.it/80x80" alt="">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h5>{{ item.produit.article.titre }}</h5>
+                                        <div>
+                                            <small class="text-secondary">
+                                                {% if item.produit.taille %}
+                                                    Taille / Pointure : {{ item.produit.taille }}
+                                                    <br>
+                                                {% endif %}
+
+                                                {% if item.produit.couleur %}
+                                                    Couleur : {{ item.produit.couleur }}
+                                                    <br>
+                                                {% endif %}
+
+                                                {% if item.produit.article.remise == 0 %}
+                                                    {{ item.produit.article.prix }}  €
+                                                    <br>
+                                                {% else %}
+                                                    {{ item.produit.article.prix-(item.produit.article.prix * item.produit.article.remise)/100 }}  € <s>{{ item.produit.article.prix }}  €</s> (- {{ item.produit.article.remise }} %)
+                                                    <br>
+                                                {% endif %}
+                                            </small>
+                                        </div>
+
+                                        <div class="my-1">
+                                            <a href="{{ path('chariot_ajouter', {'id': item.produit.id}) }}" class="btn bg-ligth border rounded-circle"><b>+</b></a>
+                                            <input type="text" value="{{ item.quantite }}" class="form-control w-25 d-inline" style="text-align: center" readonly>
+                                            <a href="{{ path('chariot_soustraire', {'id': item.produit.id}) }}" class="btn bg-ligth border rounded-circle"><b>-</b></a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <p><B>{{ (item.produit.article.prix-(item.produit.article.prix * item.produit.article.remise)/100) * item.quantite }}  €</B></p>
+                                    </div>
+                                    <div class="col-md-1">
+                                        {# a.btn.btn-danger.btn-sm #}
+                                        <a href="{{ path('chariot_supprimer', {'id': item.produit.id}) }}" class="btn btn-danger btn-sm">
+                                            <!-- https://icons.getbootstrap.com/ -->
+                                            <svg class="bi bi-trash-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                <path fill-rule="evenodd" d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-5 border"></div>
+            </div>
+        </div>
+    {% else  %}
+        <h1>Pannier vide !</h1>
+    {% endif %}
+{% endblock %}

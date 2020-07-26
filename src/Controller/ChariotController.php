@@ -47,7 +47,8 @@ class ChariotController extends AbstractController
             $total += $totalItem;
         }
 
-        return $this->render('chariot/index.html.twig', [
+        return $this->render('chariot/panier.html.twig', [
+        //return $this->render('chariot/index.html.twig', [
             'items' => $panierAvecInfo,
             'total' => $total
         ]);

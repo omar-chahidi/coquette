@@ -36,6 +36,7 @@ class ChariotController extends AbstractController
 
         // Calcul du total globale
         $total = 0;
+        $nbArticles = 0;
         foreach ($panierAvecInfo as $item){
             // calcul du total de chaque produit
             //$totalItem = $item['produit']->getArticle()->getPrix() * $item['quantite'];
@@ -45,12 +46,14 @@ class ChariotController extends AbstractController
 
             // total globale
             $total += $totalItem;
+            $nbArticles += $item['quantite'];
         }
 
         return $this->render('chariot/panier.html.twig', [
         //return $this->render('chariot/index.html.twig', [
             'items' => $panierAvecInfo,
-            'total' => $total
+            'total' => $total,
+            'nbAricles' => $nbArticles
         ]);
     }
     /*

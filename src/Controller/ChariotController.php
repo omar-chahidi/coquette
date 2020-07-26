@@ -30,6 +30,7 @@ class ChariotController extends AbstractController
                 'quantite' => $quantite,
             ];
         }
+        dump($panier);
         //dd($panierAvecInfo);
         //dd($panierAvecInfo[0]['produit']);
 
@@ -38,8 +39,6 @@ class ChariotController extends AbstractController
         foreach ($panierAvecInfo as $item){
             // calcul du total de chaque produit
             //$totalItem = $item['produit']->getArticle()->getPrix() * $item['quantite'];
-
-            // {{ article.prix-(article.prix*article.remise)/100 }}
             $prixAvecRemise = $item['produit']->getArticle()->getPrix() - ($item['produit']->getArticle()->getPrix() * $item['produit']->getArticle()->getRemise())/100 ;
             $totalItem = $prixAvecRemise * $item['quantite'];
 
@@ -92,7 +91,7 @@ class ChariotController extends AbstractController
         // remettre mon pannier dans ma session
         $session->set('panier', $panier);
 
-        // dump and dai
+        // dump and die
         // dd($session->get('panier'));
 
         return $this->redirectToRoute("chariot_index");
@@ -116,8 +115,10 @@ class ChariotController extends AbstractController
         // récuperation panier
         $panier = $session->get('panier', []);
 
-        // Je supprime le produit sélctionner s'il existe dans mon panier
-        if ( !empty($panier[$id])){
+        //var_dump($panier); die();
+
+        // Je supprime le produit sélctionner s'il existe dans mon panier ou la quantité = 0
+        if ( !empty($panier[$id]) or $panier[$id]['quantite'] == 0){
             unset($panier[$id]);
         }
 
@@ -135,4 +136,32 @@ class ChariotController extends AbstractController
         return $this->redirectToRoute("chariot_index");
     }
     */
+
+
+    /**
+     * Soustraire un produit dans mon pannier
+     * @Route("/chariot/soustraire/{id}", name="chariot_soustraire")
+     */
+    public function soustraire($id, SessionInterface $session){
+        //public function ajouter($id, Request $request){
+        // acceder à la session avec symfony avec via une requette (HttpFoundation)
+        //$session = $request->getSession();
+
+        // Definition de mon pannier. Si je n'ai pas de panier mon panier est un tableau vide
+        $panier = $session->get('panier', []);
+
+        // Ajouter le produit. Si le produit existe dans mon panier j'ajoute ++1
+        if( !empty($panier[$id])){
+            $panier[$id]--;
+        }
+
+        // remettre mon pannier dans ma session
+        $session->set('panier', $panier);
+
+        // dump and die
+        // dd($session->get('panier'));
+
+        return $this->redirectToRoute("chariot_index");
+    }
+
 }

@@ -10,6 +10,8 @@
             <thead>
                 <tr>
                     <th>Produit</th>
+                    <th>Taille</th>
+                    <th>Couleur</th>
                     <th>Prix</th>
                     <th>Remise</th>
                     <th>Prix avec remise</th>
@@ -23,10 +25,17 @@
                     {# tr>td*5 #}
                     <tr>
                         <td>{{ item.produit.article.titre }}</td>
+                        <td>{{ item.produit.taille}}</td>
+                        <td>{{ item.produit.couleur }}</td>
                         <td>{{ item.produit.article.prix }}  €</td>
                         <td>{{ item.produit.article.remise }} %</td>
                         <td>{{ item.produit.article.prix-(item.produit.article.prix * item.produit.article.remise)/100 }}  €</td>
-                        <td>{{ item.quantite }}</td>
+                        <td>
+                            {{ item.quantite }}
+                            <a href="{{ path('chariot_ajouter', {'id': item.produit.id}) }}" class="btn bg-ligth border rounded-circle"><b>+</b></a>
+                            <input type="text" value="{{ item.quantite }}" class="form-control w-25 d-inline" style="text-align: center" readonly>
+                            <a href="{{ path('chariot_soustraire', {'id': item.produit.id}) }}" class="btn bg-ligth border rounded-circle"><b>-</b></a>
+                        </td>
                         <td>{{ (item.produit.article.prix-(item.produit.article.prix * item.produit.article.remise)/100) * item.quantite }}  €</td>
                         <td>
                             {# a.btn.btn-danger.btn-sm #}
@@ -43,8 +52,8 @@
             <tfoot>
                 {# tr>td*3 #}
                 <tr>
-                    <td colspan="5" class="text-right">Total : </td>
-                    <td>{{ total }}  €</td>
+                    <td colspan="7" class="text-right">Total :</td>
+                    <td colspan="2"><b>{{ total }} €</b></td>
                     <td></td>
                 </tr>
             </tfoot>

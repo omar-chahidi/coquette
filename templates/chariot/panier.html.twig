@@ -13,10 +13,14 @@
                                 <div class="row bg-with">
                                     <!-- <div class="col-md-3" style="background-color: red"><img src="http://placehold.it/80x80" alt=""></div> -->
                                     <div class="col-md-3">
-                                        <img src="http://placehold.it/80x80" alt="">
+                                        {% for photo in item.masterPhoto %}
+                                            <img src="/uploads/images/{{ photo.titrePhoto }}" alt="{{ photo.titrePhoto }}" width="100%" height="auto">
+                                        {% endfor %}
+
                                     </div>
                                     <div class="col-md-6">
                                         <h5>{{ item.produit.article.titre }}</h5>
+                         
                                         <div>
                                             <small class="text-secondary">
                                                 {% if item.produit.taille %}

@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Photo;
 use App\Entity\Variante;
+use App\Repository\PhotoRepository;
 use App\Service\Chariot\ChariotService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,15 +26,22 @@ class ChariotController extends AbstractController
         // création un tableau qui contient plus d'information à partir de mon tableau panier
         $panierAvecInfo = [];
         $repo = $this->getDoctrine()->getRepository(Variante::class);
+        $repositoryPhoto = $this->getDoctrine()->getRepository(Photo::class);
         foreach ( $panier as $id => $quantite ){
             $panierAvecInfo[] = [
                 'produit' => $repo->find($id),
                 'quantite' => $quantite,
+                'masterPhoto' => $repositoryPhoto->masterPhotoDunArticle($repo->find($id)->getArticle()),
             ];
         }
         dump($panier);
         //dd($panierAvecInfo);
         //dd($panierAvecInfo[0]['produit']);
+
+
+        //$photoMaster = $repositoryPhoto->masterPhotoDunArticle(24);
+        $photoMaster = $repositoryPhoto->masterPhotoDunArticle($repo->find(44)->getArticle());
+        dump($photoMaster);
 
         // Calcul du total globale
         $total = 0;
@@ -47,6 +56,10 @@ class ChariotController extends AbstractController
             // total globale
             $total += $totalItem;
             $nbArticles += $item['quantite'];
+
+            //dump( $item['produit']);
+            //dump($item['masterPhoto']);
+            //foreach ($item['masterPhoto'] as $photo){dump($photo->getTitrePhoto());}
         }
 
         return $this->render('chariot/panier.html.twig', [

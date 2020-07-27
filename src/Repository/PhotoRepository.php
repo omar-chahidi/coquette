@@ -64,4 +64,25 @@ class PhotoRepository extends ServiceEntityRepository
 
     }
 
+    //public function masterPhotoDunArticle($articleId){
+    public function masterPhotoDunArticle(Article $article){
+        // querybuider
+        $qb = $this ->createQueryBuilder('p')
+            ->select('p')
+            // Jointure avec la table article
+            ->join('p.article', 'article')
+            ->addSelect('article')
+        ;
+
+        // Filtre sur les photo MASTER
+        $qb->where($qb->expr()->in('p.master', 1));
+
+        // filtrer sur un id article
+        //$qb->andWhere($qb->expr()->in('article.id', $articleId));
+        $qb->andWhere($qb->expr()->in('article.id', $article->getId()));
+
+        return $qb->getQuery()->getResult();
+    }
+
+
 }

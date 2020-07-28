@@ -62,7 +62,17 @@ class ChariotController extends AbstractController
             //foreach ($item['masterPhoto'] as $photo){dump($photo->getTitrePhoto());}
         }
 
-        dump($request->get('btCommande'));
+        dump($request);
+        dump($request->getMethod());
+        dump($request->query->get('btCommande'));
+        if( $request->getMethod() == 'GET' && $request->query->get('btCommande' ) == 'COMMENDER' ) {
+            return $this->render('chariot/validerPanier.html.twig', [
+                'items' => $panierAvecInfo,
+                'total' => $total,
+                'nbAricles' => $nbArticles
+            ]);
+        }
+
 
         return $this->render('chariot/panier.html.twig', [
         //return $this->render('chariot/index.html.twig', [
@@ -182,5 +192,6 @@ class ChariotController extends AbstractController
 
         return $this->redirectToRoute("chariot_index");
     }
+
 
 }

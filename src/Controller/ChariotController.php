@@ -17,7 +17,7 @@ class ChariotController extends AbstractController
      * affichage de mon panier avec la récuperation de ma session
      * @Route("/chariot", name="chariot_index")
      */
-    public function index(SessionInterface $session)
+    public function index(SessionInterface $session, Request $request)
     {
         // récuperation de mon pannier
         $panier = $session->get('panier', []);
@@ -40,8 +40,8 @@ class ChariotController extends AbstractController
 
 
         //$photoMaster = $repositoryPhoto->masterPhotoDunArticle(24);
-        $photoMaster = $repositoryPhoto->masterPhotoDunArticle($repo->find(44)->getArticle());
-        dump($photoMaster);
+        //$photoMaster = $repositoryPhoto->masterPhotoDunArticle($repo->find(44)->getArticle());
+        //dump($photoMaster);
 
         // Calcul du total globale
         $total = 0;
@@ -61,6 +61,8 @@ class ChariotController extends AbstractController
             //dump($item['masterPhoto']);
             //foreach ($item['masterPhoto'] as $photo){dump($photo->getTitrePhoto());}
         }
+
+        dump($request->get('btCommande'));
 
         return $this->render('chariot/panier.html.twig', [
         //return $this->render('chariot/index.html.twig', [

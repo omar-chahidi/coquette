@@ -140,6 +140,8 @@ class ChariotController extends AbstractController
         // Je supprime le produit sélctionner s'il existe dans mon panier ou la quantité = 0
         if ( !empty($panier[$id]) or $panier[$id]['quantite'] == 0){
             unset($panier[$id]);
+            // Type = notice, success, warning ou erreur
+            $this->addFlash('success', 'Article supprimé avec succès' );
         }
 
         // Génération de la nouvelle pannier
@@ -214,8 +216,20 @@ class ChariotController extends AbstractController
         // calcul nombre d'articles dans mon panier
         $nombreArticlesPanier = $this->calculerNombreArticles($panier, $request)['nbArticles'];
 
+        /*
         if ( $nombreArticlesPanier == 0) {
+            // Type = notice, success, warning ou error
+            $this->addFlash('warning', 'Vous ne pouvez pas valider commande car le nombre d\'article = 0 ' );
             return $this->redirectToRoute('chariot_index');
+        }
+        */
+
+        foreach ( $panier as $id => $quantite ) {
+            if ( $quantite == 0) {
+                // Type = notice, success, warning ou error
+                $this->addFlash('warning', 'Vous ne pouvez pas valider commande. La quantité d\'un d\'article ou total doit être > 0' );
+                return $this->redirectToRoute('chariot_index');
+            }
         }
         return $this->render('chariot/validerPanier.html.twig', [
             'articles' => $articlesDuPanier,

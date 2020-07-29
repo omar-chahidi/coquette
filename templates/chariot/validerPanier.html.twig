@@ -1,54 +1,60 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>VOTRE COMMANDE</h1>
+    <h1>VOTRE COMMANDE
+        <small class="text-secondary">
+            {% if  nbArticles == 1 %}
+                pour {{ nbArticles }} article
+            {% else %}
+                pour {{ nbArticles }} articles
+            {% endif %}
+        </small>
+    </h1>
 
-    {% if items | length > 0 %}
-        {# table.table #}
-        <table class="table" style="text-align: center">
-            {# thead>tr>th*5 #}
-            <thead>
-            <tr>
-                <th>Produit</th>
-                <th>Taille</th>
-                <th>Couleur</th>
-                <th>Prix</th>
-                <th>Remise</th>
-                <th>Prix avec remise</th>
-                <th>Quantité</th>
-                <th>Total</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for item in items %}
-                {# tr>td*5 #}
-                <tr>
-                    <td>{{ item.produit.article.titre }}</td>
-                    <td>{{ item.produit.taille}}</td>
-                    <td>{{ item.produit.couleur }}</td>
-                    <td>{{ item.produit.article.prix }}  €</td>
-                    <td>{{ item.produit.article.remise }} %</td>
-                    <td>{{ item.produit.article.prix-(item.produit.article.prix * item.produit.article.remise)/100 }}  €</td>
-                    <td>{{ item.quantite }}</td>
-                    <td>{{ (item.produit.article.prix-(item.produit.article.prix * item.produit.article.remise)/100) * item.quantite }}  €</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-            <tfoot>
-            {# tr>td*3 #}
-            <tr>
-                <td colspan="7" class="text-right"><b>Total :</b></td>
-                <td colspan="2"><b>{{ total }} €</b></td>
-                <td></td>
-            </tr>
-            </tfoot>
-        </table>
 
-        <div>
-            <a href="{{ path('home') }}" class="btn btn-info">Continuer vos achats </a>
-            <a href="{{ app.request.headers.get('referer') }}" class="btn btn-info">Revenir à la page précédente</a>
-        </div>
-    {% else  %}
-        <h3>Pannier vide !</h3>
-    {% endif %}
+    {# table.table #}
+    <table class="table" style="text-align: center">
+        {# thead>tr>th*5 #}
+        <thead>
+        <tr>
+            <th>Produit</th>
+            <th>Taille</th>
+            <th>Couleur</th>
+            <th>Prix</th>
+            <th>Remise</th>
+            <th>Prix avec remise</th>
+            <th>Quantité</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in articles %}
+            {# tr>td*5 #}
+            <tr>
+                <td>{{ item.article.titre }}</td>
+                <td>{{ item.taille }}</td>
+                <td>{{ item.couleur }}</td>
+                <td>{{ item.article.prix }} €</td>
+                <td>{{ item.article.remise }} %</td>
+                <td>{{ item.article.prix-(item.article.prix * item.article.remise)/100 }} €</td>
+                <td>{{ panier[item.id] }}</td>
+                <td>{{ (item.article.prix-(item.article.prix * item.article.remise)/100) * panier[item.id] }} €</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+        {# tr>td*3 #}
+        <tr>
+            <td colspan="7" class="text-right"><b>Total :</b></td>
+            <td colspan="2"><b>{{ total }} €</b></td>
+            <td></td>
+        </tr>
+        </tfoot>
+    </table>
+
+    <div>
+        <a href="{{ path('home') }}" class="btn btn-info">Continuer vos achats </a>
+        <a href="{{ app.request.headers.get('referer') }}" class="btn btn-info">Revenir à la page précédente</a>
+    </div>
+
 {% endblock %}

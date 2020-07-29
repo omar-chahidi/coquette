@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Article;
 use App\Entity\Photo;
 use App\Entity\Variante;
 use App\Repository\PhotoRepository;
@@ -62,18 +63,6 @@ class ChariotController extends AbstractController
             //foreach ($item['masterPhoto'] as $photo){dump($photo->getTitrePhoto());}
         }
 
-        dump($request);
-        dump($request->getMethod());
-        dump($request->query->get('btCommande'));
-        if( $request->getMethod() == 'GET' && $request->query->get('btCommande' ) == 'COMMENDER' ) {
-            return $this->render('chariot/validerPanier.html.twig', [
-                'items' => $panierAvecInfo,
-                'total' => $total,
-                'nbAricles' => $nbArticles
-            ]);
-        }
-
-
         return $this->render('chariot/panier.html.twig', [
         //return $this->render('chariot/index.html.twig', [
             'items' => $panierAvecInfo,
@@ -107,8 +96,10 @@ class ChariotController extends AbstractController
         // acceder à la session avec symfony avec via une requette (HttpFoundation)
         //$session = $request->getSession();
 
-        // Definition de mon pannier. Si je n'ai pas de panier mon panier est un tableau vide
+        // Déclarer ma variable session panier. Si je n'ai pas de panier mon panier est un tableau vide
         $panier = $session->get('panier', []);
+
+        // $panier [ ID PRODUIT ] => QUANTITE
 
         // Ajouter le produit. Si le produit existe dans mon panier j'ajoute ++1
         if( !empty($panier[$id])){
@@ -194,4 +185,77 @@ class ChariotController extends AbstractController
     }
 
 
+    /**
+     * @Route("/chariot/valider", name="chariot_valider")
+     */
+    public function validerPanier(Request $request) {
+
+        // Initialisation une session
+        $session = $request->getSession();
+
+        // Récupération de la session
+        $panier = $session->get('panier');
+
+        // Trouver les articles de mon pannier
+        $depotArticle = $this->getDoctrine()->getRepository(Variante::class);
+        $articlesDuPanier = $depotArticle->trouverTableauArticlesPanier(array_keys($panier));
+
+        //dump($request->getSession()->get('panier'));
+        //dump($articlesDuPanier);
+        //die('ici');
+        //dump($request);
+        //dump($request->getMethod());
+        //dump($request->query->get('btCommande'));
+        //dump($request->request->get('btCommande'));
+
+        // Calcul prix total de mon panier
+        $prixTotalPanier = $this->calculerNombreArticles($panier, $request)['prixTotalPanier'];
+
+        // calcul nombre d'articles dans mon panier
+        $nombreArticlesPanier = $this->calculerNombreArticles($panier, $request)['nbArticles'];
+
+        if ( $nombreArticlesPanier == 0) {
+            return $this->redirectToRoute('chariot_index');
+        }
+        return $this->render('chariot/validerPanier.html.twig', [
+            'articles' => $articlesDuPanier,
+            'panier' => $panier,
+            'nbArticles' => $nombreArticlesPanier,
+            'total' => $prixTotalPanier
+        ]);
+    }
+
+    public function calculerNombreArticles($monPanier, Request $request ) {
+        $nbArticles = 0;
+        $prixTotal = 0;
+
+        // Récupération de la session panier
+        $session = $request->getSession();
+        $panier = $session->get('panier');
+
+        // Récupération du dépôt variante
+        $depotVariante = $this->getDoctrine()->getRepository(Variante::class);
+
+        foreach ( $panier as $id => $quantite ) {
+            // Calcul nombre articles
+            $nbArticles = $nbArticles + $quantite ;
+
+            // Calcul prix sous total pour un article (une ligne de mon panier)
+            $article = $depotVariante->find($id);
+            $prixAvecRemise = $article->getArticle()->getPrix() - ($article->getArticle()->getPrix() * $article->getArticle()->getRemise())/100 ;
+            $prixSousTotalDunArticle = $prixAvecRemise * $quantite;
+
+            // Prix Total du panier
+            $prixTotal += $prixSousTotalDunArticle;
+        }
+
+        $tableauNbArticlesEtPrixTotal = [
+            'nbArticles' => $nbArticles,
+            'prixTotalPanier' => $prixTotal,
+        ];
+
+        //dump($tableauNbArticlesEtPrixTotal);
+
+        return $tableauNbArticlesEtPrixTotal;
+    }
 }

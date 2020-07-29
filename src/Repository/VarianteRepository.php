@@ -47,4 +47,14 @@ class VarianteRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function trouverTableauArticlesPanier($tableauIdArticlesPanier) {
+        $qb = $this ->createQueryBuilder('v')
+                    ->select('v')
+                    ->Where('v.id IN (:tableau)')
+                    ->setParameter('tableau', $tableauIdArticlesPanier)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
 }

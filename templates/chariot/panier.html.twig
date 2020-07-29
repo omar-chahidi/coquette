@@ -44,7 +44,10 @@
                                         </div>
 
                                         <div class="my-1">
-                                            <a href="{{ path('chariot_ajouter', {'id': item.produit.id}) }}" class="btn bg-ligth border rounded-circle"><b>+</b></a>
+                                            {% if item.quantite < item.produit.stocke  %}
+                                                <a href="{{ path('chariot_ajouter', {'id': item.produit.id}) }}" class="btn bg-ligth border rounded-circle"><b>+</b></a>
+                                            {% endif %}
+
                                             <input type="text" value="{{ item.quantite }}" class="form-control w-25 d-inline" style="text-align: center" readonly>
                                             <a href="{{ path('chariot_soustraire', {'id': item.produit.id}) }}" class="btn bg-ligth border rounded-circle"><b>-</b></a>
                                         </div>
@@ -87,7 +90,7 @@
                         </div>
                     </div>
                     <div class="py-5">
-                        <form action="{{ path('chariot_index') }}">
+                        <form action="{{ path('chariot_valider') }}" method="post">
                             <button type="submit" class="btn btn-lg btn-block btn-dark" name="btCommande" value="COMMENDER">COMMANDER</button>
                         </form>
                     </div>

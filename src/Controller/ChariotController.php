@@ -232,7 +232,8 @@ class ChariotController extends AbstractController
         //dump($request->request->get('btCommande'));
 
         // Calcul prix total de mon panier
-        $prixTotalPanier = $this->calculerNombreArticlesEtPrixTotal($panier, $request)['prixTotalPanier'];
+        $prixTotalPanierTTC = $this->calculerNombreArticlesEtPrixTotal($panier, $request)['prixTotalPanierTTC'];
+        $prixTotalPanierHT = $this->calculerNombreArticlesEtPrixTotal($panier, $request)['prixTotalPanierHT'];
 
         // calcul nombre d'articles dans mon panier
         $nombreArticlesPanier = $this->calculerNombreArticlesEtPrixTotal($panier, $request)['nbArticles'];
@@ -248,13 +249,15 @@ class ChariotController extends AbstractController
             'articles' => $articlesDuPanier,
             'panier' => $panier,
             'nbArticles' => $nombreArticlesPanier,
-            'total' => $prixTotalPanier
+            'totalTTC' => $prixTotalPanierTTC,
+            'totalHT' => $prixTotalPanierHT
         ]);
     }
 
     public function calculerNombreArticlesEtPrixTotal($monPanier, Request $request ) {
         $nbArticles = 0;
-        $prixTotal = 0;
+        $prixTotalTTC = 0;
+        $prixTotalHC = 0;
 
         // Récupération de la session panier
         $session = $request->getSession();
@@ -268,17 +271,25 @@ class ChariotController extends AbstractController
             $nbArticles = $nbArticles + $quantite ;
 
             // Calcul prix sous total pour un article (une ligne de mon panier)
-            $article = $depotVariante->find($id);
-            $prixAvecRemise = $article->getArticle()->getPrix() - ($article->getArticle()->getPrix() * $article->getArticle()->getRemise())/100 ;
-            $prixSousTotalDunArticle = $prixAvecRemise * $quantite;
+            $variante = $depotVariante->find($id);
+            $prixAvecRemise = $variante->getArticle()->getPrix() - ($variante->getArticle()->getPrix() * $variante->getArticle()->getRemise())/100 ;
+            $prixSousTotalDunArticleTTC = $prixAvecRemise * $quantite;
+            /*
+                Prix HT* = prix TTC ÷ (1 + taux de TVA)
+                Prix TTC** = prix HT x (1 + taux de TVA)
+             */
+            $prixSousTotalDunArticleHC = $prixSousTotalDunArticleTTC / (1 + $variante->getArticle()->getTva()/100);
 
             // Prix Total du panier
-            $prixTotal += $prixSousTotalDunArticle;
+            $prixTotalTTC += $prixSousTotalDunArticleTTC;
+            $prixTotalHC += $prixSousTotalDunArticleHC;
+            $prixTotalHC = round($prixTotalHC, 2);
         }
 
         $tableauNbArticlesEtPrixTotal = [
             'nbArticles' => $nbArticles,
-            'prixTotalPanier' => $prixTotal,
+            'prixTotalPanierTTC' => $prixTotalTTC,
+            'prixTotalPanierHT' => $prixTotalHC,
         ];
 
         //dump($tableauNbArticlesEtPrixTotal);

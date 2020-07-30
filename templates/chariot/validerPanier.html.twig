@@ -1,8 +1,5 @@
 {% extends 'base.html.twig' %}
-{#
-Prix HT* = prix TTC ÷ (1 + taux de TVA)
-Prix TTC** = prix HT x (1 + taux de TVA)
-#}
+
 {% block body %}
     <h1>VOTRE COMMANDE
         <small class="text-secondary">
@@ -23,6 +20,7 @@ Prix TTC** = prix HT x (1 + taux de TVA)
             <th>Taille</th>
             <th>Couleur</th>
             <th>Prix</th>
+            <th>TVA</th>
             <th>Remise</th>
             <th>Prix avec remise</th>
             <th>Quantité</th>
@@ -37,6 +35,7 @@ Prix TTC** = prix HT x (1 + taux de TVA)
                 <td>{{ item.taille }}</td>
                 <td>{{ item.couleur }}</td>
                 <td>{{ item.article.prix }} €</td>
+                <td>{{ item.article.tva }} %</td>
                 <td>{{ item.article.remise }} %</td>
                 <td>{{ item.article.prix-(item.article.prix * item.article.remise)/100 }} €</td>
                 <td>{{ panier[item.id] }}</td>
@@ -46,10 +45,21 @@ Prix TTC** = prix HT x (1 + taux de TVA)
         </tbody>
         <tfoot>
         {# tr>td*3 #}
+        {#
+            Prix HT* = prix TTC ÷ (1 + taux de TVA)
+            Prix TTC** = prix HT x (1 + taux de TVA)
+        #}
         <tr>
-            <td colspan="7" class="text-right"><b>Total :</b></td>
-            <td colspan="2"><b>{{ total }} €</b></td>
-            <td></td>
+            <td colspan="8" class="text-right">Total HT :</td>
+            <td colspan="2">{{ totalHT }} €</td>
+        </tr>
+        <tr>
+            <td colspan="8" class="text-right">TVA :</td>
+            <td colspan="2">{{ totalTTC - totalHT }} €</td>
+        </tr>
+        <tr>
+            <td colspan="8" class="text-right"><b>Total TTC :</b></td>
+            <td colspan="2"><b>{{ totalTTC }} €</b></td>
         </tr>
         </tfoot>
     </table>

@@ -27,7 +27,7 @@
     <article>
         <h2>Article n° {{ unArticle.id }}</h2>
         <h3>{{ unArticle.titre }}</h3>
-        <div class="metadata">Ecrit le {{ unArticle.createdAt | date ('Y/m/d') }} dans la catégorie Homme</div>
+        <div class="metadata">Ecrit le {{ unArticle.createdAt | date ('Y/m/d') }} dans la catégorie {{ unArticle.categorie.titre }}</div>
         <div class="container">
             <div class="row">
                 {% for photo in articlePhotos %}
@@ -41,7 +41,6 @@
         </div>
         <p>{{ unArticle.description | raw }}</p>
         <hr>
-        <p>{{ unArticle.motRecherche }}</p>
 
         <table class="table table-bordered table-striped">
             <tr>

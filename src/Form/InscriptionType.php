@@ -19,8 +19,8 @@ class InscriptionType extends AbstractType
         $builder
             ->add('nomUtilisateur')
             ->add('prenom')
-            ->add('telephone')
-            ->add('adresse')
+            //->add('telephone')
+            //->add('adresse')
             /*
             ->add('dateNaissance', BirthdayType::class, [
                 'placeholder' => [
@@ -39,10 +39,12 @@ class InscriptionType extends AbstractType
             //->add('activation')
             //->add('dateAjout')
             //->add('dateDesactivation')
+            /*
             ->add('ville', EntityType::class, [
                 'class' => Ville::class,
                 'choice_label' => 'nomVille'
             ])
+            */
 
 
         ;

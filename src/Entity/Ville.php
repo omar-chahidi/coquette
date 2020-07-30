@@ -36,9 +36,9 @@ class Ville
     private $pays;
 
     /**
-     * @ORM\OneToMany(targetEntity=Utilisateur::class, mappedBy="ville")
+     * @ORM\OneToMany(targetEntity=Adresse::class, mappedBy="ville", orphanRemoval=true)
      */
-    private $utilisateurs;
+    private $adresses;
 
     /*
      * @ORM\OneToMany(targetEntity=User::class, mappedBy="ville")
@@ -47,8 +47,7 @@ class Ville
 
     public function __construct()
     {
-        $this->utilisateurs = new ArrayCollection();
-        //$this->users = new ArrayCollection();
+        $this->adresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,66 +92,33 @@ class Ville
     }
 
     /**
-     * @return Collection|Utilisateur[]
+     * @return Collection|Adresse[]
      */
-    public function getUtilisateurs(): Collection
+    public function getAdresses(): Collection
     {
-        return $this->utilisateurs;
+        return $this->adresses;
     }
 
-    public function addUtilisateur(Utilisateur $utilisateur): self
+    public function addAdress(Adresse $adress): self
     {
-        if (!$this->utilisateurs->contains($utilisateur)) {
-            $this->utilisateurs[] = $utilisateur;
-            $utilisateur->setVille($this);
+        if (!$this->adresses->contains($adress)) {
+            $this->adresses[] = $adress;
+            $adress->setVille($this);
         }
 
         return $this;
     }
 
-    public function removeUtilisateur(Utilisateur $utilisateur): self
+    public function removeAdress(Adresse $adress): self
     {
-        if ($this->utilisateurs->contains($utilisateur)) {
-            $this->utilisateurs->removeElement($utilisateur);
+        if ($this->adresses->contains($adress)) {
+            $this->adresses->removeElement($adress);
             // set the owning side to null (unless already changed)
-            if ($utilisateur->getVille() === $this) {
-                $utilisateur->setVille(null);
+            if ($adress->getVille() === $this) {
+                $adress->setVille(null);
             }
         }
 
         return $this;
     }
-
-    /*
-     * @return Collection|User[]
-     */
-    /*
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(User $user): self
-    {
-        if (!$this->users->contains($user)) {
-            $this->users[] = $user;
-            $user->setVille($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(User $user): self
-    {
-        if ($this->users->contains($user)) {
-            $this->users->removeElement($user);
-            // set the owning side to null (unless already changed)
-            if ($user->getVille() === $this) {
-                $user->setVille(null);
-            }
-        }
-
-        return $this;
-    }
-    */
 }

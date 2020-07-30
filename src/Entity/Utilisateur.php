@@ -51,16 +51,6 @@ class Utilisateur implements UserInterface
     private $prenom;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
-     */
-    private $telephone;
-
-    /**
-     * @ORM\Column(type="string", length=100, nullable=true)
-     */
-    private $adresse;
-
-    /**
      * @ORM\Column(type="date", nullable=true)
      */
     private $dateNaissance;
@@ -98,10 +88,14 @@ class Utilisateur implements UserInterface
     private $dateDesactivation;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Ville::class, inversedBy="utilisateurs")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity=Adresse::class, mappedBy="utilisateur", orphanRemoval=true)
      */
-    private $ville;
+    private $adresses;
+
+    public function __construct()
+    {
+        $this->adresses = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -129,30 +123,6 @@ class Utilisateur implements UserInterface
     public function setPrenom(string $prenom): self
     {
         $this->prenom = $prenom;
-
-        return $this;
-    }
-
-    public function getTelephone(): ?string
-    {
-        return $this->telephone;
-    }
-
-    public function setTelephone(?string $telephone): self
-    {
-        $this->telephone = $telephone;
-
-        return $this;
-    }
-
-    public function getAdresse(): ?string
-    {
-        return $this->adresse;
-    }
-
-    public function setAdresse(?string $adresse): self
-    {
-        $this->adresse = $adresse;
 
         return $this;
     }
@@ -229,19 +199,6 @@ class Utilisateur implements UserInterface
         return $this;
     }
 
-    public function getVille(): ?Ville
-    {
-        return $this->ville;
-    }
-
-    public function setVille(?Ville $ville): self
-    {
-        $this->ville = $ville;
-
-        return $this;
-    }
-
-
     public function getRoles()
     {
         return ['ROLE_USER'];
@@ -260,5 +217,36 @@ class Utilisateur implements UserInterface
     public function eraseCredentials()
     {
         // TODO: Implement eraseCredentials() method.
+    }
+
+    /**
+     * @return Collection|Adresse[]
+     */
+    public function getAdresses(): Collection
+    {
+        return $this->adresses;
+    }
+
+    public function addAdress(Adresse $adress): self
+    {
+        if (!$this->adresses->contains($adress)) {
+            $this->adresses[] = $adress;
+            $adress->setUtilisateur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdress(Adresse $adress): self
+    {
+        if ($this->adresses->contains($adress)) {
+            $this->adresses->removeElement($adress);
+            // set the owning side to null (unless already changed)
+            if ($adress->getUtilisateur() === $this) {
+                $adress->setUtilisateur(null);
+            }
+        }
+
+        return $this;
     }
 }

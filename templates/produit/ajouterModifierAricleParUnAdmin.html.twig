@@ -14,9 +14,9 @@
     {{ form_row(formulaireArticle.categorie, {'label': 'Catégorie'}) }}
     {{ form_row(formulaireArticle.domaine, {'label': 'Domaine'}) }}
     {{ form_row(formulaireArticle.prix, {'label': 'Prix'}) }}
+    {{ form_row(formulaireArticle.tva, {'label': 'tva'}) }}
     {{ form_row(formulaireArticle.remise, {'label': 'Réduction'}) }}
     {{ form_row(formulaireArticle.description, {'label': 'Déscription', 'attr': {'placeholder': 'déscription ...'}}) }}
-    {{ form_row(formulaireArticle.motRecherche, {'label': 'Mot de recherche', 'attr': {'placeholder': 'mot de recherche ...'}}) }}
 
     <button type="submit" class="btn btn-success">
         {% if produitExist %}

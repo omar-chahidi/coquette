@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Article;
 use App\Entity\Photo;
+use App\Entity\Utilisateur;
 use App\Entity\Variante;
 use App\Repository\PhotoRepository;
 use App\Service\Chariot\ChariotService;
@@ -11,6 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
 
 class ChariotController extends AbstractController
 {
@@ -190,7 +192,27 @@ class ChariotController extends AbstractController
     /**
      * @Route("/chariot/valider", name="chariot_valider")
      */
-    public function validerPanier(Request $request) {
+    public function validerPanier(Request $request, Security $security) {
+
+        dump($request);
+        // usually you'll want to make sure the user is authenticated first
+        // Pour aller directement à la page de connexion
+        //dump($this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY'));
+
+        // Un racourcis pour voir l'utilisateur
+        // dump($this->getUser());
+
+
+        dump($this->trouverUtilisateurConnecte($security));
+        if ( $this->trouverUtilisateurConnecte($security) == null) {
+            $this->addFlash(
+                'warning',
+                'Avant de valider la commande il faut s\'inscrire si vous n\'navez pas de compte et ensuite se connecter'
+            );
+            return $this->redirectToRoute('chariot_index');
+        }
+
+
 
         // Initialisation une session
         $session = $request->getSession();
@@ -205,24 +227,15 @@ class ChariotController extends AbstractController
         //dump($request->getSession()->get('panier'));
         //dump($articlesDuPanier);
         //die('ici');
-        //dump($request);
         //dump($request->getMethod());
         //dump($request->query->get('btCommande'));
         //dump($request->request->get('btCommande'));
 
         // Calcul prix total de mon panier
-        $prixTotalPanier = $this->calculerNombreArticles($panier, $request)['prixTotalPanier'];
+        $prixTotalPanier = $this->calculerNombreArticlesEtPrixTotal($panier, $request)['prixTotalPanier'];
 
         // calcul nombre d'articles dans mon panier
-        $nombreArticlesPanier = $this->calculerNombreArticles($panier, $request)['nbArticles'];
-
-        /*
-        if ( $nombreArticlesPanier == 0) {
-            // Type = notice, success, warning ou error
-            $this->addFlash('warning', 'Vous ne pouvez pas valider commande car le nombre d\'article = 0 ' );
-            return $this->redirectToRoute('chariot_index');
-        }
-        */
+        $nombreArticlesPanier = $this->calculerNombreArticlesEtPrixTotal($panier, $request)['nbArticles'];
 
         foreach ( $panier as $id => $quantite ) {
             if ( $quantite == 0) {
@@ -239,7 +252,7 @@ class ChariotController extends AbstractController
         ]);
     }
 
-    public function calculerNombreArticles($monPanier, Request $request ) {
+    public function calculerNombreArticlesEtPrixTotal($monPanier, Request $request ) {
         $nbArticles = 0;
         $prixTotal = 0;
 
@@ -271,5 +284,11 @@ class ChariotController extends AbstractController
         //dump($tableauNbArticlesEtPrixTotal);
 
         return $tableauNbArticlesEtPrixTotal;
+    }
+
+    public function trouverUtilisateurConnecte(Security $security) {
+        $utilisateurConnecte = $security->getUser();
+
+        return $utilisateurConnecte;
     }
 }

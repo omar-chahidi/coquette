@@ -17,8 +17,8 @@
             <th>Marque</th>
             <th>Prix</th>
             <th>Remise</th>
+            <th>tva</th>
             <!--<th>Déscription</th>-->
-            <!--<th>Recherche</th>-->
             <th>Actions</th>
         </tr>
         </thead>
@@ -32,8 +32,7 @@
                 <td>{{ produit.marque.titre }}</td>
                 <td>{{ produit.prix }} €</td>
                 <td>{{ produit.remise }} %</td>
-                <!--<td>{{ produit.description }}</td>-->
-                <!--<td>{{ produit.motRecherche }}</td>-->
+                <td>{{ produit.tva }} %</td>
                 <td>
                     <div class="btn-group">
                         <div class="btn mr-1">

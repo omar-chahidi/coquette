@@ -30,11 +30,6 @@ class Article
     private $description;
 
     /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $motRecherche;
-
-    /**
      * @ORM\Column(type="date")
      */
     private $createdAt;
@@ -82,6 +77,11 @@ class Article
      */
     private $variantes;
 
+    /**
+     * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true)
+     */
+    private $tva;
+
 
     public function __construct()
     {
@@ -115,18 +115,6 @@ class Article
     public function setDescription(string $description): self
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    public function getMotRecherche(): ?string
-    {
-        return $this->motRecherche;
-    }
-
-    public function setMotRecherche(?string $motRecherche): self
-    {
-        $this->motRecherche = $motRecherche;
 
         return $this;
     }
@@ -292,6 +280,18 @@ class Article
                 $variante->setArticle(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTva(): ?string
+    {
+        return $this->tva;
+    }
+
+    public function setTva(?string $tva): self
+    {
+        $this->tva = $tva;
 
         return $this;
     }

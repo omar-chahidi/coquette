@@ -23,6 +23,7 @@ class ArticleType extends AbstractType
             ->add('prix', MoneyType::class, [
                 'currency' => 'EUR'
             ])
+            ->add('tva')
             ->add('remise', IntegerType::class, [
                 "label" => "Remise en %",
                 "attr" => [
@@ -43,7 +44,6 @@ class ArticleType extends AbstractType
                 'choice_label' => 'titre'
             ])
             ->add('description')
-            ->add('motRecherche')
         ;
     }
 

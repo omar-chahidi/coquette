@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
-
+{#
+Prix HT* = prix TTC ÷ (1 + taux de TVA)
+Prix TTC** = prix HT x (1 + taux de TVA)
+#}
 {% block body %}
     <h1>VOTRE COMMANDE
         <small class="text-secondary">

@@ -10,37 +10,25 @@ INSERT INTO pays (code, nom) VALUES
 -- Contenu de la table ville
 truncate table ville;
 INSERT INTO ville (`code_postale`, `nom_ville`, `pays_id`) VALUES
-('13000', 'Marseille', '033'),			('24200', 'Sarlat', '033'),		('24300', 'Carsac', '033'),		('24400', 'Aillac', '033'),		
-('59000', 'Lille', '033'),				('69000', 'LION', '033'),		('75011', 'Paris 11', '033'),	('75012', 'Paris 12', '033'),
-('75019', 'Paris XIX', '033'),			('78000', 'Versailles', '033'),	('94100', 'Vincennes', '033'),	('94200', 'St Mandé', '033'),
-('91390', 'Morsang sur orge', '033'), 	('99391', 'ROME', '039'),		('99392', 'MILAN', '039');
+('13000', 'Marseille', '033'),	('24200', 'Sarlat', '033'),		('24300', 'Carsac', '033'),		('24400', 'Aillac', '033'),		
+('59000', 'Lille', '033'),		('69000', 'LION', '033'),		('75011', 'Paris 11', '033'),	('75012', 'Paris 12', '033'),
+('75019', 'Paris XIX', '033'),	('78000', 'Versailles', '033'),	('94100', 'Vincennes', '033'),	('94200', 'St Mandé', '033'),
+('99391', 'ROME', '039'),		('99392', 'MILAN', '039');
 
 -- Contenu de la table utilisateur
 truncate table utilisateur;
-INSERT INTO utilisateur (id, nom_utilisateur, prenom, date_naissance, email, password, date_ajout, activation) VALUES
-(1, 'Buguet', 'Pascal', '1955-10-03', 'af@free.fr', '123', CURDATE(), 'OUI'),
-(2, 'Buguet', 'MJ', '1948-08-22', '2@free.fr', '123', CURDATE(), 'OUI'),
-(3, 'Fassiola', 'Annabelle', '1985-05-10', '3@free.fr', '123A', CURDATE(), 'OUI'),
-(4, 'Roux', 'Françoise', '1950-10-10', '4@free.fr', '123E', CURDATE(), 'OUI'),
-(5, 'Tintin', 'Albert', '1950-10-10', '5@free.fr', '123R', CURDATE(), 'OUI'),
-(6, 'Sordi', 'Alberto', '1950-10-10', '6@free.fr', '123F', CURDATE(), 'OUI'),
-(7, 'Muti', 'Ornella', '1950-10-10', '7@free.fr', '123F', CURDATE(), 'OUI'),
-(8, 'Milou', 'Le chien', '1950-10-10', '8@free.fr', '123S', CURDATE(), 'OUI'),
-(9, 'Tournesol', 'Bruno', '1950-10-10', '9@free.fr', '123Q', CURDATE(), 'OUI'),
-(10, 'Roberts', 'Julia', '1965-10-03', '10@free.fr', '1234D', CURDATE(), 'OUI'),
-(11, 'CHAHIDI', 'Omar', '1984-04-14', 'oci@gmail.com', '123', CURDATE(), 'OUI');
-  
--- Contenu de la table adresse
-truncate table adresse;
-INSERT INTO adresse (id, utilisateur_id, nom_adresse, prenom_adresse, telephone_adresse, adresse, ville_id) VALUES
-(1, '1', 'Pascal', 'Pascal', '0601370001', '18 square jean lurçat', '1'),
-(2, '1', 'Buchou', 'Christophe', '0601370002', '18 rue paul', '10'),
-
-(3, '2', 'Buguet', 'MJ', '0601370003', '1 rue etoile', '7'),
-(4, '2', 'Buguet', 'MJ', '0601370004', '2 rue michel', '8'),
-
-(5, '3', 'Muti', 'Ornella', '0601370005', '18 square jean lurçat', '11'),
-(6, '3', 'Pascal', 'Pascal', '0601370006', '18 square jean lurçat', '12');
+INSERT INTO utilisateur (id, nom_utilisateur, prenom, adresse, date_naissance, ville_id, telephone, email, password, date_ajout, activation) VALUES
+(1, 'Buguet', 'Pascal', '18 Square Jean Lurçat', '1955-10-03', '1', '0601370000', 'af@free.fr', '123', CURDATE(), 'OUI'),
+(2, 'Buguet', 'MJ', '18 Square Jean Lurçat', '1948-08-22', '2', '0700000031', '2@free.fr', '123', CURDATE(), 'OUI'),
+(3, 'Fassiola', 'Annabelle', '18 Square Jean Lurçat', '1985-05-10', '3', '0700000031', '3@free.fr', '123A', CURDATE(), 'OUI'),
+(4, 'Roux', 'Françoise', '18 Square Jean Lurçat', '1950-10-10', '4', '0901370031', '4@free.fr', '123E', CURDATE(), 'OUI'),
+(5, 'Tintin', 'Albert', '18 Square Jean Lurçat', '1950-10-10', '5', '010000031', '5@free.fr', '123R', CURDATE(), 'OUI'),
+(6, 'Sordi', 'Alberto', '18 Square Jean Lurçat', '1950-10-10', '6', '010000031', '6@free.fr', '123F', CURDATE(), 'OUI'),
+(7, 'Muti', 'Ornella', '18 Square Jean Lurçat', '1950-10-10', '7', '010000031', '7@free.fr', '123F', CURDATE(), 'OUI'),
+(8, 'Milou', 'Le chien', '18 Square Jean Lurçat', '1950-10-10', '8', '0101370031', '8@free.fr', '123S', CURDATE(), 'OUI'),
+(9, 'Tournesol', 'Bruno', '18 Square Jean Lurçat', '1950-10-10', '9', '0700000031', '9@free.fr', '123Q', CURDATE(), 'OUI'),
+(10, 'Roberts', 'Julia', '18 Square Jean Lurçat', '1965-10-03', '10', '0700000031', '10@free.fr', '1234D', CURDATE(), 'OUI'),
+(11, 'CHAHIDI', 'Omar', '18 Square Jean Lurçat', '1984-04-14', '11', '0601370031', 'oci@gmail.com', '123', CURDATE(), 'OUI');
   
 -- Contenu de la table commandes
 truncate table commande;
@@ -76,44 +64,44 @@ insert into marque (id, titre) VALUES
 
 -- Contenu de la table article
 truncate table article;
-insert into article (id, tva, titre, prix, remise, marque_id, categorie_id, domaine_id, description, created_at) VALUES
+insert into article (id, titre, prix, remise, marque_id, categorie_id, domaine_id, description, mot_recherche, created_at) VALUES
 -- HOMME - CHAUSSURE
-(1, 2, 'React Infinity Run Flyknit', 90.50, 10, 1, 1, 1, 'React Infinity Run Flyknit', CURDATE()),	
-(2, 2, 'Jordan Max Aura', 35.50, 20, 1, 1, 1, 'Jordan Max Aura', CURDATE()),
-(3, 2, 'Sneakers Gripshot homme en toile texturée et synthétique', 200.50, 0, 4, 1, 1, 'Sneakers Gripshot homme en toile texturée et synthétique', CURDATE()),	
-(4, 2, 'CHAUSSURE NMD R1', 45.99, 30, 2, 1, 1, 'CHAUSSURE NMD R1', CURDATE()),
+(1, 'React Infinity Run Flyknit', 90.50, 10, 1, 1, 1, 'React Infinity Run Flyknit', 'homme chassure nike', CURDATE()),	
+(2, 'Jordan Max Aura', 35.50, 20, 1, 1, 1, 'Jordan Max Aura', 'homme chassure nike', CURDATE()),
+(3, 'Sneakers Gripshot homme en toile texturée et synthétique', 200.50, 0, 4, 1, 1, 'Sneakers Gripshot homme en toile texturée et synthétique', 'homme chassure lacoste', CURDATE()),	
+(4, 'CHAUSSURE NMD R1', 45.99, 30, 2, 1, 1, 'CHAUSSURE NMD R1', 'homme chassure adidas', CURDATE()),
 -- HOMME - VETEMMENT	
-(5, 2, 'Sweatshirt a capuche Lacoste SPORT en molleton bicolore', 100, 40, 4, 1, 2, 'Sweatshirt a capuche Lacoste SPORT en molleton bicolore', CURDATE()),
-(6, 2, 'Polo Lacoste slim fit en petit piqué uni', 30.99, 50, 4, 1, 2, 'Polo Lacoste slim fit en petit piqué uni', CURDATE()),
-(7, 2, 'Veste de costume', 150.80, 60, 5, 1, 2, 'Veste de costume', CURDATE()),	
-(8, 2, 'SWEAT SHIRT TREFOIL WARM UP CREW', 20.5, 70, 2, 1, 2, 'SWEAT SHIRT TREFOIL WARM UP CREW', CURDATE()),
+(5, 'Sweatshirt a capuche Lacoste SPORT en molleton bicolore', 100, 40, 4, 1, 2, 'Sweatshirt a capuche Lacoste SPORT en molleton bicolore', 'homme vetemment lacoste', CURDATE()),
+(6, 'Polo Lacoste slim fit en petit piqué uni', 30.99, 50, 4, 1, 2, 'Polo Lacoste slim fit en petit piqué uni', 'homme vetemment lacoste', CURDATE()),
+(7, 'Veste de costume', 150.80, 60, 5, 1, 2, 'Veste de costume', 'homme vetemment jules', CURDATE()),	
+(8, 'SWEAT SHIRT TREFOIL WARM UP CREW', 20.5, 70, 2, 1, 2, 'SWEAT SHIRT TREFOIL WARM UP CREW', 'homme vetemment adidas', CURDATE()),
 -- HOMME - ACCESSOIRE
-(9, 2, 'sac', 100.30, 0, 5, 1, 3, 'sac', CURDATE()),	
-(10, 2, 'Portefeuille homme horizontal en cuir marron  Marron Foncé', 20.30, 80, 5, 1, 3, 'Portefeuille homme horizontal en cuir marron  Marron Foncé', CURDATE()),	
-(11, 2, 'Ceinture en fausse suedine', 10.50, 90, 1, 1, 3, 'Ceinture en fausse suedine', CURDATE()),
+(9, 'sac', 100.30, 0, 5, 1, 3, 'sac', 'homme accessoire', CURDATE()),	
+(10, 'Portefeuille homme horizontal en cuir marron  Marron Foncé', 20.30, 80, 5, 1, 3, 'Portefeuille homme horizontal en cuir marron  Marron Foncé', 'homme accessoire', CURDATE()),	
+(11, 'Ceinture en fausse suedine', 10.50, 90, 1, 1, 3, 'Ceinture en fausse suedine', 'homme accessoire', CURDATE()),
 -- FEMME - CHAUSSURE
-(12, 2, 'Sneakers T-Clip femme en cuir et daim', 100.77, 90, 4, 2, 1, 'Sneakers T-Clip femme en cuir et daim', CURDATE()),
-(13, 2, 'AURE Sandales métallisées à talons', 60.66, 10, 3, 2, 1, 'AURE Sandales métallisées à talons', CURDATE()),	
-(14, 2, 'CHAUSSURE SUPERSTAR', 200.50, 20, 2, 2, 1, 'CHAUSSURE SUPERSTAR', CURDATE()),
+(12, 'Sneakers T-Clip femme en cuir et daim', 100.77, 90, 4, 2, 1, 'Sneakers T-Clip femme en cuir et daim', 'femme chaussure lacoste', CURDATE()),
+(13, 'AURE Sandales métallisées à talons', 60.66, 10, 3, 2, 1, 'AURE Sandales métallisées à talons', 'femme chaussure etam', CURDATE()),	
+(14, 'CHAUSSURE SUPERSTAR', 200.50, 20, 2, 2, 1, 'CHAUSSURE SUPERSTAR', 'femme chaussure adidas', CURDATE()),
 -- FEMME - VETEMMENT
-(15, 2, 'ROBE OFF THE SHOULDER', 100.30, 30, 2, 2, 2, 'ROBE OFF THE SHOULDER', CURDATE()),	
-(16, 2, 'Robe polo Lacoste LIVE en piqué stretch avec pli épaule', 100.30, 0, 4, 2, 2, 'Robe polo Lacoste LIVE en piqué stretch avec pli épaule', CURDATE()),	
-(17, 2, 'Combinaison pantalon imprimée femme', 80.80, 40, 1, 2, 2, 'Combinaison pantalon imprimée femme', CURDATE()),
+(15, 'ROBE OFF THE SHOULDER', 100.30, 30, 2, 2, 2, 'ROBE OFF THE SHOULDER', 'femme vetement adidas', CURDATE()),	
+(16, 'Robe polo Lacoste LIVE en piqué stretch avec pli épaule', 100.30, 0, 4, 2, 2, 'Robe polo Lacoste LIVE en piqué stretch avec pli épaule', 'femme vetement lacoste', CURDATE()),	
+(17, 'Combinaison pantalon imprimée femme', 80.80, 40, 1, 2, 2, 'Combinaison pantalon imprimée femme', 'femme vetement nike', CURDATE()),
 -- FEMME - ACCESSOIRE
-(18, 2, 'Sac à main sceau femme', 100.67, 0, 4, 2, 3, 'Sac à main sceau femme', CURDATE()),
-(19, 2, 'Ceinture tressée dorée femme', 15.77, 50, 4, 2, 3, 'Ceinture tressée dorée femme', CURDATE()),	
+(18, 'Sac à main sceau femme', 100.67, 0, 4, 2, 3, 'Sac à main sceau femme', 'femme accessoire', CURDATE()),
+(19, 'Ceinture tressée dorée femme', 15.77, 50, 4, 2, 3, 'Ceinture tressée dorée femme', 'femme accessoire', CURDATE()),	
 -- ENFANTS - CHAUSSURE
-(20, 2, 'Baskets basses', 88.99, 60, 6, 3, 1, 'Baskets basses', CURDATE()),
-(21, 2, 'Sneakers Masters Cup ado en cuir', 20.60, 0, 4, 3, 1, 'Sneakers Masters Cup ado en cuir', CURDATE()),	
-(22, 2, 'CHAUSSURE TENSOR', 30.30, 70, 2, 3, 1, 'CHAUSSURE TENSOR', CURDATE()),	
+(20, 'Baskets basses', 88.99, 60, 6, 3, 1, 'Baskets basses', 'enfant chaussure orchestra', CURDATE()),
+(21, 'Sneakers Masters Cup ado en cuir', 20.60, 0, 4, 3, 1, 'Sneakers Masters Cup ado en cuir', 'enfant chaussure lacoste', CURDATE()),	
+(22, 'CHAUSSURE TENSOR', 30.30, 70, 2, 3, 1, 'CHAUSSURE TENSOR', 'enfant chaussure adidas', CURDATE()),	
 -- ENFANTS - VETEMMENT
-(23, 2, 'pijama rose', 10.99, 80, 6, 3, 2, 'pijama rose', CURDATE()),
-(24, 2, 'Robe Fille à taille élastiquée en molleton de coton', 30.4, 90, 4, 3, 2, 'Robe Fille à taille élastiquée en molleton de coton', CURDATE()),
-(25, 2, 'PANTALON DE SURVÊTEMENT SST', 15.77, 10, 2, 3, 2, 'PANTALON DE SURVÊTEMENT SST', CURDATE()),
+(23, 'pijama rose', 10.99, 80, 6, 3, 2, 'pijama rose', 'enfant vetemment orchestra', CURDATE()),
+(24, 'Robe Fille à taille élastiquée en molleton de coton', 30.4, 90, 4, 3, 2, 'Robe Fille à taille élastiquée en molleton de coton', 'enfant vetemment lacoste', CURDATE()),
+(25, 'PANTALON DE SURVÊTEMENT SST', 15.77, 10, 2, 3, 2, 'PANTALON DE SURVÊTEMENT SST', 'enfant vetemment adidas', CURDATE()),
 -- ENFANTS - ACCESSOIRE
-(26, 2, 'ADDIDAS sacados', 10.38, 20, 2, 3, 3, 'ADDIDAS sacados', CURDATE()),
-(27, 2, 'Montre Enfant Lacoste 12_12 avec Bracelet Silicone', 50.50, 30, 4, 3, 3, 'Montre Enfant Lacoste 12_12 avec Bracelet Silicone', CURDATE()),
-(28, 2, 'Parapluie transparent avec Étoiles Mickey Disney printés', 10.99, 40, 4, 3, 3, 'Parapluie transparent avec Étoiles Mickey Disney printés', CURDATE())
+(26, 'ADDIDAS sacados', 10.38, 20, 2, 3, 3, 'ADDIDAS sacados', 'enfant accessoire', CURDATE()),
+(27, 'Montre Enfant Lacoste 12_12 avec Bracelet Silicone', 50.50, 30, 4, 3, 3, 'Montre Enfant Lacoste 12_12 avec Bracelet Silicone', 'enfant accessoire', CURDATE()),
+(28, 'Parapluie transparent avec Étoiles Mickey Disney printés', 10.99, 40, 4, 3, 3, 'Parapluie transparent avec Étoiles Mickey Disney printés', 'enfant accessoire', CURDATE())
 ;
 
 -- Contenu de la table photo

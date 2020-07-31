@@ -66,7 +66,7 @@ class ChariotController extends AbstractController
         }
 
         return $this->render('chariot/panier.html.twig', [
-        //return $this->render('chariot/index.html.twig', [
+        //return $this->render('chariot/listerAdresseUtlisateur.html.twig', [
             'items' => $panierAvecInfo,
             'total' => $total,
             'nbAricles' => $nbArticles

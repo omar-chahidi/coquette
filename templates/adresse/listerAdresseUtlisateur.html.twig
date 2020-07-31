@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 border py-1">
+            <h1 style="text-align: center">Liste des adresses</h1>
+            <hr>
+            {% if adresses | length > 0 %}
+                <h4>Choisir adresse de livraison</h4>
+                {% for uneAdresse in adresses  %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="exampleRadios{{ uneAdresse.id }} " id="exampleRadios1" value="{{ uneAdresse.id }}" >
+                        <label class="form-check-label" for="exampleRadios1">
+                            {{ uneAdresse.nomAdresse }} {{ uneAdresse.prenomAdresse }} {{ uneAdresse.adresse }} {{ uneAdresse.ville.codePostale }} {{ uneAdresse.ville.nomVille }}
+                        </label>
+                    </div>
+                {% endfor %}
+                <br><br>
+                <hr>
+                <h4>Choisir adresse de facturation</h4>
+                {% for uneAdresse in adresses  %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="exampleRadios{{ uneAdresse.id }} " id="exampleRadios1" value="{{ uneAdresse.id }}" >
+                        <label class="form-check-label" for="exampleRadios1">
+                            {{ uneAdresse.nomAdresse }} {{ uneAdresse.prenomAdresse }} {{ uneAdresse.adresse }} {{ uneAdresse.ville.codePostale }} {{ uneAdresse.ville.nomVille }}
+                        </label>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h4>Il faut ajouter une adresse</h4>
+            {% endif %}
+        </div>
+        <div class="col-md-6 border py-1">
+            <h1 style="text-align: center">Ajouter une adresse</h1>
+            <hr>
+        </div>
+    </div>
+</div>
+
+
+
+{% endblock %}

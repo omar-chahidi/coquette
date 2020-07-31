@@ -27,9 +27,8 @@ INSERT INTO utilisateur (id, nom_utilisateur, prenom, date_naissance, email, pas
 (7, 'Muti', 'Ornella', '1950-10-10', '7@free.fr', '123F', CURDATE(), 'OUI'),
 (8, 'Milou', 'Le chien', '1950-10-10', '8@free.fr', '123S', CURDATE(), 'OUI'),
 (9, 'Tournesol', 'Bruno', '1950-10-10', '9@free.fr', '123Q', CURDATE(), 'OUI'),
-(10, 'Roberts', 'Julia', '1965-10-03', '10@free.fr', '1234D', CURDATE(), 'OUI'),
-(11, 'CHAHIDI', 'Omar', '1984-04-14', 'oci@gmail.com', '123', CURDATE(), 'OUI');
-  
+(10, 'Roberts', 'Julia', '1965-10-03', '10@free.fr', '1234D', CURDATE(), 'OUI');
+
 -- Contenu de la table adresse
 truncate table adresse;
 INSERT INTO adresse (id, utilisateur_id, nom_adresse, prenom_adresse, telephone_adresse, adresse, ville_id) VALUES

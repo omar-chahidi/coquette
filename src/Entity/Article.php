@@ -7,6 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+// namespace pour la validation
+use Symfony\Component\Validator\Constraints as Assert;
+
+
 /**
  * @ORM\Entity(repositoryClass=ArticleRepository::class)
  */
@@ -79,6 +83,7 @@ class Article
 
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true)
+     * @Assert\GreaterThan(value = 0, message = "La valeur '{{ value }}' doit être > 0")
      */
     private $tva;
 

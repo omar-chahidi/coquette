@@ -101,11 +101,20 @@ class ChariotController extends AbstractController
         // Déclarer ma variable session panier. Si je n'ai pas de panier mon panier est un tableau vide
         $panier = $session->get('panier', []);
 
+        // Dépôt variante
+        $depotVariante = $this->getDoctrine()->getRepository(Variante::class);
+        dump($depotVariante->find($id));
+        dump($depotVariante->find($id)->getStocke() );
+        //dump( $articleVariante = $depotVariante->find($id)->getArticle()->getStock() ) ;
+
         // $panier [ ID PRODUIT ] => QUANTITE
 
         // Ajouter le produit. Si le produit existe dans mon panier j'ajoute ++1
         if( !empty($panier[$id])){
-            $panier[$id]++;
+            // On ajoute dans le panier si la quantité < quantité du stock
+            if ( $panier[$id] < $depotVariante->find($id)->getStocke() ) {
+                $panier[$id]++;
+            }
         } else{
             $panier[$id] = 1;
         }
@@ -117,6 +126,7 @@ class ChariotController extends AbstractController
         // dd($session->get('panier'));
 
         return $this->redirectToRoute("chariot_index");
+        //die();
     }
 
     /*

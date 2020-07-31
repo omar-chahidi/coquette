@@ -10,6 +10,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -18,12 +21,12 @@ class ArticleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('titre')
+            ->add('titre', TextType::class)
             //->add('createdAt')
             ->add('prix', MoneyType::class, [
                 'currency' => 'EUR'
             ])
-            ->add('tva')
+            ->add('tva', NumberType::class)
             ->add('remise', IntegerType::class, [
                 "label" => "Remise en %",
                 "attr" => [
@@ -43,7 +46,7 @@ class ArticleType extends AbstractType
                 'class' =>Domaine::class,
                 'choice_label' => 'titre'
             ])
-            ->add('description')
+            ->add('description', TextareaType::class)
         ;
     }
 

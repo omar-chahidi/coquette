@@ -4,16 +4,16 @@ SET FOREIGN_KEY_CHECKS = 0;
 
 -- Contenu de la table pays
 truncate table pays;
-INSERT INTO pays (code, nom) VALUES
-('033', 'France'),	('034', 'Espagne'),	('035', 'Angleterre'),	('039', 'Italie');
+INSERT INTO pays (id, code, nom) VALUES
+(1, '033', 'France'),	(2, '034', 'Espagne'),	(3, '035', 'Angleterre'),	(4, '039', 'Italie');
 
 -- Contenu de la table ville
 truncate table ville;
 INSERT INTO ville (`code_postale`, `nom_ville`, `pays_id`) VALUES
-('13000', 'Marseille', '033'),			('24200', 'Sarlat', '033'),		('24300', 'Carsac', '033'),		('24400', 'Aillac', '033'),		
-('59000', 'Lille', '033'),				('69000', 'LION', '033'),		('75011', 'Paris 11', '033'),	('75012', 'Paris 12', '033'),
-('75019', 'Paris XIX', '033'),			('78000', 'Versailles', '033'),	('94100', 'Vincennes', '033'),	('94200', 'St Mandé', '033'),
-('91390', 'Morsang sur orge', '033'), 	('99391', 'ROME', '039'),		('99392', 'MILAN', '039');
+('13000', 'Marseille', '1'),			('24200', 'Sarlat', '1'),		('24300', 'Carsac', '1'),		('24400', 'Aillac', '1'),		
+('59000', 'Lille', '1'),				('69000', 'LION', '1'),		('75011', 'Paris 11', '1'),	('75012', 'Paris 12', '1'),
+('75019', 'Paris XIX', '1'),			('78000', 'Versailles', '1'),	('94100', 'Vincennes', '1'),	('94200', 'St Mandé', '1'),
+('91390', 'Morsang sur orge', '1'), 	('99391', 'ROME', '4'),		('99392', 'MILAN', '4');
 
 -- Contenu de la table utilisateur
 truncate table utilisateur;
@@ -28,7 +28,7 @@ INSERT INTO utilisateur (id, nom_utilisateur, prenom, date_naissance, email, pas
 (8, 'Milou', 'Le chien', '1950-10-10', '8@free.fr', '123S', CURDATE(), 'OUI'),
 (9, 'Tournesol', 'Bruno', '1950-10-10', '9@free.fr', '123Q', CURDATE(), 'OUI'),
 (10, 'Roberts', 'Julia', '1965-10-03', '10@free.fr', '1234D', CURDATE(), 'OUI');
-
+  
 -- Contenu de la table adresse
 truncate table adresse;
 INSERT INTO adresse (id, utilisateur_id, nom_adresse, prenom_adresse, telephone_adresse, adresse, ville_id) VALUES

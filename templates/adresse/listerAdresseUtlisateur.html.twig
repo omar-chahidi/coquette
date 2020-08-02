@@ -3,38 +3,66 @@
 {% block body %}
 
 <div class="container-fluid">
+    <h1>LIVRAISON / FACTURATION</h1>
+    <hr>
+
     <div class="row">
-        <div class="col-md-6 border py-1">
-            <h1 style="text-align: center">Liste des adresses</h1>
-            <hr>
+        <div class="col-md-8 py-1">
             {% if adresses | length > 0 %}
-                <h4>Choisir adresse de livraison</h4>
-                {% for uneAdresse in adresses  %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="exampleRadios{{ uneAdresse.id }} " id="exampleRadios1" value="{{ uneAdresse.id }}" >
-                        <label class="form-check-label" for="exampleRadios1">
-                            {{ uneAdresse.nomAdresse }} {{ uneAdresse.prenomAdresse }} {{ uneAdresse.adresse }} {{ uneAdresse.ville.codePostale }} {{ uneAdresse.ville.nomVille }}
-                        </label>
+                <form action="">
+                    <h5>Choisir adresse de livraison</h5>
+                    {% for uneAdresse in adresses  %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="{{ uneAdresse.id }}" name="livraison" value="{{ uneAdresse.id }}" {% if loop.first %} checked="checked" {% endif %}>
+                            <label class="form-check-label" for="{{ uneAdresse.id }}">
+                                <span style="text-transform: uppercase">{{ uneAdresse.nomAdresse }}</span> {{ uneAdresse.prenomAdresse }} <br>
+                                {{ uneAdresse.adresse }} {{ uneAdresse.ville.codePostale }} {{ uneAdresse.ville.nomVille }} - {{ uneAdresse.ville.pays.nom }}
+                                <br>
+                                <a href="{{ path('supprimer_adresse', {'utilisateurId': utilisateurConecte.id, 'id': uneAdresse.id}) }}">
+                                        <i> Supprimer</i>
+                                </a>
+                            </label>
+                        </div>
+                    {% endfor %}
+
+                    <br><br>
+
+                    <h5>Choisir adresse de facturation</h5>
+                    {% for uneAdresse in adresses  %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" id="{{ uneAdresse.id }}" name="facturation" value="{{ uneAdresse.id }}" {% if loop.first %} checked="checked" {% endif %}>
+                            <label class="form-check-label" for="{{ uneAdresse.id }}">
+                                <span style="text-transform: uppercase">{{ uneAdresse.nomAdresse }}</span> {{ uneAdresse.prenomAdresse }} <br>
+                                {{ uneAdresse.adresse }} {{ uneAdresse.ville.codePostale }} {{ uneAdresse.ville.nomVille }} - {{ uneAdresse.ville.pays.nom }}
+                                <br>
+                                <a href="{{ path('supprimer_adresse', {'utilisateurId': utilisateurConecte.id, 'id': uneAdresse.id}) }}">
+                                    <i> Supprimer</i>
+                                </a>
+                            </label>
+                        </div>
+                    {% endfor %}
+                    <br>
+                    <div>
+                        <button type="submit" name="validerAdresse" value="validerAdresse" class="btn btn-primary">Valider mes adresses</button>
                     </div>
-                {% endfor %}
-                <br><br>
-                <hr>
-                <h4>Choisir adresse de facturation</h4>
-                {% for uneAdresse in adresses  %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="exampleRadios{{ uneAdresse.id }} " id="exampleRadios1" value="{{ uneAdresse.id }}" >
-                        <label class="form-check-label" for="exampleRadios1">
-                            {{ uneAdresse.nomAdresse }} {{ uneAdresse.prenomAdresse }} {{ uneAdresse.adresse }} {{ uneAdresse.ville.codePostale }} {{ uneAdresse.ville.nomVille }}
-                        </label>
-                    </div>
-                {% endfor %}
+                </form>
             {% else %}
                 <h4>Il faut ajouter une adresse</h4>
             {% endif %}
         </div>
-        <div class="col-md-6 border py-1">
-            <h1 style="text-align: center">Ajouter une adresse</h1>
-            <hr>
+        <div class="col-md-4 py-1">
+            <h5>Ajouter une nouvelle adresse</h5>
+            {{ form_start(formulaireNouvelleAdresse) }}
+
+            {{ form_row(formulaireNouvelleAdresse.nomAdresse, {'label': 'Nom', 'attr': {'placeholder': 'Nom ...'}}) }}
+            {{ form_row(formulaireNouvelleAdresse.prenomAdresse, {'label': 'Prénom', 'attr': {'placeholder': 'Prénom ...'}}) }}
+            {{ form_row(formulaireNouvelleAdresse.telephoneAdresse, {'label': 'Téléphone', 'attr': {'placeholder': 'Téléphone ...'}}) }}
+            {{ form_row(formulaireNouvelleAdresse.adresse, {'label': 'Adresse'}) }}
+            {{ form_row(formulaireNouvelleAdresse.ville, {'label': 'Ville'}) }}
+            <button type="submit" class="btn btn-primary">Ajouter</button>
+
+            {{ form_end(formulaireNouvelleAdresse) }}
+
         </div>
     </div>
 </div>

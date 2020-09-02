@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-md-8 py-1">
             {% if adresses | length > 0 %}
-                <form action="">
+                <form action="{{ path('valider_adresses', {'utilisateurId': utilisateurConecte.id}) }}" method="post">
                     <h5>Choisir adresse de livraison</h5>
                     {% for uneAdresse in adresses  %}
                         <div class="form-check">

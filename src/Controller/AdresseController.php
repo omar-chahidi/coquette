@@ -74,4 +74,37 @@ class AdresseController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("adresse/valider/{utilisateurId}", name="valider_adresses")
+     */
+    public function validerAdresseLivraisonEtFacturation($utilisateurId, Request $request) {
+        //die("VALIDATION $utilisateurId");
+
+        // Initialisation une session
+        $session = $request->getSession();
+
+        // Déclarer ma variable session adresses. Si je n'ai pas adresses mon adresses est un tableau vide
+        // Récupération de la session
+        $adresses = $session->get('adresses', []);
+
+        // Remplir mon tableau adresses avec les id des adresses séléctionnés
+        //dump($request);
+        //dump($request->query->get('livraison')); // pour get
+        dump($request->request->get('livraison')); // pour post
+        dump($request->request->get('facturation'));
+        dump($request->request->get('validerAdresse'));
+        $adresses['livraison'] = $request->request->get('livraison');
+        $adresses['facturation'] = $request->request->get('facturation');
+
+        // Remettre mon adresses dans ma session
+        $session->set('adresses', $adresses);
+
+        //dump($adresses);
+        //die();
+
+
+        return $this->redirectToRoute('chariot_valider');
+    }
+
+
 }

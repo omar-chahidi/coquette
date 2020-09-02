@@ -255,9 +255,31 @@ class ChariotController extends AbstractController
                 return $this->redirectToRoute('chariot_index');
             }
         }
+
+        // Ajout des adresse livraison et facturation
+        $adresses = $session->get('adresses');
+        dump($adresses);
+        $idAdresseLivraison = $adresses['livraison'];
+        $idAdresseFacturation = $adresses['facturation'];
+        dump($idAdresseLivraison);
+        dump($idAdresseFacturation);
+
+        if (empty($idAdresseLivraison) || empty($idAdresseFacturation) ) {
+            $this->addFlash('warning', 'Vous ne pouvez pas valider commande. Il faut définir une adresse de livraison et de facturation' );
+            return $this->redirectToRoute('chariot_index');
+        }
+
+        //$adresses = $request->getSession()->remove('adresses');
+        //dump($adresses);
+        //die();
+
+        // depot adresse
+
+
         return $this->render('chariot/validerPanier.html.twig', [
             'articles' => $articlesDuPanier,
             'panier' => $panier,
+            'adresses' => $adresses,
             'nbArticles' => $nombreArticlesPanier,
             'totalTTC' => $prixTotalPanierTTC,
             'totalHT' => $prixTotalPanierHT

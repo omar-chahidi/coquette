@@ -93,15 +93,22 @@ class AdresseController extends AbstractController
         dump($request->request->get('livraison')); // pour post
         dump($request->request->get('facturation'));
         dump($request->request->get('validerAdresse'));
-        $adresses['livraison'] = $request->request->get('livraison');
-        $adresses['facturation'] = $request->request->get('facturation');
+
+        if($request->request->get('facturation') != null && $request->request->get('livraison') != null) {
+            $adresses['livraison'] = $request->request->get('livraison');
+            $adresses['facturation'] = $request->request->get('facturation');
+        } else {
+            $this->addFlash('warning', 'Avant de valider il faut définir une adresse de livraison et de facturation' );
+            return $this->redirectToRoute('adresse_utilisateur', [
+                'id' => $utilisateurId
+            ]);
+        }
 
         // Remettre mon adresses dans ma session
         $session->set('adresses', $adresses);
 
         //dump($adresses);
         //die();
-
 
         return $this->redirectToRoute('chariot_valider');
     }

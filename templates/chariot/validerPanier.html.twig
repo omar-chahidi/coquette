@@ -64,16 +64,29 @@
         </tfoot>
     </table>
 
-    <div>
-        <h4>Adresse de livraison</h4>
-        {{ adresses['livraison'] }}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <dl>
+                    <dt><h4>Adresse de livraison</h4></dt>
+                    <dt>{{ adreseLivraison.nomAdresse }} <span style="text-transform:uppercase">{{ adreseLivraison.prenomAdresse }}</span></dt>
+                    <dt>{{ adreseLivraison.adresse }} </dt>
+                    <dt>{{ adreseLivraison.ville.codePostale }} {{ adreseLivraison.ville.nomVille }} - {{ adreseFacturation.ville.pays.nom }}</dt>
+                </dl>
+            </div>
 
-
-    <div>
-        <h4>Adresse de facturation</h4>
-        {{ adresses['facturation'] }}
+            <div class="col-md-6">
+                <dl>
+                    <dt><h4>Adresse de facturation</h4></dt>
+                    <dt>{{ adreseFacturation.nomAdresse }} <span style="text-transform:uppercase">{{ adreseFacturation.prenomAdresse }}</span></dt>
+                    <dt>{{ adreseFacturation.adresse }} </dt>
+                    <dt>{{ adreseFacturation.ville.codePostale }} {{ adreseFacturation.ville.nomVille }} - {{ adreseFacturation.ville.pays.nom }}</dt>
+                </dl>
+            </div>
+        </div>
     </div>
 
+    <br>
     <div>
         <a href="{{ path('home') }}" class="btn btn-info">Continuer vos achats </a>
         <a href="{{ app.request.headers.get('referer') }}" class="btn btn-info">Revenir à la page précédente</a>

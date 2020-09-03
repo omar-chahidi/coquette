@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Adresse;
 use App\Entity\Article;
 use App\Entity\Photo;
 use App\Entity\Utilisateur;
@@ -214,6 +215,8 @@ class ChariotController extends AbstractController
 
 
         dump($this->trouverUtilisateurConnecte($security));
+        dump($this->trouverUtilisateurConnecte($security)->getId());
+        dump($this->trouverUtilisateurConnecte($security)->getEmail());
         if ( $this->trouverUtilisateurConnecte($security) == null) {
             $this->addFlash(
                 'warning',
@@ -221,7 +224,6 @@ class ChariotController extends AbstractController
             );
             return $this->redirectToRoute('chariot_index');
         }
-
 
 
         // Initialisation une session
@@ -258,31 +260,36 @@ class ChariotController extends AbstractController
 
         // Ajout des adresse livraison et facturation
         $adresses = $session->get('adresses');
-        dump($adresses);
-        $idAdresseLivraison = $adresses['livraison'];
-        $idAdresseFacturation = $adresses['facturation'];
-        dump($idAdresseLivraison);
-        dump($idAdresseFacturation);
-
-        if (empty($idAdresseLivraison) || empty($idAdresseFacturation) ) {
-            $this->addFlash('warning', 'Vous ne pouvez pas valider commande. Il faut définir une adresse de livraison et de facturation' );
-            return $this->redirectToRoute('chariot_index');
-        }
-
-        //$adresses = $request->getSession()->remove('adresses');
         //dump($adresses);
+        //dump($adresses['livraison']);
+        //dump($adresses['facturation']);
+        //$adresses = $request->getSession()->remove('adresses');
         //die();
 
-        // depot adresse
+        if (empty($adresses['livraison']) || empty($adresses['facturation']) ) {
+            $this->addFlash('warning', 'Vous ne pouvez pas valider commande. Il faut définir une adresse de livraison et de facturation' );
+            //return $this->redirectToRoute('chariot_index');
+            return $this->redirectToRoute('adresse_utilisateur', [
+                'id' => $this->trouverUtilisateurConnecte($security)->getId()
+            ]);
+        }
+
+        // Depot adresse
+        $depotAdres = $this->getDoctrine()->getRepository(Adresse::class);
+        $adreseLivraison = $depotAdres->find($adresses['livraison']);
+        $adreseFacturation = $depotAdres->find($adresses['facturation']);
+
 
 
         return $this->render('chariot/validerPanier.html.twig', [
             'articles' => $articlesDuPanier,
             'panier' => $panier,
-            'adresses' => $adresses,
             'nbArticles' => $nombreArticlesPanier,
             'totalTTC' => $prixTotalPanierTTC,
-            'totalHT' => $prixTotalPanierHT
+            'totalHT' => $prixTotalPanierHT,
+            'adresses' => $adresses,
+            'adreseLivraison' => $adreseLivraison,
+            'adreseFacturation' => $adreseFacturation
         ]);
     }
 

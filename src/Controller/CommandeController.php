@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Adresse;
 use App\Entity\Commande;
+use App\Entity\CommandeProduit;
 use App\Entity\Variante;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -127,7 +128,9 @@ class CommandeController extends AbstractController
         //$payementStatut = 'ko';
 
         if($payementStatut == 'ok'){
-           $this->creerCommande($request);
+            $this->creerCommande($request);
+            $this->addFlash('success', 'Commande validée');
+            return $this->redirectToRoute("chariot_valider");
         } else {
             // Type = info, success, warning ou danger
             $this->addFlash('danger', 'Le paiement est refusé. Essayer une nouvelle fois');
@@ -163,6 +166,29 @@ class CommandeController extends AbstractController
 
             // mettre la commande dans la session
             $session->set('commande', $commandeObjet);
+
+            // CommandeProduit
+            $panier = $session->get('panier');
+            dump($session->get('panier'));
+            $depotVariante= $this->getDoctrine()->getRepository(Variante::class);
+            $articlesDuPanier = $depotVariante->trouverTableauArticlesPanier(array_keys($panier));
+            //$depotCommande = $this->getDoctrine()->getRepository(Commande::class);
+            //$commande = $depotCommande->find($commandeObjet->getId());
+
+            foreach ($articlesDuPanier as $variante){
+                $commandeProduit = new CommandeProduit();
+                $commandeProduit->setCommande($commandeObjet);
+                $commandeProduit->setVariante($variante);
+                $commandeProduit->setPrixUnitaire($variante->getArticle()->getPrix());
+                $commandeProduit->setQuantite($panier[$variante->getId()]);
+                $commandeProduit->setRemiseCommande($variante->getArticle()->getRemise());
+                $commandeProduit->setTvaCommande($variante->getArticle()->getTva());
+                $entityManager = $this->getDoctrine()->getManager();
+                $entityManager->persist($commandeProduit);
+                $entityManager->flush();
+
+                dump($commandeProduit);
+            }
         } else {
             $depotCommande = $this->getDoctrine()->getRepository(Commande::class);
             $commandeObjet = $depotCommande->find($session->get('commande'));
@@ -173,9 +199,9 @@ class CommandeController extends AbstractController
         dump($commandeObjet);
         dump($commandeObjet->getId());
 
-        //$this->preparerCommande($request);
-        die();
+        //die();
 
         return new Response($commandeObjet->getId());
     }
+
 }

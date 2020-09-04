@@ -39,6 +39,16 @@ class CommandeProduit
      */
     private $variante;
 
+    /**
+     * @ORM\Column(type="decimal", precision=5, scale=2, nullable=true)
+     */
+    private $tvaCommande;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $remiseCommande;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -88,6 +98,30 @@ class CommandeProduit
     public function setVariante(?Variante $variante): self
     {
         $this->variante = $variante;
+
+        return $this;
+    }
+
+    public function getTvaCommande(): ?string
+    {
+        return $this->tvaCommande;
+    }
+
+    public function setTvaCommande(?string $tvaCommande): self
+    {
+        $this->tvaCommande = $tvaCommande;
+
+        return $this;
+    }
+
+    public function getRemiseCommande(): ?int
+    {
+        return $this->remiseCommande;
+    }
+
+    public function setRemiseCommande(?int $remiseCommande): self
+    {
+        $this->remiseCommande = $remiseCommande;
 
         return $this;
     }

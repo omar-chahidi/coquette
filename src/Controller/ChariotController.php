@@ -215,8 +215,7 @@ class ChariotController extends AbstractController
 
 
         dump($this->trouverUtilisateurConnecte($security));
-        dump($this->trouverUtilisateurConnecte($security)->getId());
-        dump($this->trouverUtilisateurConnecte($security)->getEmail());
+
         if ( $this->trouverUtilisateurConnecte($security) == null) {
             $this->addFlash(
                 'warning',
@@ -224,6 +223,9 @@ class ChariotController extends AbstractController
             );
             return $this->redirectToRoute('chariot_index');
         }
+
+        dump($this->trouverUtilisateurConnecte($security)->getId());
+        dump($this->trouverUtilisateurConnecte($security)->getEmail());
 
 
         // Initialisation une session

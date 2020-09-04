@@ -46,6 +46,11 @@ class Commande
      */
     private $commandeProduits;
 
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $commande = [];
+
     public function __construct()
     {
         $this->commandeProduits = new ArrayCollection();
@@ -145,6 +150,18 @@ class Commande
                 $commandeProduit->setCommande(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCommande(): ?array
+    {
+        return $this->commande;
+    }
+
+    public function setCommande(?array $commande): self
+    {
+        $this->commande = $commande;
 
         return $this;
     }

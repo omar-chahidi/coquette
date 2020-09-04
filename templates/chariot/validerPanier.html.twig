@@ -1,6 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
     <h1>VOTRE COMMANDE
         <small class="text-secondary">
             {% if  nbArticles == 1 %}
@@ -88,7 +96,7 @@
 
     <br>
     <div>
-        <form action="{{ path('creer_commande') }}" method="post"> <!-- {# path('creerCommande') #} -->
+        <form action="{{ path('payer_commande') }}" method="post"> <!-- {# path('creerCommande') #} -->
             <a href="{{ path('home') }}" class="btn btn-info">Continuer vos achats </a>
             <a href="{{ app.request.headers.get('referer') }}" class="btn btn-info">Revenir à la page précédente</a>
             <a href="{{ path('adresse_utilisateur', {'id': app.user.id}) }}" class="btn btn-info">Définir adresse de facturation et livraison</a>

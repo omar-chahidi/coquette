@@ -119,10 +119,20 @@ class CommandeController extends AbstractController
 
     /**
      * Payer commande
+     * @Route("/commande/payer", name="payer_commande")
      */
-    public function payerCommande()
+    public function payerCommande(Request $request)
     {
+        $payementStatut = 'ok';
+        //$payementStatut = 'ko';
 
+        if($payementStatut == 'ok'){
+           $this->creerCommande($request);
+        } else {
+            // Type = info, success, warning ou danger
+            $this->addFlash('danger', 'Le paiement est refusé. Essayer une nouvelle fois');
+            return $this->redirectToRoute("chariot_valider");
+        }
     }
 
     /**
@@ -136,11 +146,9 @@ class CommandeController extends AbstractController
         //dump($this->container->get('security.token_storage')->getToken()->getUser()->getId());
         //die();
 
-
-
-
         // acceder à la session avec symfony via une requette (HttpFoundation)
         $session = $request->getSession();
+        //$request->getSession()->remove('commande');
 
 
         // Si la session commande n'existe pas on va instancier la classe commande (créer l'objet commande)
@@ -148,6 +156,7 @@ class CommandeController extends AbstractController
             $commandeObjet = new Commande();
             $commandeObjet->setDatCommande(new \DateTime());
             $commandeObjet->setUtilisateur($this->container->get('security.token_storage')->getToken()->getUser());
+            $commandeObjet->setCommande($this->preparerCommande($request));
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($commandeObjet);
             $entityManager->flush();
@@ -164,10 +173,8 @@ class CommandeController extends AbstractController
         dump($commandeObjet);
         dump($commandeObjet->getId());
 
-
-
-        $this->preparerCommande($request);
-        //die();
+        //$this->preparerCommande($request);
+        die();
 
         return new Response($commandeObjet->getId());
     }

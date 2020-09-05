@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Adresse;
+use App\Entity\BonDeLivraison;
 use App\Entity\Commande;
 use App\Entity\CommandeProduit;
+use App\Entity\Facture;
 use App\Entity\Variante;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -129,8 +131,14 @@ class CommandeController extends AbstractController
 
         if($payementStatut == 'ok'){
             $this->creerCommande($request);
-            $this->addFlash('success', 'Commande validée');
-            return $this->redirectToRoute("chariot_valider");
+            $this->addFlash('success', 'Commande validée numéro ' . $this->creerCommande($request)->getContent());
+
+            $request->getSession()->remove('panier');
+            $request->getSession()->remove('adresses');
+            $request->getSession()->remove('commande');
+
+            return $this->redirectToRoute("home");
+
         } else {
             // Type = info, success, warning ou danger
             $this->addFlash('danger', 'Le paiement est refusé. Essayer une nouvelle fois');
@@ -153,29 +161,34 @@ class CommandeController extends AbstractController
         $session = $request->getSession();
         //$request->getSession()->remove('commande');
 
+        $entityManager = $this->getDoctrine()->getManager();
+
 
         // Si la session commande n'existe pas on va instancier la classe commande (créer l'objet commande)
         if( !$session->has('commande')) {
+            // 1) Ajout de la commande dans DB
             $commandeObjet = new Commande();
             $commandeObjet->setDatCommande(new \DateTime());
             $commandeObjet->setUtilisateur($this->container->get('security.token_storage')->getToken()->getUser());
             $commandeObjet->setCommande($this->preparerCommande($request));
-            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($commandeObjet);
             $entityManager->flush();
-
             // mettre la commande dans la session
             $session->set('commande', $commandeObjet);
 
-            // CommandeProduit
+            // 2) Ajout de la ligne CommandeProduit dans DB
             $panier = $session->get('panier');
             dump($session->get('panier'));
             $depotVariante= $this->getDoctrine()->getRepository(Variante::class);
             $articlesDuPanier = $depotVariante->trouverTableauArticlesPanier(array_keys($panier));
-            //$depotCommande = $this->getDoctrine()->getRepository(Commande::class);
-            //$commande = $depotCommande->find($commandeObjet->getId());
-
             foreach ($articlesDuPanier as $variante){
+                // Modifier le stocke
+                dump($variante);
+                $stocke = $variante->getStocke();
+                $nouveauStocke = $stocke - $panier[$variante->getId()];
+                $variante->setStocke($nouveauStocke);
+
+                // Ajouter la nouvelle ligne de la commande produit
                 $commandeProduit = new CommandeProduit();
                 $commandeProduit->setCommande($commandeObjet);
                 $commandeProduit->setVariante($variante);
@@ -183,12 +196,27 @@ class CommandeController extends AbstractController
                 $commandeProduit->setQuantite($panier[$variante->getId()]);
                 $commandeProduit->setRemiseCommande($variante->getArticle()->getRemise());
                 $commandeProduit->setTvaCommande($variante->getArticle()->getTva());
-                $entityManager = $this->getDoctrine()->getManager();
                 $entityManager->persist($commandeProduit);
                 $entityManager->flush();
-
+                dump($variante);
                 dump($commandeProduit);
             }
+
+            // 3) Ajout de la ligne Facture dans DB
+            $facture = new Facture();
+            $facture->setCommande($commandeObjet);
+            $facture->setDateFacture(new \DateTime());
+            $entityManager->persist($facture);
+            $entityManager->flush();
+            dump($facture);
+
+            // 4) Ajout de la ligne BonLivraison dans DB
+            $bonLivraison = new BonDeLivraison();
+            $bonLivraison->setCommande($commandeObjet);
+            $bonLivraison->setDateBonLivraison(new \DateTime());
+            $entityManager->persist($bonLivraison);
+            $entityManager->flush();
+            dump($bonLivraison);
         } else {
             $depotCommande = $this->getDoctrine()->getRepository(Commande::class);
             $commandeObjet = $depotCommande->find($session->get('commande'));

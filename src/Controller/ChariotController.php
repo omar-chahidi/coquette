@@ -269,7 +269,7 @@ class ChariotController extends AbstractController
         //die();
 
         if (empty($adresses['livraison']) || empty($adresses['facturation']) ) {
-            $this->addFlash('warning', 'Vous ne pouvez pas valider commande. Il faut définir une adresse de livraison et de facturation' );
+            $this->addFlash('warning', 'Vous ne pouvez pas valider la commande. Il faut définir une adresse de livraison et de facturation' );
             //return $this->redirectToRoute('chariot_index');
             return $this->redirectToRoute('adresse_utilisateur', [
                 'id' => $this->trouverUtilisateurConnecte($security)->getId()

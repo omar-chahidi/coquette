@@ -7,6 +7,7 @@ use App\Entity\BonDeLivraison;
 use App\Entity\Commande;
 use App\Entity\CommandeProduit;
 use App\Entity\Facture;
+use App\Entity\Utilisateur;
 use App\Entity\Variante;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,12 +17,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommandeController extends AbstractController
 {
     /**
-     * @Route("/commande", name="commande")
+     * @Route("/commande/affichier/{id}", name="afficher_les_commandes")
      */
-    public function index()
+    public function afficherCommandeUtilisateur(Utilisateur $utilisateur)
     {
-        return $this->render('commande/index.html.twig', [
-            'controller_name' => 'CommandeController',
+        $depotCommande = $this->getDoctrine()->getRepository(Commande::class);
+        $tableauCommandes = $depotCommande->findBy(array('utilisateur' => $utilisateur->getId()));
+
+        //dump($utilisateur);
+        dump($tableauCommandes);
+        foreach ($tableauCommandes as $commande){
+            dump($commande);
+            dump($commande->getCommande());
+            dump($commande->getCommande()['totalTTC']);
+        }
+        //die();
+        return $this->render('commande/afficherCommandeUtilisateur.html.twig', [
+            'utilisateur' => $utilisateur,
+            'tableauCommandes' => $tableauCommandes,
         ]);
     }
 
@@ -137,7 +150,13 @@ class CommandeController extends AbstractController
             $request->getSession()->remove('adresses');
             $request->getSession()->remove('commande');
 
-            return $this->redirectToRoute("home");
+            //return $this->redirectToRoute("home");
+            dump( $this->getUser());
+            dump( $this->getUser()->getId());
+            //die();
+            return $this->redirectToRoute("afficher_les_commandes", [
+                'id' => $this->getUser()->getId(),
+            ]);
 
         } else {
             // Type = info, success, warning ou danger

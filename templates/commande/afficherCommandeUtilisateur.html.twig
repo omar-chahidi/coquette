@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commandes{% endblock %}
+
+{% block body %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+
+    <h1>Vos commandes {{ utilisateur.getNomUtilisateur() }} {{ utilisateur.getPrenom() }}</h1>
+
+    {# table.table #}
+    <table class="table" style="text-align: center">
+        {# thead>tr>th*5 #}
+        <thead>
+            <tr>
+                <th>Réference</th>
+                <th>Date</th>
+                <th>Prix TTC</th>
+                <th>Editer</th>
+            </tr>
+        </thead>
+        <tbody>
+        {# #}
+            {% if  tableauCommandes | length == 0 %}
+                <tr>
+                    <td colspan="4" ><center>Aucune facture actuellement</center></td>
+                </tr>
+            {% endif %}
+
+            {% for item in tableauCommandes %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.datCommande | date('d/m/Y') }}</td>
+
+                    {% for key, value in item.getCommande() %}
+                        {% if key == 'totalTTC' %}
+                            <td>{{ value }}</td>
+                        {% endif %}
+                    {% endfor %}
+
+                </tr>
+            {% endfor %}
+
+        </tbody>
+        {#
+        <tfoot>
+            <tr>
+                <td colspan="8" class="text-right">Total HT :</td>
+                <td colspan="2">  €</td>
+            </tr>
+
+        </tfoot>
+        #}
+    </table>
+
+    {% for item in tableauCommandes %}
+
+        {% for key, value in item.getCommande() %}
+            {{ key }} <br> {{ dump(value) }}
+
+        {% endfor %}
+        <hr>
+    {% endfor %}
+
+
+{% endblock %}

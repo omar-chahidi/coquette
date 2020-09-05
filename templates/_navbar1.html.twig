@@ -71,6 +71,8 @@
                         <a class="dropdown-item" href="{{ path('security_update', {'id': app.user.id}) }}">Modification compte</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ path('adresse_utilisateur', {'id': app.user.id}) }}">Adresses</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('afficher_les_commandes', {'id': app.user.id}) }}">Commandes</a>
                     {% endif %}
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{{ path('admin_afficher_les_articles') }}">Administration du site</a>

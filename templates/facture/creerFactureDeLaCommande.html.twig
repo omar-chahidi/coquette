@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello FactureController!{% endblock %}
+
+{% block body %}
+    {{ dump(commande) }}
+
+    {{ dump(commande.commande) }}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6" style="text-align: left">
+                <h1>Facture</h1>
+                Pour <B><span style="text-transform: uppercase">{{ commande.utilisateur.nomUtilisateur }}</span> {{ commande.utilisateur.prenom }}</B>
+                <br>{{ commande.utilisateur.email }}
+            </div>
+            <div class="col-md-6" style="text-align: right">
+                <h1>Numéro {{ commande.id }}</h1>
+                Le {{ commande.datCommande | date('d/m/Y')}}
+            </div>
+
+        </div>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-6" style="text-align: left">
+                <h4>Adresse facturation</h4>
+                <span style="text-transform: uppercase">{{ commande.commande.adreseLivraison.nom }} {{ commande.commande.adreseLivraison.prenom }} <br>
+                {{ commande.commande.adreseLivraison.adresse }} <br>
+                {{ commande.commande.adreseLivraison.cp }} {{ commande.commande.adreseLivraison.ville }} <br>
+                <span style="text-transform: uppercase">{{ commande.commande.adreseLivraison.pays }}</span><br>
+                {{ commande.commande.adreseLivraison.telephone }}
+
+            </div>
+            <div class="col-md-6" style="text-align: right">
+                <h4>Adresse livraison</h4>
+                <span style="text-transform: uppercase">{{ commande.commande.adreseFacturation.nom }}</span> {{ commande.commande.adreseFacturation.prenom }} <br>
+                {{ commande.commande.adreseFacturation.adresse }} <br>
+                {{ commande.commande.adreseFacturation.cp }} {{ commande.commande.adreseFacturation.ville }} <br>
+                <span style="text-transform: uppercase">{{ commande.commande.adreseFacturation.pays }}</span> <br>
+                {{ commande.commande.adreseFacturation.telephone }}
+            </div>
+        </div>
+
+        <br><br>
+
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><strong>Récapitulatif de la commande</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                            <table class="table table-condensed">
+                                <thead>
+                                <tr>
+                                    <td><strong>Item</strong></td>
+                                    <td class="text-center"><strong>Price</strong></td>
+                                    <td class="text-center"><strong>Quantity</strong></td>
+                                    <td class="text-right"><strong>Totals</strong></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- foreach ($order->lineItems as $line) or some such thing here -->
+                                <tr>
+                                    <td>BS-200</td>
+                                    <td class="text-center">$10.99</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">$10.99</td>
+                                </tr>
+                                <tr>
+                                    <td>BS-400</td>
+                                    <td class="text-center">$20.00</td>
+                                    <td class="text-center">3</td>
+                                    <td class="text-right">$60.00</td>
+                                </tr>
+                                <tr>
+                                    <td>BS-1000</td>
+                                    <td class="text-center">$600.00</td>
+                                    <td class="text-center">1</td>
+                                    <td class="text-right">$600.00</td>
+                                </tr>
+                                <tr>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line"></td>
+                                    <td class="thick-line text-center"><strong>Subtotal</strong></td>
+                                    <td class="thick-line text-right">$670.99</td>
+                                </tr>
+                                <tr>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line text-center"><strong>Shipping</strong></td>
+                                    <td class="no-line text-right">$15</td>
+                                </tr>
+                                <tr>
+                                    <td class="no-line"></td>
+                                    <td class="no-line"></td>
+                                    <td class="no-line text-center"><strong>Total</strong></td>
+                                    <td class="no-line text-right">$685.99</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

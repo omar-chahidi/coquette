@@ -22,7 +22,7 @@
                 <th>Réference</th>
                 <th>Date</th>
                 <th>Prix TTC</th>
-                <th>Editer</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -43,24 +43,16 @@
                             <td>{{ value }}</td>
                         {% endif %}
                     {% endfor %}
-
+                    <td><a href="#">Editer</a></td>
                 </tr>
             {% endfor %}
 
         </tbody>
-        {#
-        <tfoot>
-            <tr>
-                <td colspan="8" class="text-right">Total HT :</td>
-                <td colspan="2">  €</td>
-            </tr>
-
-        </tfoot>
-        #}
     </table>
 
+    {# DEBOGAGE #}
     {% for item in tableauCommandes %}
-
+        {{ dump(item) }}
         {% for key, value in item.getCommande() %}
             {{ key }} <br> {{ dump(value) }}
 

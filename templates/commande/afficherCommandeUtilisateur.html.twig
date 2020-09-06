@@ -12,7 +12,8 @@
     {% endfor %}
 
 
-    <h1>Vos commandes {{ utilisateur.getNomUtilisateur() }} {{ utilisateur.getPrenom() }}</h1>
+    <h1>Vos commandes</h1>
+    <br>
 
     {# table.table #}
     <table class="table" style="text-align: center">
@@ -43,7 +44,10 @@
                             <td>{{ value }}</td>
                         {% endif %}
                     {% endfor %}
-                    <td><a href="#">Editer</a></td>
+                    <td>
+                        <a href="{{ path('creer_facture', {'id' : item.id} ) }}">Editer</a> <br>
+                        <a href="{{ path('creer_facture_pdf', {'id' : item.id} ) }}">Afficher</a>
+                    </td>
                 </tr>
             {% endfor %}
 
@@ -51,14 +55,17 @@
     </table>
 
     {# DEBOGAGE #}
-    {% for item in tableauCommandes %}
-        {{ dump(item) }}
-        {% for key, value in item.getCommande() %}
-            {{ key }} <br> {{ dump(value) }}
+    {#
+        {{ utilisateur.getNomUtilisateur() }} {{ utilisateur.getPrenom() }}
+        {% for item in tableauCommandes %}
+            {{ dump(item) }}
+            {% for key, value in item.getCommande() %}
+                {{ key }} <br> {{ dump(value) }}
 
+            {% endfor %}
+            <hr>
         {% endfor %}
-        <hr>
-    {% endfor %}
+    #}
 
 
 {% endblock %}

@@ -3,11 +3,27 @@
 {% block title %}Hello FactureController!{% endblock %}
 
 {% block body %}
-    {{ dump(commande) }}
-
-    {{ dump(commande.commande) }}
 
     <div class="container">
+
+        <span class="bg-primary"></span>
+
+        <div class="row " >
+            <div class="col-md-4" style="text-align: left; background-color: gold">
+                <img src="{{ asset('uploads/images/coquette_logo.png') }}" height="180px" style="margin-top: 0; padding: 0" alt="Coquette">
+            </div>
+            <div class="col-md-4" style="text-align: left; background-color: gold">
+            </div>
+            <div class="col-md-4 py-2" style="text-align: right; background-color: gold">
+                <h4>COQUETTE</h4>
+                <p>18 Square Jean Lurçat <br> 91390 Morsang Sur Orge - FRANCE
+                <p>0033 (06) 01 37 00 31 <br> contact@coquette.fr</p>
+
+            </div>
+        </div>
+
+        <br> <br>
+
         <div class="row">
             <div class="col-md-6" style="text-align: left">
                 <h1>Facture</h1>
@@ -18,7 +34,6 @@
                 <h1>Numéro {{ commande.id }}</h1>
                 Le {{ commande.datCommande | date('d/m/Y')}}
             </div>
-
         </div>
         <hr>
 
@@ -44,70 +59,60 @@
 
         <br><br>
 
-
-
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><strong>Récapitulatif de la commande</strong></h3>
-                    </div>
-                    <div class="panel-body">
-                        <div class="table-responsive">
-                            <table class="table table-condensed">
-                                <thead>
-                                <tr>
-                                    <td><strong>Item</strong></td>
-                                    <td class="text-center"><strong>Price</strong></td>
-                                    <td class="text-center"><strong>Quantity</strong></td>
-                                    <td class="text-right"><strong>Totals</strong></td>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <!-- foreach ($order->lineItems as $line) or some such thing here -->
-                                <tr>
-                                    <td>BS-200</td>
-                                    <td class="text-center">$10.99</td>
-                                    <td class="text-center">1</td>
-                                    <td class="text-right">$10.99</td>
-                                </tr>
-                                <tr>
-                                    <td>BS-400</td>
-                                    <td class="text-center">$20.00</td>
-                                    <td class="text-center">3</td>
-                                    <td class="text-right">$60.00</td>
-                                </tr>
-                                <tr>
-                                    <td>BS-1000</td>
-                                    <td class="text-center">$600.00</td>
-                                    <td class="text-center">1</td>
-                                    <td class="text-right">$600.00</td>
-                                </tr>
-                                <tr>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line"></td>
-                                    <td class="thick-line text-center"><strong>Subtotal</strong></td>
-                                    <td class="thick-line text-right">$670.99</td>
-                                </tr>
-                                <tr>
-                                    <td class="no-line"></td>
-                                    <td class="no-line"></td>
-                                    <td class="no-line text-center"><strong>Shipping</strong></td>
-                                    <td class="no-line text-right">$15</td>
-                                </tr>
-                                <tr>
-                                    <td class="no-line"></td>
-                                    <td class="no-line"></td>
-                                    <td class="no-line text-center"><strong>Total</strong></td>
-                                    <td class="no-line text-right">$685.99</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        {#  style="border: 1px solid gold " #}
+        <table class="table" style="text-align: center">
+            {# thead>tr>th*5 #}
+            <thead class="thead-dark" style="text-align: justify-all">
+                <tr>
+                    <th style="border: 1px solid gold " >Produit</th>
+                    <th style="border: 1px solid gold " >Taille</th>
+                    <th style="border: 1px solid gold " >Couleur</th>
+                    <th style="border: 1px solid gold " >Prix TTC unitaire</th>
+                    <th style="border: 1px solid gold " >Remise</th>
+                    <th style="border: 1px solid gold " >Prix TTC unitaire avec remise</th>
+                    <th style="border: 1px solid gold " >Quantité</th>
+                    <th style="border: 1px solid gold " >TVA</th>
+                    <th style="border: 1px solid gold " >Total HT</th>
+                    <th style="border: 1px solid gold " >Prix tva</th>
+                    <th style="border: 1px solid gold " >Total TTC</th>
+                </tr>
+            </thead>
+            <tbody>
+                {##}
+                {% for variante in commande.commande.produit %}
+                    <tr>
+                        <td style="border: 1px solid gold " >{{ variante.produit }}</td>
+                        <td style="border: 1px solid gold " >{{ variante.taille }}</td>
+                        <td style="border: 1px solid gold " >{{ variante.couleur }}</td>
+                        <td style="border: 1px solid gold " >{{ variante.prixTTCSansRemiseUnArticle }} €</td>
+                        <td style="border: 1px solid gold " >{{ variante.remise }} %</td>
+                        <td style="border: 1px solid gold " >{{ variante.prixTTCAvecRemiseUnArticle }} €</td>
+                        <td style="border: 1px solid gold " >{{ variante.Qqantite }}</td>
+                        <td style="border: 1px solid gold " >{{ variante.tva }} %</td>
+                        <td style="border: 1px solid gold " >{{ variante.prixHTSousTotalDunArticle }} €</td>
+                        <td style="border: 1px solid gold " >{{ variante.prixTVA }} %</td>
+                        <td style="border: 1px solid gold " >{{ variante.prixTTCSousTotalDunArticle }} €</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="9" class="text-right" >Total HT :</td>
+                    <td colspan="3">{{ commande.commande.totalHT }} €</td>
+                </tr>
+                <tr>
+                    <td colspan="9" class="text-right">TVA :</td>
+                    <td colspan="3">{{ commande.commande.totalTVA }} €</td>
+                </tr>
+                <tr>
+                    <td colspan="9" class="text-right"><b>Total TTC :</b></td>
+                    <td colspan="3"><b>{{ commande.commande.totalTTC }} €</b></td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
+    {#
+    {{ dump(commande) }}
+    {{ dump(commande.commande) }}
+    #}
 {% endblock %}

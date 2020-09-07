@@ -32,7 +32,7 @@ class CommandeController extends AbstractController
             dump($commande->getCommande()['totalTTC']);
         }
         //die();
-        return $this->render('commande/afficherCommandeUtilisateur.html.twig', [
+        return $this->render('commande/afficherLesCommandesUtilisateur.html.twig', [
             'utilisateur' => $utilisateur,
             'tableauCommandes' => $tableauCommandes,
         ]);

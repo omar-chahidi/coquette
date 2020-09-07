@@ -45,8 +45,8 @@
                         {% endif %}
                     {% endfor %}
                     <td>
-                        <a href="{{ path('creer_facture', {'id' : item.id} ) }}">Editer</a> <br>
-                        <a href="{{ path('creer_facture_pdf', {'id' : item.id} ) }}">Afficher</a>
+                        <a href="{{ path('editer_facture_pdf', {'id' : item.id} ) }}" target="_blank">Editer</a> <br>
+                        <a href="{{ path('afficher_facture', {'id' : item.id} ) }}">Afficher</a>
                     </td>
                 </tr>
             {% endfor %}

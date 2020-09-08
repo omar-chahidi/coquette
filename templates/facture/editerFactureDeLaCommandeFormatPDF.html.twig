@@ -8,7 +8,7 @@
         .produis {
             border: 1px solid black;
         }
-        th, td {
+        .thtd {
             border-bottom: 1px solid #ddd;
         }
 
@@ -22,40 +22,67 @@
 
 
 
+        <br>
+        <table class="adresses"  width="100%">
+            <tr>
+                <td style="text-align: left"><b>Adresse de livraison</b></td>
+                <td style="text-align: right"><b>Adresse de facturation</b></td>
+            </tr>
+            <tr>
+                <td style="text-align: left">
+                    <span style="text-transform: uppercase">{{ commande.commande.adreseLivraison.nom }} {{ commande.commande.adreseLivraison.prenom }} <br>
+                    {{ commande.commande.adreseLivraison.adresse }} <br>
+                    {{ commande.commande.adreseLivraison.cp }} {{ commande.commande.adreseLivraison.ville }} <br>
+                    <span style="text-transform: uppercase">{{ commande.commande.adreseLivraison.pays }}</span><br>
+                    {{ commande.commande.adreseLivraison.telephone }}
+                </td>
+                <td style="text-align: right">
+                    <span style="text-transform: uppercase">{{ commande.commande.adreseFacturation.nom }}</span> {{ commande.commande.adreseFacturation.prenom }}
+                    <br>
+                    {{ commande.commande.adreseFacturation.adresse }} <br>
+                    {{ commande.commande.adreseFacturation.cp }} {{ commande.commande.adreseFacturation.ville }} <br>
+                    <span style="text-transform: uppercase">{{ commande.commande.adreseFacturation.pays }}</span> <br>
+                    {{ commande.commande.adreseFacturation.telephone }}
+                </td>
+            </tr>
+
+        </table>
+
+        <br><br><br>
 
         <table class="produis" style="text-align: center">
             <thead style="background-color: #AAAAAA">
             <tr>
-                <th >Produit</th>
-                <th >Taille</th>
-                <th >Couleur</th>
-                <th >P.U TTC</th>
-                <th >Remise</th>
-                <th >P.U TTC avec remise</th>
-                <th >Quantité</th>
-                <th >TVA</th>
-                <th >Total HT</th>
-                <th >Prix tva</th>
-                <th >Total TTC</th>
+                <th class="thtd">Produit</th>
+                <th class="thtd">Taille</th>
+                <th class="thtd">Couleur</th>
+                <th class="thtd">P.U TTC</th>
+                <th class="thtd">Remise</th>
+                <th class="thtd">P.U TTC avec remise</th>
+                <th class="thtd">Quantité</th>
+                <th class="thtd">TVA</th>
+                <th class="thtd">Total HT</th>
+                <th class="thtd">Prix tva</th>
+                <th class="thtd">Total TTC</th>
             </tr>
             </thead>
             <tbody>
-            {# #}
-            {% for variante in commande.commande.produit %}
-                <tr>
-                    <td >{{ variante.produit }}</td>
-                    <td >{{ variante.taille }}</td>
-                    <td >{{ variante.couleur }}</td>
-                    <td >{{ variante.prixTTCSansRemiseUnArticle }} €</td>
-                    <td >{{ variante.remise }} %</td>
-                    <td >{{ variante.prixTTCAvecRemiseUnArticle }} €</td>
-                    <td >{{ variante.Qqantite }}</td>
-                    <td >{{ variante.tva }} %</td>
-                    <td >{{ variante.prixHTSousTotalDunArticle }} €</td>
-                    <td >{{ variante.prixTVA }} %</td>
-                    <td >{{ variante.prixTTCSousTotalDunArticle }} €</td>
-                </tr>
-            {% endfor %}
+                {# #}
+                {% for variante in commande.commande.produit %}
+                    <tr>
+                        <td class="thtd">{{ variante.produit }}</td>
+                        <td class="thtd">{{ variante.taille }}</td>
+                        <td class="thtd">{{ variante.couleur }}</td>
+                        <td class="thtd">{{ variante.prixTTCSansRemiseUnArticle }} €</td>
+                        <td class="thtd">{{ variante.remise }} %</td>
+                        <td class="thtd">{{ variante.prixTTCAvecRemiseUnArticle }} €</td>
+                        <td class="thtd">{{ variante.Qqantite }}</td>
+                        <td class="thtd">{{ variante.tva }} %</td>
+                        <td class="thtd">{{ variante.prixHTSousTotalDunArticle }} €</td>
+                        <td class="thtd">{{ variante.prixTVA }} %</td>
+                        <td class="thtd">{{ variante.prixTTCSousTotalDunArticle }} €</td>
+                    </tr>
+                {% endfor %}
             </tbody>
         </table>
 

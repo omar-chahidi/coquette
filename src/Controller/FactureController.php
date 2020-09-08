@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Commande;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -37,6 +39,53 @@ class FactureController extends AbstractController
         ]);
     }
 
+    public function creerFactureDeLaCommandeFormatPDF(Commande $commande){
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('facture/editerFactureDeLaCommandeFormatPDF.html.twig', [
+            'commande' => $commande
+        ]);
+
+        // Load HTML to Dompdf
+        //$dompdf->loadHtml('hello');
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        //$dompdf->setPaper('A4', 'portrait');
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (force download)
+        /*
+        $dompdf->stream("mypdf.pdf", [
+            "Attachment" => true
+        ]);
+        */
+
+        /**/
+        // Store PDF Binary Data
+        $output = $dompdf->output();
+
+        // In this case, we want to write the file in the public directory
+        $nomFacture = 'Facture_numero_' . $commande->getId() . '.pdf';
+        $pdfFilepath =  $this->getParameter('repertoireStockageFactures') . '/' . $nomFacture;
+
+        // Write file to the desired path
+        file_put_contents($pdfFilepath, $output);
+
+        // Send some text response
+        return new Response($pdfFilepath);
+
+    }
+
     /**
      * @Route("/facture/editerPDF/{id}", name="editer_facture_pdf")
      */
@@ -52,52 +101,13 @@ class FactureController extends AbstractController
                 'id' => $this->getUser()->getId(),
             ]);
         }
-        //dump($commande);
+
+        $pdfFilepath = $this->creerFactureDeLaCommandeFormatPDF($commande)->getContent();
+        dump($pdfFilepath);
         //die();
-        /*
-        return $this->render('facture/editerFactureDeLaCommandeFormatPDF.html.twig', [
-            'commande' => $commande,
-        ]);
-        */
 
-
-
-        // On crée une  instance pour définir les options de notre fichier pdf
-        $pdfOptions = new Options();
-        $pdfOptions->set('defaultFont', 'Arial');
-        // Pour simplifier l'affichage des images, on autorise dompdf à utiliser
-        // des  url pour les nom de  fichier
-        $pdfOptions->set('isRemoteEnabled', TRUE);
-
-        // On crée une instance de dompdf avec  les options définies
-        $dompdf = new Dompdf($pdfOptions);
-
-        // Récupérez le HTML généré dans notre fichier twig
-        // On demande à Symfony de générer  le code html  correspondant à
-        // notre template, et on stocke ce code dans une variable
-        $html = $this->renderView('facture/editerFactureDeLaCommandeFormatPDF.html.twig', [
-            'commande' => $commande,
-        ]);
-
-        // On envoie le code html  à notre instance de dompdf
-        $dompdf->loadHtml($html);
-
-        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
-        //$dompdf->setPaper('A4', 'portrait');
-        $dompdf->setPaper('A4', 'landscape');
-
-        // On demande à dompdf de générer le  pdf
-        $dompdf->render();
-
-        // Sortie du PDF généré dans le navigateur (téléchargement forcé)
-        $dompdf->stream("mypdf.pdf", [
-            // Générer et forcer le téléchargement de fichiers PDF
-            // "Attachment" => true
-
-            // Générer et afficher le PDF dans le navigateur
-            "Attachment" => false
-        ]);
-
+        return new BinaryFileResponse($pdfFilepath);
+         /**/
     }
 
 }

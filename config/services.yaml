@@ -5,6 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     repertoireStockageImages: '%kernel.project_dir%/public/uploads/images'
+    repertoireStockageFactures: '%kernel.project_dir%/public/facture'
 
 services:
     # default configuration for services in *this* file

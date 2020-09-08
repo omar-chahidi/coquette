@@ -4,204 +4,82 @@
     <meta charset="UTF-8">
     <title>Facture</title>
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
     <style>
-        /**
-            Set the margins of the page to 0, so the footer and the header
-            can be of the full height and width !
-         **/
-        @page {
-            /* margin: 0cm 0cm; */
-            margin: 0px 25px;
+        .produis {
+            border: 1px solid black;
+        }
+        th, td {
+            border-bottom: 1px solid #ddd;
         }
 
-        /** Define now the real margins of every page in the PDF **/
-        body {
-            margin-top: 2cm;
-            margin-left: 2cm;
-            margin-right: 2cm;
-            margin-bottom: 2cm;
-        }
+        .total{
 
-        /** Define the header rules **/
-        header {
-            position: fixed;
-            top: 0cm;
-            left: 0cm;
-            right: 0cm;
-            /* height: 2cm; */
-
-            /** Extra personal styles **/
-            background-color: gold;
-            color: black;
-            /* text-align: center;
-            line-height: 1.5cm;*/
-        }
-
-        /** Define the footer rules **/
-        footer {
-            position: fixed;
-            bottom: 0cm;
-            left: 0cm;
-            right: 0cm;
-            height: 2cm;
-
-            /** Extra personal styles **/
-            background-color: #03a9f4;
-            color: white;
-            text-align: center;
-            line-height: 1.5cm;
         }
     </style>
+
 </head>
 <body>
-    <!-- Define header and footer blocks before your content -->
-    <header>
-        <p style="text-align: right">
-        <B>COQUETTE</B> <br>
-        18 Square Jean Lurçat <br>
-        91390 Morsang Sur Orge - FRANCE <br>
-        0033 (06) 01 37 00 31 <br>
-        contact@coquette.fr <br>
-        </p>
-        <div class="header">
-            <a href="#default" class="logo">CompanyLogo</a>
-            <div class="header-right">
-                <a class="active" href="#home">Home</a>
-                <a href="#contact">Contact</a>
-                <a href="#about">About</a>
-            </div>
-        </div>
 
-    </header>
 
-    <footer>
-        Copyright &copy; <?php echo date("Y");?>
-    </footer>
 
-    <!-- Wrap the content of your PDF inside a main tag -->
-    <main>
-        <h1>Hello World</h1>
 
-        <div class="container">
-            <h2>toto</h2>
-            <div class="row ">
-                <div class="col-md-4" style="text-align: left; background-color: gold">
-                    <img src="{{ asset('uploads/images/coquette_logo.png') }}" height="180px" style="margin-top: 0; padding: 0"
-                         alt="Coquette">
-                </div>
-                <div class="col-md-4" style="text-align: left; background-color: gold">
-                </div>
-                <div class="col-md-4 py-2" style="text-align: right; background-color: gold">
-                    <h4>COQUETTE</h4>
-                    <p>18 Square Jean Lurçat <br> 91390 Morsang Sur Orge - FRANCE
-                    <p>0033 (06) 01 37 00 31 <br> contact@coquette.fr</p>
-
-                </div>
-            </div>
-
-            <br> <br>
-
-            <div class="row">
-                <div class="col-md-6" style="text-align: left">
-                    <h1>Facture</h1>
-                    Pour <B><span
-                                style="text-transform: uppercase">{{ commande.utilisateur.nomUtilisateur }}</span> {{ commande.utilisateur.prenom }}
-                    </B>
-                    <br>{{ commande.utilisateur.email }}
-                </div>
-                <div class="col-md-6" style="text-align: right">
-                    <h1>Numéro {{ commande.id }}</h1>
-                    Le {{ commande.datCommande | date('d/m/Y') }}
-                </div>
-            </div>
-            <hr>
-
-            <div class="row">
-                <div class="col-md-6" style="text-align: left">
-                    <h4>Adresse facturation</h4>
-                    <span style="text-transform: uppercase">{{ commande.commande.adreseLivraison.nom }} {{ commande.commande.adreseLivraison.prenom }} <br>
-                    {{ commande.commande.adreseLivraison.adresse }} <br>
-                    {{ commande.commande.adreseLivraison.cp }} {{ commande.commande.adreseLivraison.ville }} <br>
-                    <span style="text-transform: uppercase">{{ commande.commande.adreseLivraison.pays }}</span><br>
-                    {{ commande.commande.adreseLivraison.telephone }}
-
-                </div>
-                <div class="col-md-6" style="text-align: right">
-                    <h4>Adresse livraison</h4>
-                    <span style="text-transform: uppercase">{{ commande.commande.adreseFacturation.nom }}</span> {{ commande.commande.adreseFacturation.prenom }}
-                    <br>
-                    {{ commande.commande.adreseFacturation.adresse }} <br>
-                    {{ commande.commande.adreseFacturation.cp }} {{ commande.commande.adreseFacturation.ville }} <br>
-                    <span style="text-transform: uppercase">{{ commande.commande.adreseFacturation.pays }}</span> <br>
-                    {{ commande.commande.adreseFacturation.telephone }}
-                </div>
-            </div>
-
-            <br><br>
-
-            {# style="border: 1px solid gold " #}
-            <table class="table" style="text-align: center">
-                {# thead>tr>th*5 #}
-                <thead class="thead-dark" style="text-align: justify-all">
+        <table class="produis" style="text-align: center">
+            <thead style="background-color: #AAAAAA">
+            <tr>
+                <th >Produit</th>
+                <th >Taille</th>
+                <th >Couleur</th>
+                <th >P.U TTC</th>
+                <th >Remise</th>
+                <th >P.U TTC avec remise</th>
+                <th >Quantité</th>
+                <th >TVA</th>
+                <th >Total HT</th>
+                <th >Prix tva</th>
+                <th >Total TTC</th>
+            </tr>
+            </thead>
+            <tbody>
+            {# #}
+            {% for variante in commande.commande.produit %}
                 <tr>
-                    <th style="border: 1px solid gold ">Produit</th>
-                    <th style="border: 1px solid gold ">Taille</th>
-                    <th style="border: 1px solid gold ">Couleur</th>
-                    <th style="border: 1px solid gold ">P.U TTC</th>
-                    <th style="border: 1px solid gold ">Remise</th>
-                    <th style="border: 1px solid gold ">P.U TTC avec remise</th>
-                    <th style="border: 1px solid gold ">Quantité</th>
-                    <th style="border: 1px solid gold ">TVA</th>
-                    <th style="border: 1px solid gold ">Total HT</th>
-                    <th style="border: 1px solid gold ">Prix tva</th>
-                    <th style="border: 1px solid gold ">Total TTC</th>
+                    <td >{{ variante.produit }}</td>
+                    <td >{{ variante.taille }}</td>
+                    <td >{{ variante.couleur }}</td>
+                    <td >{{ variante.prixTTCSansRemiseUnArticle }} €</td>
+                    <td >{{ variante.remise }} %</td>
+                    <td >{{ variante.prixTTCAvecRemiseUnArticle }} €</td>
+                    <td >{{ variante.Qqantite }}</td>
+                    <td >{{ variante.tva }} %</td>
+                    <td >{{ variante.prixHTSousTotalDunArticle }} €</td>
+                    <td >{{ variante.prixTVA }} %</td>
+                    <td >{{ variante.prixTTCSousTotalDunArticle }} €</td>
                 </tr>
-                </thead>
-                <tbody>
-                {# #}
-                {% for variante in commande.commande.produit %}
-                    <tr>
-                        <td style="border: 1px solid gold ">{{ variante.produit }}</td>
-                        <td style="border: 1px solid gold ">{{ variante.taille }}</td>
-                        <td style="border: 1px solid gold ">{{ variante.couleur }}</td>
-                        <td style="border: 1px solid gold ">{{ variante.prixTTCSansRemiseUnArticle }} €</td>
-                        <td style="border: 1px solid gold ">{{ variante.remise }} %</td>
-                        <td style="border: 1px solid gold ">{{ variante.prixTTCAvecRemiseUnArticle }} €</td>
-                        <td style="border: 1px solid gold ">{{ variante.Qqantite }}</td>
-                        <td style="border: 1px solid gold ">{{ variante.tva }} %</td>
-                        <td style="border: 1px solid gold ">{{ variante.prixHTSousTotalDunArticle }} €</td>
-                        <td style="border: 1px solid gold ">{{ variante.prixTVA }} %</td>
-                        <td style="border: 1px solid gold ">{{ variante.prixTTCSousTotalDunArticle }} €</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-                <tfoot>
-                <tr>
-                    <td colspan="9" class="text-right">Total HT :</td>
-                    <td colspan="3">{{ commande.commande.totalHT }} €</td>
-                </tr>
-                <tr>
-                    <td colspan="9" class="text-right">TVA :</td>
-                    <td colspan="3">{{ commande.commande.totalTVA }} €</td>
-                </tr>
-                <tr>
-                    <td colspan="9" class="text-right"><b>Total TTC :</b></td>
-                    <td colspan="3"><b>{{ commande.commande.totalTTC }} €</b></td>
-                </tr>
-                </tfoot>
-            </table>
-        </div>
-        {#
-        {{ dump(commande) }}
-        {{ dump(commande.commande) }}
-        #}
-    </main>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <br>
+        <table class="total" align="right" width="150">
+            <tr>
+                <td >Total HT :</td>
+                <td style="text-align: right">{{ commande.commande.totalHT }} €</td>
+            </tr>
+            <tr>
+                <td>TVA :</td>
+                <td style="text-align: right">{{ commande.commande.totalTVA }} €</td>
+            </tr>
+            <tr>
+                <td ><b>Total TTC :</b></td>
+                <td style="text-align: right"><b>{{ commande.commande.totalTTC }} €</b></td>
+            </tr>
+        </table>
+    {#
+    {{ dump(commande) }}
+    {{ dump(commande.commande) }}
+    #}
 
 
 
 </body>
 </html>
-

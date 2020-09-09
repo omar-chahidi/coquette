@@ -42,26 +42,31 @@ class FactureController extends AbstractController
     public function creerFactureDeLaCommandeFormatPDF(Commande $commande){
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
-        $pdfOptions->set('defaultFont', 'Arial');
+        $pdfOptions->setDefaultFont('Arial'); // 'defaultFont',
+        $pdfOptions->setIsPhpEnabled('true'); // isPhpEnabled
 
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
 
         // Retrieve the HTML generated in our twig file
+        /*
         $html = $this->renderView('facture/editerFactureDeLaCommandeFormatPDF.html.twig', [
             'commande' => $commande
         ]);
+        */
+        $html = $this->renderView('facture/test.html.twig', []);
 
         // Load HTML to Dompdf
         //$dompdf->loadHtml('hello');
         $dompdf->loadHtml($html);
 
         // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
-        //$dompdf->setPaper('A4', 'portrait');
-        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->setPaper('A4', 'portrait');
+        //$dompdf->setPaper('A4', 'landscape');
 
         // Render the HTML as PDF
         $dompdf->render();
+
 
         // Output the generated PDF to Browser (force download)
         /*
@@ -83,6 +88,11 @@ class FactureController extends AbstractController
 
         // Send some text response
         //return new Response($pdfFilepath);
+
+        dump($dompdf->getCanvas());
+        dump($dompdf->getCanvas()->get_page_number());
+        dump($dompdf->getCanvas()->get_page_count());
+        //die();
 
     }
 

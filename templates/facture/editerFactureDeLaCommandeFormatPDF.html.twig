@@ -9,6 +9,14 @@
             margin: 0cm 0cm;
         }
 
+        /** Define now the real margins of every page in the PDF **/
+        body {
+            margin-top: 3cm;
+            margin-left: 2cm;
+            margin-right: 2cm;
+            margin-bottom: 2cm;
+        }
+
         /** Define the header rules **/
         header {
             position: fixed;
@@ -22,6 +30,18 @@
             color: gold;
             /* text-align: center; */
             /* line-height: 1.5cm; */
+        }
+
+        #footer {
+            position: fixed;
+            bottom: -60px;
+            left: 0px;
+            right: 0px;
+            background-color: #ffffff;
+            height: 50px;
+        }
+        #footer .page:after {
+            content: counter(page, decimal);
         }
 
         /** Define now the real margins of every page in the PDF **/
@@ -98,7 +118,10 @@
                 <td>Référence</td>
             </tr>
             <tr>
-                <td style="color: blue">1</td>
+                {#
+                {{ PAGE_NUM }} / {{ PAGE_COUNT  }}
+                #}
+                <td style="color: blue">1 </td>
                 <td style="color: blue">{{ commande.datCommande | date('d/m/Y') }}</td>
                 <td style="color: blue">{{ commande.id }}</td>
             </tr>
@@ -188,6 +211,14 @@
         {{ dump(commande) }}
         {{ dump(commande.commande) }}
         #}
+
+        <p style="page-break-after: always;">
+            Content Page 1
+        </p>
+        <p style="page-break-after: never;">
+            Content Page 2
+        </p>
+
     </main>
 
 </body>

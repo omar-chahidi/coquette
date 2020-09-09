@@ -82,28 +82,35 @@ class FactureController extends AbstractController
         file_put_contents($pdfFilepath, $output);
 
         // Send some text response
-        return new Response($pdfFilepath);
+        //return new Response($pdfFilepath);
 
     }
 
     /**
      * @Route("/facture/editerPDF/{id}", name="editer_facture_pdf")
      */
-    public function editerFactureDeLaCommandeFormatPDF(Commande $commande)
+    //public function editerFactureDeLaCommandeFormatPDF(Commande $commande)
+    public function editerFactureDeLaCommandeFormatPDF($id)
     {
-        //$depotCommande = $this->getDoctrine()->getRepository(Commande::class);
-        //$commande = $depotCommande->findOneBy(array('utilisateur' => $this->getUser(), 'id' => $commande->getId() ) );
+        $depotCommande = $this->getDoctrine()->getRepository(Commande::class);
+        $commande = $depotCommande->findOneBy(array('utilisateur' => $this->getUser(), 'id' => $id ) );
 
         if(!$commande){
             // Type = info, success, warning ou danger
-            $this->addFlash('danger', 'Il y a un problème de téléchargement de la commande');
+            $this->addFlash('danger', 'Il y a un problème de téléchargement de la commande ou commande n\'existe pas');
             return $this->redirectToRoute("afficher_les_commandes", [
                 'id' => $this->getUser()->getId(),
             ]);
         }
 
-        $pdfFilepath = $this->creerFactureDeLaCommandeFormatPDF($commande)->getContent();
-        dump($pdfFilepath);
+        //$pdfFilepath = $this->creerFactureDeLaCommandeFormatPDF($commande)->getContent();
+
+        $pdfFilepath = $this->getParameter('repertoireStockageFactures') . '/' . 'Facture_numero_' . $commande->getId() . '.pdf';
+        if (!file_exists($pdfFilepath)){
+            $this->creerFactureDeLaCommandeFormatPDF($commande);
+        }
+        //else{dump('file existe');}
+        //dump($pdfFilepath);
         //die();
 
         return new BinaryFileResponse($pdfFilepath);

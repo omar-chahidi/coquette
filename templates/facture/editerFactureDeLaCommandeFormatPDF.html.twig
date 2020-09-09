@@ -5,6 +5,54 @@
     <title>Facture</title>
 
     <style>
+        @page {
+            margin: 0cm 0cm;
+        }
+
+        /** Define the header rules **/
+        header {
+            position: fixed;
+            top: 0cm;
+            left: 0cm;
+            right: 0cm;
+            /* height: 2cm; */
+
+            /** Extra personal styles **/
+            background-color: black;
+            color: gold;
+            /* text-align: center; */
+            /* line-height: 1.5cm; */
+        }
+
+        /** Define now the real margins of every page in the PDF **/
+        body {
+            margin-top: 2cm;
+            margin-left: 2cm;
+            margin-right: 1cm;
+            margin-bottom: 1cm;
+        }
+
+        .headline h1,
+        .headline p {
+            margin:0px;
+            display: inline-block;
+            padding:1em;
+            vertical-align: top;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .headline h1 {
+            /*font-weight: bold;*.
+            /*background:#88D498;*/
+        }
+
+        .headline p{
+            text-align:center;
+            /*padding-right:2em;*/
+            /*background:#FF4A63;*/
+            float:right;
+        }
+
+
         .produis {
             border: 1px solid black;
         }
@@ -12,16 +60,51 @@
             border-bottom: 1px solid #ddd;
         }
 
-        .total{
-
+        tbody tr tr{
+            color: blue;
         }
+
     </style>
 
 </head>
 <body>
+    <header>
+        <div class="headline">
+            <h1>Coquette</h1>
+            <p>
+                18 Square Jean Lurçat <br>
+                91390 Morsang Sur Orge - France <br>
+                omarchahidi@gmail.com <br>
+                06 01 37 00 31
+            </p>
+        </div>
+    </header>
+    <br><br>
+    <main>
 
+        <table style="text-align: center"  width="550" align="center">
+            <tr>
+                <td></td>
+                <td>
+                    <h1>
+                        Facture pour <span style="text-transform: uppercase">{{ commande.utilisateur.nomUtilisateur }}</span> {{ commande.utilisateur.prenom }}
+                    </h1>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Page</td>
+                <td>Date</td>
+                <td>Référence</td>
+            </tr>
+            <tr>
+                <td style="color: blue">1</td>
+                <td style="color: blue">{{ commande.datCommande | date('d/m/Y') }}</td>
+                <td style="color: blue">{{ commande.id }}</td>
+            </tr>
+        </table>
 
-
+        <br>
         <br>
         <table class="adresses"  width="100%">
             <tr>
@@ -29,14 +112,14 @@
                 <td style="text-align: right"><b>Adresse de facturation</b></td>
             </tr>
             <tr>
-                <td style="text-align: left">
+                <td style="text-align: left; color: blue">
                     <span style="text-transform: uppercase">{{ commande.commande.adreseLivraison.nom }} {{ commande.commande.adreseLivraison.prenom }} <br>
                     {{ commande.commande.adreseLivraison.adresse }} <br>
                     {{ commande.commande.adreseLivraison.cp }} {{ commande.commande.adreseLivraison.ville }} <br>
                     <span style="text-transform: uppercase">{{ commande.commande.adreseLivraison.pays }}</span><br>
                     {{ commande.commande.adreseLivraison.telephone }}
                 </td>
-                <td style="text-align: right">
+                <td style="text-align: right; color: blue">
                     <span style="text-transform: uppercase">{{ commande.commande.adreseFacturation.nom }}</span> {{ commande.commande.adreseFacturation.prenom }}
                     <br>
                     {{ commande.commande.adreseFacturation.adresse }} <br>
@@ -50,7 +133,7 @@
 
         <br><br><br>
 
-        <table class="produis" style="text-align: center">
+        <table class="produis" style="text-align: center" width="100%">
             <thead style="background-color: #AAAAAA">
             <tr>
                 <th class="thtd">Produit</th>
@@ -70,17 +153,17 @@
                 {# #}
                 {% for variante in commande.commande.produit %}
                     <tr>
-                        <td class="thtd">{{ variante.produit }}</td>
-                        <td class="thtd">{{ variante.taille }}</td>
-                        <td class="thtd">{{ variante.couleur }}</td>
-                        <td class="thtd">{{ variante.prixTTCSansRemiseUnArticle }} €</td>
-                        <td class="thtd">{{ variante.remise }} %</td>
-                        <td class="thtd">{{ variante.prixTTCAvecRemiseUnArticle }} €</td>
-                        <td class="thtd">{{ variante.Qqantite }}</td>
-                        <td class="thtd">{{ variante.tva }} %</td>
-                        <td class="thtd">{{ variante.prixHTSousTotalDunArticle }} €</td>
-                        <td class="thtd">{{ variante.prixTVA }} %</td>
-                        <td class="thtd">{{ variante.prixTTCSousTotalDunArticle }} €</td>
+                        <td class="thtd" style="color: blue">{{ variante.produit }}</td>
+                        <td class="thtd" style="color: blue">{{ variante.taille }}</td>
+                        <td class="thtd" style="color: blue">{{ variante.couleur }}</td>
+                        <td class="thtd" style="color: blue">{{ variante.prixTTCSansRemiseUnArticle }} €</td>
+                        <td class="thtd" style="color: blue">{{ variante.remise }} %</td>
+                        <td class="thtd" style="color: blue">{{ variante.prixTTCAvecRemiseUnArticle }} €</td>
+                        <td class="thtd" style="color: blue">{{ variante.Qqantite }}</td>
+                        <td class="thtd" style="color: blue">{{ variante.tva }} %</td>
+                        <td class="thtd" style="color: blue">{{ variante.prixHTSousTotalDunArticle }} €</td>
+                        <td class="thtd" style="color: blue">{{ variante.prixTVA }} %</td>
+                        <td class="thtd" style="color: blue">{{ variante.prixTTCSousTotalDunArticle }} €</td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -90,23 +173,22 @@
         <table class="total" align="right" width="150">
             <tr>
                 <td >Total HT :</td>
-                <td style="text-align: right">{{ commande.commande.totalHT }} €</td>
+                <td style="text-align: right; color: blue">{{ commande.commande.totalHT }} €</td>
             </tr>
             <tr>
                 <td>TVA :</td>
-                <td style="text-align: right">{{ commande.commande.totalTVA }} €</td>
+                <td style="text-align: right; color: blue">{{ commande.commande.totalTVA }} €</td>
             </tr>
             <tr>
                 <td ><b>Total TTC :</b></td>
-                <td style="text-align: right"><b>{{ commande.commande.totalTTC }} €</b></td>
+                <td style="text-align: right; color: blue"><b>{{ commande.commande.totalTTC }} €</b></td>
             </tr>
         </table>
-    {#
-    {{ dump(commande) }}
-    {{ dump(commande.commande) }}
-    #}
-
-
+        {#
+        {{ dump(commande) }}
+        {{ dump(commande.commande) }}
+        #}
+    </main>
 
 </body>
 </html>

@@ -49,12 +49,12 @@ class FactureController extends AbstractController
         $dompdf = new Dompdf($pdfOptions);
 
         // Retrieve the HTML generated in our twig file
-        /*
         $html = $this->renderView('facture/editerFactureDeLaCommandeFormatPDF.html.twig', [
             'commande' => $commande
         ]);
-        */
-        $html = $this->renderView('facture/test.html.twig', []);
+
+        //$html = $this->renderView('facture/test.html.twig', []);
+
 
         // Load HTML to Dompdf
         //$dompdf->loadHtml('hello');

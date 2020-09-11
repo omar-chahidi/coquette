@@ -33,14 +33,22 @@
             text-align: center;
         }
 
+        .produis {
+            border: 1px solid black;
+        }
+        .thtd {
+            border-bottom: 1px solid #ddd;
+        }
 
     </style>
 </head>
 <body>
 <!-- Define header and footer blocks before your content -->
 <header>
-        <b>COQUETTE</b> <br>
-        Facture numéro 11 pour Omar
+        <font size="+2"><b>COQUETTE</b></font> <br>
+        <font size="3">
+            Facture numéro {{ commande.id }} pour <span style="text-transform: uppercase">{{ commande.utilisateur.nomUtilisateur }}</span> {{ commande.utilisateur.prenom }} (fait le {{ commande.datCommande | date('d/m/Y') }})
+        </font>
 
 </header>
 
@@ -50,12 +58,91 @@
 
 <!-- Wrap the content of your PDF inside a main tag -->
 <main>
+    <table class="adresses"  width="100%">
+        <tr>
+            <td style="text-align: left"><b>Adresse de livraison</b></td>
+            <td style="text-align: right"><b>Adresse de facturation</b></td>
+        </tr>
+        <tr>
+            <td style="text-align: left; color: blue">
+                    <span style="text-transform: uppercase">{{ commande.commande.adreseLivraison.nom }} {{ commande.commande.adreseLivraison.prenom }} <br>
+                    {{ commande.commande.adreseLivraison.adresse }} <br>
+                    {{ commande.commande.adreseLivraison.cp }} {{ commande.commande.adreseLivraison.ville }} <br>
+                    <span style="text-transform: uppercase">{{ commande.commande.adreseLivraison.pays }}</span><br>
+                    {{ commande.commande.adreseLivraison.telephone }}
+            </td>
+            <td style="text-align: right; color: blue">
+                <span style="text-transform: uppercase">{{ commande.commande.adreseFacturation.nom }}</span> {{ commande.commande.adreseFacturation.prenom }}
+                <br>
+                {{ commande.commande.adreseFacturation.adresse }} <br>
+                {{ commande.commande.adreseFacturation.cp }} {{ commande.commande.adreseFacturation.ville }} <br>
+                <span style="text-transform: uppercase">{{ commande.commande.adreseFacturation.pays }}</span> <br>
+                {{ commande.commande.adreseFacturation.telephone }}
+            </td>
+        </tr>
+    </table>
+    <br><br><br>
+
+    <table class="produis" style="text-align: center" width="100%">
+        <thead style="background-color: #AAAAAA">
+            <tr>
+                <th class="thtd">Produit</th>
+                <th class="thtd">Taille</th>
+                <th class="thtd">Couleur</th>
+                <th class="thtd">P.U TTC en €</th>
+                <th class="thtd">Remise en %</th>
+                <th class="thtd">P.U TTC avec remise €</th>
+                <th class="thtd">Quantité</th>
+                <th class="thtd">TVA %</th>
+                <th class="thtd">P.T HT €</th>
+                <th class="thtd">P tva en €</th>
+                <th class="thtd">P.T TTC en €</th>
+            </tr>
+        </thead>
+        <tbody>
+        {# #}
+            {% for variante in commande.commande.produit %}
+                <tr>
+                    <td class="thtd" style="color: blue">{{ variante.produit }}</td>
+                    <td class="thtd" style="color: blue">{{ variante.taille }}</td>
+                    <td class="thtd" style="color: blue">{{ variante.couleur }}</td>
+                    <td class="thtd" style="color: blue">{{ variante.prixTTCSansRemiseUnArticle }}</td>
+                    <td class="thtd" style="color: blue">{{ variante.remise }}</td>
+                    <td class="thtd" style="color: blue">{{ variante.prixTTCAvecRemiseUnArticle }}</td>
+                    <td class="thtd" style="color: blue">{{ variante.Qqantite }}</td>
+                    <td class="thtd" style="color: blue">{{ variante.tva }}</td>
+                    <td class="thtd" style="color: blue">{{ variante.prixHTSousTotalDunArticle }}</td>
+                    <td class="thtd" style="color: blue">{{ variante.prixTVA }}</td>
+                    <td class="thtd" style="color: blue">{{ variante.prixTTCSousTotalDunArticle }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="8" style="text-align: right">Total HT :</td>
+                <td colspan="3" style="text-align: center; color: blue">{{ commande.commande.totalHT }} €</td>
+            </tr>
+            <tr>
+                <td colspan="8" style="text-align: right">TVA :</td>
+                <td colspan="3" style="text-align: center; color: blue">{{ commande.commande.totalTVA }} €</td>
+            </tr>
+            <tr>
+                <td colspan="8" style="text-align: right"><b>Total TTC :</b></td>
+                <td colspan="3" style="text-align: center; color: blue"><b>{{ commande.commande.totalTTC }} €</b></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    {#
+    <br>
     <p style="page-break-after: always;">
         Content Page 1
     </p>
     <p style="page-break-after: never;">
         Content Page 2
     </p>
+    #}
+
 </main>
 </body>
 </html>

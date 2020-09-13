@@ -137,14 +137,57 @@ class CommandeController extends AbstractController
      * Payer commande
      * @Route("/commande/payer", name="payer_commande")
      */
-    public function payerCommande(Request $request)
+    public function payerCommande(Request $request, \Swift_Mailer $mailer)
     {
         $payementStatut = 'ok';
         //$payementStatut = 'ko';
 
         if($payementStatut == 'ok'){
+            // Création de la commande
             $this->creerCommande($request);
             $this->addFlash('success', 'Commande validée numéro ' . $this->creerCommande($request)->getContent());
+
+            // Création de la facture sous format PDF
+            $this->forward('App\Controller\FactureController::creerFactureDeLaCommandeFormatPDF', [
+                'commande' => $this->creerCommande($request)->getContent()
+            ]);
+
+            // Envoyer la facture par email
+            $depotCommande = $this->getDoctrine()->getRepository(Commande::class);
+            $commande = $depotCommande->find($this->creerCommande($request)->getContent());
+            $pdfFilepath = $this->getParameter('repertoireStockageFactures') . '/' . 'Facture_numero_' . $commande->getId() . '.pdf';
+
+            // On crée le message
+            $message = (new \Swift_Message('Facture'))
+                // On attribue l'expéditeur
+                ->setFrom('christophebuchou1984@gmail.com')
+                // On attribue le destinataire
+                ->setTo($this->getUser()->getEmail())
+                // On crée le texte avec la vue
+                ->setBody(
+                    $this->renderView(
+                        'emails/facture.html.twig', [
+                            'commande' => $commande
+                        ]
+                    ),
+                    'text/html'
+                )
+                ->setCharset('utf-8')
+                /*
+                // you can remove the following code if you don't define a text version for your emails
+                ->addPart(
+                    $this->renderView(
+                    // templates/emails/registration.txt.twig
+                        'emails/facture.html.twig', [
+                            'commande' => $commande
+                        ]
+                    ),
+                    'text/plain'
+                )
+                */
+                ->attach(\Swift_Attachment::fromPath($pdfFilepath));
+            ;
+            $mailer->send($message);
 
             $request->getSession()->remove('panier');
             $request->getSession()->remove('adresses');

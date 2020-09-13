@@ -127,4 +127,27 @@ class FactureController extends AbstractController
          /**/
     }
 
+
+    public function envyerParEmailLaFacture(Commande $commander){
+        // On crée le message
+        $message = (new \Swift_Message('Facture'))
+            // On attribue l'expéditeur
+            ->setFrom('oci@gmail.com')
+            // On attribue le destinataire
+            ->setTo($commande->getUtilisateur()->getEmail())
+            // On crée le texte avec la vue
+            ->setBody(
+                $this->renderView(
+                    'emails/facture.html.twig', [
+                        'commande' => $commande
+                    ]
+                ),
+                'text/html'
+            )
+        ;
+        $mailer = new \Swift_Mailer();
+        $mailer->send($message);
+
+    }
+
 }

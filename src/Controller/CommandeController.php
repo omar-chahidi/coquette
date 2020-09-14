@@ -9,9 +9,12 @@ use App\Entity\CommandeProduit;
 use App\Entity\Facture;
 use App\Entity\Utilisateur;
 use App\Entity\Variante;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CommandeController extends AbstractController
@@ -137,7 +140,8 @@ class CommandeController extends AbstractController
      * Payer commande
      * @Route("/commande/payer", name="payer_commande")
      */
-    public function payerCommande(Request $request, \Swift_Mailer $mailer)
+    //public function payerCommande(Request $request, \Swift_Mailer $mailer)
+    public function payerCommande(Request $request, MailerInterface $mailer)
     {
         $payementStatut = 'ok';
         //$payementStatut = 'ko';
@@ -157,37 +161,56 @@ class CommandeController extends AbstractController
             $commande = $depotCommande->find($this->creerCommande($request)->getContent());
             $pdfFilepath = $this->getParameter('repertoireStockageFactures') . '/' . 'Facture_numero_' . $commande->getId() . '.pdf';
 
-            // On crée le message
-            $message = (new \Swift_Message('Facture'))
-                // On attribue l'expéditeur
-                ->setFrom('christophebuchou1984@gmail.com')
-                // On attribue le destinataire
-                ->setTo($this->getUser()->getEmail())
-                // On crée le texte avec la vue
-                ->setBody(
-                    $this->renderView(
-                        'emails/facture.html.twig', [
-                            'commande' => $commande
-                        ]
-                    ),
-                    'text/html'
-                )
-                ->setCharset('utf-8')
-                /*
-                // you can remove the following code if you don't define a text version for your emails
-                ->addPart(
-                    $this->renderView(
-                    // templates/emails/registration.txt.twig
-                        'emails/facture.html.twig', [
-                            'commande' => $commande
-                        ]
-                    ),
-                    'text/plain'
-                )
-                */
-                ->attach(\Swift_Attachment::fromPath($pdfFilepath));
+            $email = (new TemplatedEmail())
+                ->from('omarchahidi@gmail.com')
+                ->to($this->getUser()->getEmail())
+                ->subject('Facture numéro ' . $commande->getId())
+                ->attachFromPath($pdfFilepath)
+
+                // path of the Twig template to render
+                ->htmlTemplate('emails/facture.html.twig')
+
+                // pass variables (name => value) to the template
+                ->context([
+                    'commande' => $commande
+                ])
             ;
-            $mailer->send($message);
+            $mailer->send($email);
+
+            /*
+            try {
+                // On crée le message
+                $message = (new \Swift_Message('Facture'))
+                    // On attribue l'expéditeur
+                    ->setFrom('christophebuchou1984@gmail.com')
+                    // On attribue le destinataire
+                    ->setTo('omarchahidi@outlook.fr')
+                    // On crée le texte avec la vue
+                    ->setBody(
+                        $this->renderView(
+                            'emails/facture.html.twig', [
+                                'commande' => $commande
+                            ]
+                        ),
+                        'text/html'
+                    )
+                    ->setCharset('utf-8')
+                    ->attach(\Swift_Attachment::fromPath($pdfFilepath));
+                ;
+                $mailer->send($message);
+                dump($message);
+                dump($mailer);
+                dump($mailer->send($message) );
+                if ($mailer->send($message) == 0) {
+                    $this->addFlash('warning', "Erreur lors de l'envoi du mail");
+                } else {
+                    $this->addFlash('success', "Un mail vient d'etre envoye !");
+                }
+            } catch (Exception $exception) {
+                dump($exception->getMessage());
+                die();
+            }
+            */
 
             $request->getSession()->remove('panier');
             $request->getSession()->remove('adresses');

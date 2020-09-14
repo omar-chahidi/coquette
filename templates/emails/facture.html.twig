@@ -5,5 +5,29 @@
 
     Nous préparons votre commande. <br><br>
 
-    Cordialement.
+    <b>Adresse de livraison : </b><br>
+        <span style="text-transform: uppercase">{{ commande.commande.adreseLivraison.nom }}</span>  {{ commande.commande.adreseLivraison.prenom }} <br>
+        {{ commande.commande.adreseLivraison.adresse }} <br>
+        {{ commande.commande.adreseLivraison.cp }} {{ commande.commande.adreseLivraison.ville }} <br>
+        <span style="text-transform: uppercase">{{ commande.commande.adreseLivraison.pays }}</span><br>
+        {{ commande.commande.adreseLivraison.telephone }}
+
+    <br><br>
+    <b>Adresse de facturation : </b><br>
+        <span style="text-transform: uppercase">{{ commande.commande.adreseFacturation.nom }}</span> {{ commande.commande.adreseFacturation.prenom }}<br>
+        {{ commande.commande.adreseFacturation.adresse }} <br>
+        {{ commande.commande.adreseFacturation.cp }} {{ commande.commande.adreseFacturation.ville }} <br>
+        <span style="text-transform: uppercase">{{ commande.commande.adreseFacturation.pays }}</span> <br>
+        {{ commande.commande.adreseFacturation.telephone }}
+    <br><br><br>
+    Cordialement. <br><br>
+
+
 </p>
+
+<h4>COQUETTE</h4>
+<h6>18 square Jean Lurçat 91390 Morsang Sur Orge</h6>
+<h6>coquette@contact.fr</h6>
+<h6>06 01 37 00 31</h6>
+<br>
+<img src="{{ email.image('@images/coquette_logo.png') }}" hwidth="200" height="200" alt="Coquette">

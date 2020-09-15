@@ -177,6 +177,7 @@ class CommandeController extends AbstractController
             ;
             $mailer->send($email);
 
+            $this->addFlash('success', "Un mail est envoyé avec la facture en pièce jointe ");
             /*
             try {
                 // On crée le message

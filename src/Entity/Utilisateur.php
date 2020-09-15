@@ -73,9 +73,9 @@ class Utilisateur implements UserInterface
     public $confirm_password;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $activation;
+    private $activationToken;
 
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -163,17 +163,25 @@ class Utilisateur implements UserInterface
         return $this;
     }
 
-    public function getActivation(): ?string
+    /**
+     * @return mixed
+     */
+    public function getActivationToken()
     {
-        return $this->activation;
+        return $this->activationToken;
     }
 
-    public function setActivation(string $activation): self
+    /**
+     * @param mixed $activationToken
+     * @return Utilisateur
+     */
+    public function setActivationToken($activationToken)
     {
-        $this->activation = $activation;
-
+        $this->activationToken = $activationToken;
         return $this;
     }
+
+
 
     public function getDateAjout(): ?\DateTimeInterface
     {

@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Utilisateur;
 use App\Form\InscriptionType;
 use App\Form\RegistrationType;
+use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,7 +20,8 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 class SecurityController extends AbstractController
 {
     /**
-     * cette fonction permet de créer et modifier un compte utilisateur
+     * Cette fonction permet de créer et modifier un compte utilisateur.
+     * Elle premettra aussi d'envyer un email au utilisateur pour activer son compte
      * @Route("/security/inscription", name="security_registration")
      * @Route("/security/{id}/modification", name="security_update")
      */
@@ -51,8 +53,9 @@ class SecurityController extends AbstractController
            $utilisateur->setPassword($hash);
 
            // s'il n y pas un compte utilisateur j'ajoute la date de création
+           // et on génère un token ensuite on l'enregistre
            if(!$utilisateur->getId()){
-               $utilisateur ->setActivation('ok')
+               $utilisateur ->setActivationToken(md5(uniqid()))
                             ->setDateAjout(new \DateTime())
                ;
                $mail = 'aEnvoyer';
@@ -70,12 +73,40 @@ class SecurityController extends AbstractController
            // Envoie d'email de création du compte
            dump($mail);
            //die();
+
            if($mail == 'aEnvoyer'){
-               $this->envyerEmail($mailer, $utilisateur);
+               //$this->envyerEmailComfirmationCreationCompte($mailer, $utilisateur);
+               //$this->addFlash('success', "Un mail est envoyé confirme la création du compte");
+               // ajouter un envoi d'e-mail pour que l'utilisateur puisse activer son compte.
+               // Création d'email
+               $email = (new TemplatedEmail())
+                   ->from('christophebuchou1984@gmail.com')
+                   ->to($utilisateur->getEmail())
+                   ->subject('Demande de validation la création du compte ' . $utilisateur->getNomUtilisateur() . ' ' . $utilisateur->getPrenom())
+
+                   // path of the Twig template to render
+                   ->htmlTemplate('emails/activationCompte.html.twig')
+
+                   // pass variables (name => value) to the template
+                   ->context([
+                       'token' => $utilisateur->getActivationToken()
+                   ])
+               ;
+
+               dump($utilisateur->getActivationToken());
+               dump($email);
+               // Envoie d'email
+               $mailer->send($email);
+               dump($mailer);
+
+               // On génère un message
+               $this->addFlash('success', 'Un mail a été envoyer pour demander l\'activation du compte à l\'adresse ' . $utilisateur->getEmail() . '. Il faut valider le compte avant se connecte' );
+           }else{
+               // Après une inscription je me dérige vers la route login
+               $this->addFlash('success', "Les modifications sont pris en compte. Vous pouvez se connecter avec le compte modifié");
+               return $this->redirectToRoute('security_login');
            }
 
-           // Après une inscription je me dérige vers la route login
-           return $this->redirectToRoute('security_login');
        }
 
        return $this->render('security/inscription.html.twig', [
@@ -101,8 +132,37 @@ class SecurityController extends AbstractController
 
    }
 
+    /**
+     * Le lien dans l'e-mail devra diriger vers cette route qui vérifiera si le token existe et ensuite valider le compte correspondant.
+     * @Route("/security/activation/{token}", name="activer_compte")
+     */
+    public function activerCompte($token, UtilisateurRepository $utilisateurRepository)
+    {
+        // On recherche si un utilisateur avec ce token existe dans la base de données
+        $user = $utilisateurRepository->findOneBy(['activationToken' => $token]);
 
-   public function envyerEmail(MailerInterface $mailer, Utilisateur $utilisateur){
+        // Si aucun utilisateur n'est associé à ce token
+        if(!$user){
+            // On renvoie une erreur 404
+            throw $this->createNotFoundException('Cet utilisateur n\'existe pas');
+        }
+
+        // On supprime le token
+        $user->setActivationToken(null);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        // On génère un message
+        $this->addFlash('success', 'Compte activé avec succès. Vous pouvez se connecter');
+
+        // On retourne au page connexion
+        return $this->redirectToRoute('security_login');
+    }
+
+
+   public function envyerEmailComfirmationCreationCompte(MailerInterface $mailer, Utilisateur $utilisateur){
+       // Création d'email
        $email = (new TemplatedEmail())
            ->from('omarchahidi@gmail.com')
            ->to($utilisateur->getEmail())
@@ -116,7 +176,13 @@ class SecurityController extends AbstractController
                'utilisateur' => $utilisateur
            ])
        ;
+
+       // Envoie d'email
        $mailer->send($email);
    }
+
+
+
+
 
 }

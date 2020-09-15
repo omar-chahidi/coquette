@@ -6,6 +6,7 @@ namespace App\Controller;
 use App\Entity\Utilisateur;
 use App\Form\InscriptionType;
 use App\Form\RegistrationType;
+use App\Form\ReinitialiserPwdType;
 use App\Repository\UtilisateurRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -14,8 +15,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 
 class SecurityController extends AbstractController
 {
@@ -181,8 +185,128 @@ class SecurityController extends AbstractController
        $mailer->send($email);
    }
 
+    /**
+     * Nous allons créer la route qui affichera un champ demandant l'adresse e-mail de l'utilisateur.
+     * @Route("/security/demanderEmail", name="demander_email_pour_reinitialisation_pwd")
+     */
+   public function demanderEmailPourReinitialiserPwd(
+       MailerInterface $mailer, Request $request, UtilisateurRepository $utilisateurRepository,
+       TokenGeneratorInterface  $tokenGenerator){
+
+       // On initialise le formulaire
+       $form = $this->createForm(ReinitialiserPwdType::class);
+
+       // On traite le formulaire
+       $form->handleRequest($request);
+
+       // Si le formulaire est valide
+       if ($form->isSubmitted() && $form->isValid()) {
+
+           // On récupère les données
+           $donnees = $form->getData();
+
+           // On cherche un utilisateur ayant cet e-mail
+           $user = $utilisateurRepository->findOneBy([ 'email' => $donnees['email'] ]);
+
+           // Si l'utilisateur n'existe pas
+           if ($user === null) {
+               // On envoie une alerte disant que l'adresse e-mail est inconnue
+               $this->addFlash('danger', 'Cette adresse e-mail est inconnue');
+
+               // On retourne au page connexion
+               return $this->redirectToRoute('security_login');
+           }
+
+           // On génère un token
+           $token = $tokenGenerator->generateToken();
+
+           // On essaie d'écrire le token en base de données. S'il y a un problème on n'envoie pas l'email réinitialisation pwd
+           try{
+               $user->setPwdToken($token);
+               $entityManager = $this->getDoctrine()->getManager();
+               $entityManager->persist($user);
+               $entityManager->flush();
+           } catch (\Exception $e) {
+               $this->addFlash('warning', 'Une erreur est survenue ' . $e->getMessage());
+               return $this->redirectToRoute('security_login');
+           }
 
 
+           // On génère l'URL de réinitialisation de mot de passe
+           $url = $this->generateUrl('reinitialiser_mot_de_passe', array('token' => $token), UrlGeneratorInterface::ABSOLUTE_URL);
+
+           // On génère l'e-mail
+           // Création d'email
+           $email = (new Email())
+               ->from('christophebuchou1984@gmail.com')
+               ->to($user->getEmail())
+               ->subject('Mot de passe oublié')
+               ->html("Bonjour,<br><br>Une demande de réinitialisation de mot de passe a été effectuée pour 
+                            le site COQUETTE.<br>Veuillez cliquer sur le lien suivant : <br>" . $url)
+           ;
+
+           // Envoie d'email
+           $mailer->send($email);
+
+           // On crée le message flash de confirmation
+           $this->addFlash('success', 'E-mail de réinitialisation du mot de passe envoyé !');
+
+           // On redirige vers la page de login
+           return $this->redirectToRoute('security_login');
+       }
+
+
+       // On envoie le formulaire à la vue
+       return $this->render('security/formulairEnvoieEmailPourReinitialisationPWD.html.twig', [
+           'emailForm' => $form->createView()
+       ]);
+   }
+
+
+    /**
+     * Une fois le lien envoyé, nous devons traiter le retour en créant le contrôleur pour la route "reinitialis_mot_de_passe".
+     * Cette route effectuera les actions suivantes :
+     *      Vérifier si le token de l'URL correspond à un utilisateur
+     *      Afficher le formulaire permettant de saisir le mot de passe
+     *
+     * @Route("/security/reinitialiserPWD/{token}", name="reinitialiser_mot_de_passe")
+     */
+    public function reinitialiserPWD(Request $request, string $token, UserPasswordEncoderInterface $passwordEncoder)
+    {
+        // On cherche un utilisateur avec le token donné
+        $utilisateur = $this->getDoctrine()->getRepository(Utilisateur::class)->findOneBy(['pwdToken' => $token]);
+
+        // Si l'utilisateur n'existe pas
+        if ($utilisateur === null) {
+            // On affiche une erreur
+            $this->addFlash('danger', 'Token/utilisateur Inconnu');
+            return $this->redirectToRoute('security_login');
+        }
+
+        // Si le formulaire est envoyé en méthode post
+        if ($request->isMethod('POST')) {
+            // On supprime le token
+            $utilisateur->setPwdToken(null);
+
+            // On chiffre le mot de passe
+            $utilisateur->setPassword($passwordEncoder->encodePassword($utilisateur, $request->request->get('password')));
+
+            // On stocke
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($utilisateur);
+            $entityManager->flush();
+
+            // On crée le message flash
+            $this->addFlash('message', 'Mot de passe mis à jour. Vous pouvez maintenant se connecter');
+
+            // On redirige vers la page de connexion
+            return $this->redirectToRoute('security_login');
+        }else {
+            // Si on n'a pas reçu les données, on affiche le formulaire
+            return $this->render('security/formulaireReinitialisationPWD.html.twig', ['token' => $token]);
+        }
+
+    }
 
 
 }

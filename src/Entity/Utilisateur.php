@@ -92,6 +92,11 @@ class Utilisateur implements UserInterface
      */
     private $adresses;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $pwdToken;
+
     public function __construct()
     {
         $this->adresses = new ArrayCollection();
@@ -254,6 +259,18 @@ class Utilisateur implements UserInterface
                 $adress->setUtilisateur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPwdToken(): ?string
+    {
+        return $this->pwdToken;
+    }
+
+    public function setPwdToken(?string $pwdToken): self
+    {
+        $this->pwdToken = $pwdToken;
 
         return $this;
     }

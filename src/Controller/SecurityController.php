@@ -109,7 +109,7 @@ class SecurityController extends AbstractController
 
        }
 
-       return $this->render('security/inscription.html.twig', [
+       return $this->render('security/confirmationInscription.html.twig', [
            'form' => $form->createView(),
            // utilisateur existe updateMode = true
            'updateMode' => $utilisateur->getId() !== null
@@ -169,7 +169,7 @@ class SecurityController extends AbstractController
            ->subject('Création du compte ' . $utilisateur->getNomUtilisateur() . ' ' . $utilisateur->getPrenom())
 
            // path of the Twig template to render
-           ->htmlTemplate('emails/inscription.html.twig')
+           ->htmlTemplate('emails/confirmationInscription.html.twig')
 
            // pass variables (name => value) to the template
            ->context([

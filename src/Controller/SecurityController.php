@@ -11,6 +11,8 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -26,7 +28,9 @@ class SecurityController extends AbstractController
     //public function inscriptionEtModification(Request $request, ManagerRegistry $managerRegistry){
     //public function inscriptionEtModification(Utilisateur $utilisateur = null,Request $request, ManagerRegistry $managerRegistry){
 
-    public function inscriptionEtModification(Utilisateur $utilisateur = null,Request $request, ManagerRegistry $managerRegistry, UserPasswordEncoderInterface $encoder){
+    public function inscriptionEtModification(Utilisateur $utilisateur = null,Request $request, ManagerRegistry $managerRegistry, UserPasswordEncoderInterface $encoder, MailerInterface $mailer){
+        // Initialisaton variable pour l'envoie de mail
+        $mail = 'dejaEnvoyer';
 
         // Instansiation d'un utilisateur
         if(!$utilisateur){
@@ -51,6 +55,7 @@ class SecurityController extends AbstractController
                $utilisateur ->setActivation('ok')
                             ->setDateAjout(new \DateTime())
                ;
+               $mail = 'aEnvoyer';
            }
 
            dump($utilisateur);
@@ -61,6 +66,13 @@ class SecurityController extends AbstractController
            $em = $managerRegistry->getManager();
            $em->persist($utilisateur);
            $em->flush();
+
+           // Envoie d'email de création du compte
+           dump($mail);
+           //die();
+           if($mail == 'aEnvoyer'){
+               $this->envyerEmail($mailer, $utilisateur);
+           }
 
            // Après une inscription je me dérige vers la route login
            return $this->redirectToRoute('security_login');
@@ -87,6 +99,24 @@ class SecurityController extends AbstractController
      */
    public function logout(){
 
+   }
+
+
+   public function envyerEmail(MailerInterface $mailer, Utilisateur $utilisateur){
+       $email = (new TemplatedEmail())
+           ->from('omarchahidi@gmail.com')
+           ->to($utilisateur->getEmail())
+           ->subject('Création du compte ' . $utilisateur->getNomUtilisateur() . ' ' . $utilisateur->getPrenom())
+
+           // path of the Twig template to render
+           ->htmlTemplate('emails/inscription.html.twig')
+
+           // pass variables (name => value) to the template
+           ->context([
+               'utilisateur' => $utilisateur
+           ])
+       ;
+       $mailer->send($email);
    }
 
 }

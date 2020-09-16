@@ -63,27 +63,25 @@
                 <span class="sr-only">Suivant</span>
             </a>
         </div>
-        <h2>Article n° {{ unArticle.id }}</h2>
-        <h3>{{ unArticle.titre }}</h3>
+
         {#
-        <div class="container">
-            <div class="row">
-                {% for photo in articlePhotos %}
-                    <div>
-                        <a href="{{ photo.titrePhoto }}" class="thumbnail">
-                            <img src="/uploads/images/{{ photo.titrePhoto }}" alt="{{ photo.titrePhoto }}" width="200" height="200"/>
-                        </a>
-                    </div>
-                {% endfor %}
+            <div class="container">
+                <div class="row">
+                    {% for photo in articlePhotos %}
+                        <div>
+                            <a href="{{ photo.titrePhoto }}" class="thumbnail">
+                                <img src="/uploads/images/{{ photo.titrePhoto }}" alt="{{ photo.titrePhoto }}" width="200" height="200"/>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
+
+            <h2>Article n° {{ unArticle.id }}</h2>
+            <div class="metadata">Ecrit le {{ unArticle.createdAt | date ('Y/m/d') }} dans la catégorie {{ unArticle.categorie.titre }}</div>
         #}
 
-        {# #}
-        <div class="metadata">Ecrit le {{ unArticle.createdAt | date ('Y/m/d') }} dans la catégorie {{ unArticle.categorie.titre }}</div>
-
-
-
+        <h3>{{ unArticle.titre }}</h3>
         <p>{{ unArticle.description | raw }}</p>
         <hr>
 

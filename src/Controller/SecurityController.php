@@ -113,7 +113,7 @@ class SecurityController extends AbstractController
 
        }
 
-       return $this->render('security/confirmationInscription.html.twig', [
+       return $this->render('security/inscription.html.twig', [
            'form' => $form->createView(),
            // utilisateur existe updateMode = true
            'updateMode' => $utilisateur->getId() !== null

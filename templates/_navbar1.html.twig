@@ -76,8 +76,14 @@
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ path('afficher_les_commandes', {'id': app.user.id}) }}">Commandes</a>
                     {% endif %}
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{{ path('admin_afficher_les_articles') }}">Administration du site</a>
+
+                    {% if is_granted('ROLE_ADMIN') %}
+                        {# Ici le contenu réservé aux administrateurs#}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="">Administration des utilisateurs</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="{{ path('admin_afficher_les_articles') }}">Administration des articles</a>
+                    {% endif %}
                 </div>
             </li>
             <li class="nav-item">

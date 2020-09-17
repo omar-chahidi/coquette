@@ -8,10 +8,14 @@ use App\Form\VarianteType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 
 class VarianteController extends AbstractController
 {
     /**
+     * Si nous souhaitons réserver cette route aux administrateurs, nous allons modifier l'annotation de la façon suivante
+     * @IsGranted("ROLE_ADMIN")
      * php bin/console make:form VarianteType
      * @Route("/variante/{id}/ajouter", name="ajouter_variante_aticle_par_admin", requirements={"id"="\d+"})
      */
@@ -59,6 +63,11 @@ class VarianteController extends AbstractController
      */
     public function modifierVariante(Variante $variante = null, Request $request) {
 
+        // Une autre méthode commune de protection des routes est une méthode php dans le contrôleur.
+        // Il est possible d'ajouter la ligne suivante où nous le souhaitons dans nos méthodes de contrôleurs
+        // Dans cet exemple, l'utilisateur qui n'a pas le rôle administrateur se verra interdire l'accès.
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         dump($variante);
 
         // Création du formulaire
@@ -92,6 +101,12 @@ class VarianteController extends AbstractController
      * @Route("/variante/{id}/supprimer", name="supprimer_variante_article_par_un_admin")
      */
     public function supprimerVariante(Variante $variante) {
+
+        // Une autre méthode commune de protection des routes est une méthode php dans le contrôleur.
+        // Il est possible d'ajouter la ligne suivante où nous le souhaitons dans nos méthodes de contrôleurs
+        // Dans cet exemple, l'utilisateur qui n'a pas le rôle administrateur se verra interdire l'accès.
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $entitemanager = $this->getDoctrine()->getManager();
         $entitemanager->remove($variante);
         $entitemanager->flush();

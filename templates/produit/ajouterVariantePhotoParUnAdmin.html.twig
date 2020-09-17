@@ -10,7 +10,37 @@
     </div>
 
     <article>
-        <h2>{{ unArticle.titre }}</h2>
+        <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-ride="carousel" style="width: 50%; margin: 0 auto">
+            <ol class="carousel-indicators">
+                {% for photo in imagesProduit %}
+                    {% if loop.first %}
+                        <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                    {% else %}
+                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index - 1 }}" ></li>
+                    {% endif %}
+                {% endfor %}
+            </ol>
+
+            <div class="carousel-inner">
+                {% for photo in imagesProduit %}
+                    <div class="carousel-item {% if loop.first %} active {% endif %}">
+                        <img src="/uploads/images/{{ photo.titrePhoto }}" class="d-block w-100" alt="{{ photo.titrePhoto }}">
+                    </div>
+                {% endfor %}
+            </div>
+
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Précédent</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Suivant</span>
+            </a>
+        </div>
+
+
+        {#
         <div class="container">
             <div class="row">
                 {% for image in imagesProduit %}
@@ -25,6 +55,9 @@
                 {% endfor %}
             </div>
         </div>
+        #}
+        <hr>
+        <h2>{{ unArticle.titre }}</h2>
         <p>{{ unArticle.description | raw }}</p>
         <hr>
         {# <p>{{ unArticle.motRecherche }}</p> #}

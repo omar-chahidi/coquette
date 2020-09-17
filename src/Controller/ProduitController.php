@@ -11,6 +11,8 @@ use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 
 class ProduitController extends AbstractController
 {
@@ -152,6 +154,8 @@ class ProduitController extends AbstractController
     */
 
     /**
+     * Si nous souhaitons réserver cette route aux administrateurs, nous allons modifier l'annotation de la façon suivante
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/produit/listerPourAdmin", name="admin_afficher_les_articles")
      */
     public function adminAfficherLesArticles() {
@@ -164,6 +168,8 @@ class ProduitController extends AbstractController
     }
 
     /**
+     * Si nous souhaitons réserver cette route aux administrateurs, nous allons modifier l'annotation de la façon suivante
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/produit/ajouter", name="ajouter_produit_par_un_admin")
      * @Route("/produit/{id}/modifier", name="modifier_produit_par_un_admin", requirements={"id"="\d+"})
      * php bin/console make:form ProduitType
@@ -200,6 +206,8 @@ class ProduitController extends AbstractController
     }
 
     /**
+     * Si nous souhaitons réserver cette route aux administrateurs, nous allons modifier l'annotation de la façon suivante
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/produit/{id}/supprimer", name="supprimer_produit_par_un_admin", requirements={"id"="\d+"})
      */
     public function supprimerUnAricleParUnAdmin(Article $article){
@@ -213,6 +221,11 @@ class ProduitController extends AbstractController
      * @Route("/produit/{id}/ajouter", name="ajouter_variante_photo_par_un_admin", requirements={"id"="\d+"})
      */
     public function ajouterVariantePhotoParUnAdmin(Article $article) {
+
+        // Une autre méthode commune de protection des routes est une méthode php dans le contrôleur.
+        // Il est possible d'ajouter la ligne suivante où nous le souhaitons dans nos méthodes de contrôleurs
+        // Dans cet exemple, l'utilisateur qui n'a pas le rôle administrateur se verra interdire l'accès.
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         dump($article);
 

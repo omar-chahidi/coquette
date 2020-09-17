@@ -97,6 +97,11 @@ class Utilisateur implements UserInterface
      */
     private $pwdToken;
 
+    /**
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $roles = [];
+
     public function __construct()
     {
         $this->adresses = new ArrayCollection();
@@ -212,10 +217,24 @@ class Utilisateur implements UserInterface
         return $this;
     }
 
+    /*
     public function getRoles()
     {
         return ['ROLE_USER'];
     }
+    */
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
 
     public function getSalt()
     {
@@ -271,6 +290,13 @@ class Utilisateur implements UserInterface
     public function setPwdToken(?string $pwdToken): self
     {
         $this->pwdToken = $pwdToken;
+
+        return $this;
+    }
+
+    public function setRoles(?array $roles): self
+    {
+        $this->roles = $roles;
 
         return $this;
     }

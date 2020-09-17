@@ -9,10 +9,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+
 
 class PhotoController extends AbstractController
 {
     /**
+     * Si nous souhaitons réserver cette route aux administrateurs, nous allons modifier l'annotation de la façon suivante
+     * @IsGranted("ROLE_ADMIN")
      * @Route("/image/{id}/telecharger", name="telecharger_image")
      */
     public function telechargerImage(Article $article, Request $request)

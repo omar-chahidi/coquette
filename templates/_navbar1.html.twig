@@ -80,7 +80,7 @@
                     {% if is_granted('ROLE_ADMIN') %}
                         {# Ici le contenu réservé aux administrateurs#}
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="">Administration des utilisateurs</a>
+                        <a class="dropdown-item" href="{{ path('admin_utilisateurs') }}">Administration des utilisateurs</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ path('admin_afficher_les_articles') }}">Administration des articles</a>
                     {% endif %}

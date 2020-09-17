@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <h1>Liste des utilisateurs</h1>
+    <table class="table">
+        <thead>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Date de naissance</th>
+            <th>Email</th>
+            <th>Rôles</th>
+            <th>Adresses</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+        {# On boucle sur les utilisateurs #}
+        {% for user in utilisateurs %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.nomUtilisateur }}</td>
+                <td>{{ user.prenom }}</td>
+                <td>{{ user.dateNaissance | date ('Y/m/d') }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {# On boucle sur les rôles #}
+                    {% for role in user.roles %}
+                        {# {{ dump(role) }} #}
+                        {% if role == "ROLE_USER" %}
+                            Utilisateur
+                        {% elseif role == "ROLE_EDITOR" %}
+                            Editeur
+                        {% elseif role == "ROLE_ADMIN" %}
+                            Administrateur
+                        {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ user.adresses|length }}</td>
+                <td><a href="{{ path('admin_modifier_utilisateur', {'id': user.id }) }}" class="btn btn-warning">Modifier</a></td>
+            </tr>
+
+        {% else %}
+            <p>Aucun utilisateur inscrit</p>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
